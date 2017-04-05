@@ -50,6 +50,19 @@ public class Main extends Activity {
         layout.getLayoutParams().height = getWindowDim().y;
         layout.addView(gameView);
 
+        //setup listener to keep action and navigation -bar invisible when minimized and maximized again
+        decorView.setOnSystemUiVisibilityChangeListener
+                (new View.OnSystemUiVisibilityChangeListener() {
+                    @Override
+                    public void onSystemUiVisibilityChange(int visibility) {
+                        if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
+                            final int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                                    | View.SYSTEM_UI_FLAG_FULLSCREEN;
+                            decorView.setSystemUiVisibility(uiOptions);
+                        }
+                    }
+                });
+
         //setting up touchlistener & handler
         touchHandler = new TouchHandler();
         touchListener = new View.OnTouchListener(){
