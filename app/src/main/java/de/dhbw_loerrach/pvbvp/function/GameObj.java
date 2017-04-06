@@ -14,6 +14,10 @@ public class GameObj {
     protected GameObj() {
     }
 
+    public char getSide(){
+        return (char)0;
+    }
+
     public String getType() {
         return type;
     }

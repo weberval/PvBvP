@@ -23,4 +23,8 @@ public class Brick extends GameObj {
             this.type = "brick";
         }
     }
+
+    public char getSide() {
+        return side;
+    }
 }
