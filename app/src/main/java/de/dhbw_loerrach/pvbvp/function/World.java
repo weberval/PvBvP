@@ -1,5 +1,8 @@
 package de.dhbw_loerrach.pvbvp.function;
 
+import de.dhbw_loerrach.pvbvp.Main;
+import de.dhbw_loerrach.pvbvp.gui.GameView;
+
 /**
  * Created by weva on 04.04.2017.
  *  const PLAYGROUND_WIDTH has to be odd
@@ -19,7 +22,14 @@ public class World {
     public static int brickCount;
     public static GameObj[][] playground;
 
-    public static void init() {
+    private GameController gameController;
+
+
+    public World(GameController gameController){
+        this.gameController = gameController;
+    }
+
+    public void init() {
         playground = new GameObj[PLAYGROUND_WIDTH][PLAYGROUND_HEIGHT];
         for (int i = 0; i < PLAYGROUND_WIDTH; ++i) {
             for (int j = 0; j < PLAYGROUND_HEIGHT; ++j) {

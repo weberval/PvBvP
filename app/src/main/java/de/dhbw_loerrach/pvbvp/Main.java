@@ -10,6 +10,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import de.dhbw_loerrach.pvbvp.function.GameController;
+import de.dhbw_loerrach.pvbvp.function.GameObj;
+import de.dhbw_loerrach.pvbvp.function.World;
 import de.dhbw_loerrach.pvbvp.gui.GameView;
 import de.dhbw_loerrach.pvbvp.gui.TouchHandler;
 
@@ -21,6 +24,7 @@ public class Main extends Activity {
 
     private static final String TAG = "MAIN";
 
+    private GameController gameController;
     private GameView gameView;
     private View.OnTouchListener touchListener;
     private TouchHandler touchHandler;
@@ -76,6 +80,9 @@ public class Main extends Activity {
             }
         };
         gameView.setOnTouchListener(touchListener);
+
+        //setup Gamecontroller TEST
+        gameController = new GameController(this,gameView);
 
         Log.i(TAG,"created");
     }

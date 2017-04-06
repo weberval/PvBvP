@@ -37,6 +37,8 @@ public class GameView extends View {
      */
     private GameObj[][] world;
 
+    private Paint paint;
+
 
     public GameView(Context context, Point windowDim) {
         super(context);
@@ -46,6 +48,8 @@ public class GameView extends View {
 
         blockWidth = World.PLAYGROUND_WIDTH / SCREEN_WIDTH;
         blockHeight = World.PLAYGROUND_HEIGHT / SCREEN_HEIGHT;
+
+        paint = new Paint();
 
         Log.i(TAG,"created");
     }
@@ -66,7 +70,32 @@ public class GameView extends View {
         for(int i = 0; i < world.length; i ++){
             for(int j = 0; j < world[i].length; j ++){
 
+                switch (world[i][j].getType()){
+                    case "ball":
 
+                        paint.setColor(Color.RED);
+                        canvas.drawRect(i * blockWidth, j * blockHeight, i * blockWidth + blockWidth, j * blockHeight + blockHeight,paint);
+
+                        break;
+                    case "brick":
+
+                        paint.setColor(Color.GRAY);
+                        canvas.drawRect(i * blockWidth, j * blockHeight, i * blockWidth + (blockWidth * 2), j * blockHeight + blockHeight, paint);
+
+
+                        break;
+                    case "master":
+
+                        paint.setColor(Color.YELLOW);
+                        canvas.drawRect(i * blockWidth, j * blockHeight, i * blockWidth + blockWidth, j * blockHeight + blockHeight,paint);
+
+
+                        break;
+                    case "air":
+
+                        //Nothing, just black
+                        break;
+                }
 
             }
         }
