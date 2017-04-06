@@ -2,25 +2,26 @@ package de.dhbw_loerrach.pvbvp.function;
 
 /**
  * Created by weva on 04.04.2017.
- *  const PLAYGROUND_WITH has to be odd
+ *  const PLAYGROUND_WIDTH has to be odd
  *  const PLAYGROUND_HEIGHT has to be even
  *  const PANEL_WITH has to be even
  */
 
 public class World {
-    private static final int PLAYGROUND_WITH = 31;
-    private static final int PLAYGROUND_HEIGHT = 16;
-    private static final int PLAYGROUND_CENTER_X = PLAYGROUND_WITH / 2;
-    private static final int PLAYGROUND_CENTER_Y_FLOOR = PLAYGROUND_WITH / 2;
-    private static final int PLAYGROUND_OFFSET_X = 5;
-    private static final int PLAYGROUND_OFFSET_Y = 2;
+    public static final int PLAYGROUND_WIDTH = 31;
+    public static final int PLAYGROUND_HEIGHT = 16;
+    public static final int PLAYGROUND_OFFSET_X = 5;
+    public static final int PLAYGROUND_OFFSET_Y = 2;
+
+    private static final int PLAYGROUND_CENTER_X = PLAYGROUND_WIDTH / 2;
+    private static final int PLAYGROUND_CENTER_Y_FLOOR = PLAYGROUND_WIDTH / 2;
     private static final int PANEL_WITH_P_SIDE = 2;
     public static int brickCount;
     public static GameObj[][] playground;
 
     public static void init() {
-        playground = new GameObj[PLAYGROUND_WITH][PLAYGROUND_HEIGHT];
-        for (int i = 0; i < PLAYGROUND_WITH; ++i) {
+        playground = new GameObj[PLAYGROUND_WIDTH][PLAYGROUND_HEIGHT];
+        for (int i = 0; i < PLAYGROUND_WIDTH; ++i) {
             for (int j = 0; j < PLAYGROUND_HEIGHT; ++j) {
                 playground[i][j] = new Air();
             }
@@ -33,7 +34,7 @@ public class World {
 
     private static void brickCreate() {
         for (int i = PLAYGROUND_OFFSET_Y; i < PLAYGROUND_HEIGHT - PLAYGROUND_OFFSET_Y; ++i) {
-            for (int j = PLAYGROUND_OFFSET_X; j < PLAYGROUND_WITH - PLAYGROUND_OFFSET_X - 1; j += 2) {
+            for (int j = PLAYGROUND_OFFSET_X; j < PLAYGROUND_WIDTH - PLAYGROUND_OFFSET_X - 1; j += 2) {
                 playground[i][j] = new Brick('l');
                 playground[i+1][j] = new Brick('r');
             }

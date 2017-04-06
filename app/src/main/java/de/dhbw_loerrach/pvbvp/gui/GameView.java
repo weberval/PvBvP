@@ -8,6 +8,9 @@ import android.graphics.Point;
 import android.util.Log;
 import android.view.View;
 
+import de.dhbw_loerrach.pvbvp.function.GameObj;
+import de.dhbw_loerrach.pvbvp.function.World;
+
 /**
  * Created by Renat on 04.04.2017.
  * Where the game is drawn
@@ -29,6 +32,11 @@ public class GameView extends View {
      */
     private int blockHeight;
 
+    /**
+     * The game world to be drawn
+     */
+    private GameObj[][] world;
+
 
     public GameView(Context context, Point windowDim) {
         super(context);
@@ -36,14 +44,18 @@ public class GameView extends View {
         SCREEN_WIDTH = windowDim.x;
         SCREEN_HEIGHT = windowDim.y;
 
+        blockWidth = World.PLAYGROUND_WIDTH / SCREEN_WIDTH;
+        blockHeight = World.PLAYGROUND_HEIGHT / SCREEN_HEIGHT;
+
         Log.i(TAG,"created");
     }
 
     /**
      * The gameview will be updated and redrawn.
      */
-    public void update(){
+    public void update(GameObj[][] world){
 
+        this.world = world;
         postInvalidate();
     }
 
@@ -51,9 +63,12 @@ public class GameView extends View {
     public void onDraw(Canvas canvas){
         super.onDraw(canvas);
 
-        //TEST
-        Paint paint = new Paint();
-        paint.setColor(Color.RED);
-        canvas.drawRect(10,10,100,100,paint);
+        for(int i = 0; i < world.length; i ++){
+            for(int j = 0; j < world[i].length; j ++){
+
+
+
+            }
+        }
     }
 }
