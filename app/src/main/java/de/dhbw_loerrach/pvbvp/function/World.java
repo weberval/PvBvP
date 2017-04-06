@@ -1,0 +1,66 @@
+package de.dhbw_loerrach.pvbvp.function;
+
+/**
+ * Created by weva on 04.04.2017.
+ *  const PLAYGROUND_WITH has to be odd
+ *  const PLAYGROUND_HEIGHT has to be even
+ *  const PANEL_WITH has to be even
+ */
+
+public class World {
+    private static final int PLAYGROUND_WITH = 31;
+    private static final int PLAYGROUND_HEIGHT = 16;
+    private static final int PLAYGROUND_CENTER_X = PLAYGROUND_WITH / 2;
+    private static final int PLAYGROUND_CENTER_Y_FLOOR = PLAYGROUND_WITH / 2;
+    private static final int PLAYGROUND_OFFSET_X = 5;
+    private static final int PLAYGROUND_OFFSET_Y = 2;
+    private static final int PANEL_WITH_P_SIDE = 2;
+    public static int brickCount;
+    public static GameObj[][] playground;
+
+    public static void init() {
+        playground = new GameObj[PLAYGROUND_WITH][PLAYGROUND_HEIGHT];
+        for (int i = 0; i < PLAYGROUND_WITH; ++i) {
+            for (int j = 0; j < PLAYGROUND_HEIGHT; ++j) {
+                playground[i][j] = new Air();
+            }
+        }
+        brickCreate();
+        masterBrickCreate();
+        panelCreate(1);
+        panelCreate(2);
+    }
+
+    private static void brickCreate() {
+        for (int i = PLAYGROUND_OFFSET_Y; i < PLAYGROUND_HEIGHT - PLAYGROUND_OFFSET_Y; ++i) {
+            for (int j = PLAYGROUND_OFFSET_X; j < PLAYGROUND_WITH - PLAYGROUND_OFFSET_X - 1; j += 2) {
+                playground[i][j] = new Brick('l');
+                playground[i+1][j] = new Brick('r');
+            }
+        }
+    }
+
+    public static void masterBrickCreate() {
+        playground[PLAYGROUND_CENTER_X][PLAYGROUND_CENTER_Y_FLOOR] = new Brick('m');
+        playground[PLAYGROUND_CENTER_X][PLAYGROUND_CENTER_Y_FLOOR + 1] = new Brick('m');
+
+        playground[PLAYGROUND_CENTER_X + 1][PLAYGROUND_CENTER_Y_FLOOR] = new Brick('m');
+        playground[PLAYGROUND_CENTER_X + 1][PLAYGROUND_CENTER_Y_FLOOR + 1] = new Brick('m');
+
+        playground[PLAYGROUND_CENTER_X - 1][PLAYGROUND_CENTER_Y_FLOOR] = new Brick('m');
+        playground[PLAYGROUND_CENTER_X - 1][PLAYGROUND_CENTER_Y_FLOOR + 1] = new Brick('m');
+    }
+
+    public static void panelCreate(int player) {
+        int x = -1;
+        if (player == 1) {
+            x = 0;
+        }
+        else if (player == 2) {
+            x = PLAYGROUND_HEIGHT - 1;
+        }
+        for (int i = PLAYGROUND_CENTER_X - PANEL_WITH_P_SIDE; i < PLAYGROUND_CENTER_X + PANEL_WITH_P_SIDE; ++i) {
+            playground[x][i] = new Panel(player);
+        }
+    }
+}
