@@ -25,12 +25,12 @@ public class GameView extends View {
     /**
      *  Width of one single block in pixel.
      */
-    private int blockWidth;
+    private float blockWidth;
 
     /**
      *  Height of one single block in pixel.
      */
-    private int blockHeight;
+    private float blockHeight;
 
     /**
      * The game world to be drawn
@@ -46,8 +46,8 @@ public class GameView extends View {
         SCREEN_WIDTH = windowDim.x;
         SCREEN_HEIGHT = windowDim.y;
 
-        blockWidth = World.PLAYGROUND_WIDTH / SCREEN_WIDTH;
-        blockHeight = World.PLAYGROUND_HEIGHT / SCREEN_HEIGHT;
+        blockWidth = (float) (SCREEN_WIDTH / World.PLAYGROUND_WIDTH  );
+        blockHeight = (float) (SCREEN_HEIGHT / World.PLAYGROUND_HEIGHT );
 
         paint = new Paint();
 
@@ -75,20 +75,28 @@ public class GameView extends View {
 
                         paint.setColor(Color.RED);
                         canvas.drawRect(i * blockWidth, j * blockHeight, i * blockWidth + blockWidth, j * blockHeight + blockHeight,paint);
+                        Log.i(TAG,"ball drawn");
 
                         break;
                     case "brick":
 
                         paint.setColor(Color.GRAY);
                         canvas.drawRect(i * blockWidth, j * blockHeight, i * blockWidth + (blockWidth * 2), j * blockHeight + blockHeight, paint);
-
+                        Log.i(TAG,"brick drawn");
 
                         break;
                     case "master":
 
                         paint.setColor(Color.YELLOW);
                         canvas.drawRect(i * blockWidth, j * blockHeight, i * blockWidth + blockWidth, j * blockHeight + blockHeight,paint);
+                        Log.i(TAG,"master drawn");
 
+                        break;
+                    case "panel":
+
+                        paint.setColor(Color.WHITE);
+                        canvas.drawRect(i * blockWidth, j * blockHeight, i * blockWidth + blockWidth, j * blockHeight + blockHeight,paint);
+                        Log.i(TAG,"panel drawn");
 
                         break;
                     case "air":
