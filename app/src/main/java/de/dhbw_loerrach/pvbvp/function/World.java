@@ -17,7 +17,7 @@ public class World {
     public static final int PLAYGROUND_OFFSET_Y = 2;
 
     private static final int PLAYGROUND_CENTER_X = PLAYGROUND_WIDTH / 2;
-    private static final int PLAYGROUND_CENTER_Y_FLOOR = PLAYGROUND_WIDTH / 2;
+    private static final int PLAYGROUND_CENTER_Y_FLOOR = PLAYGROUND_HEIGHT / 2;
     private static final int PANEL_WITH_P_SIDE = 2;
     public static int brickCount;
     public static GameObj[][] playground;
@@ -43,10 +43,13 @@ public class World {
     }
 
     private static void brickCreate() {
-        for (int i = PLAYGROUND_OFFSET_Y; i < PLAYGROUND_HEIGHT - PLAYGROUND_OFFSET_Y; ++i) {
-            for (int j = PLAYGROUND_OFFSET_X; j < PLAYGROUND_WIDTH - PLAYGROUND_OFFSET_X - 1; j += 2) {
-                playground[i][j] = new Brick('l');
-                playground[i+1][j] = new Brick('r');
+        /**
+         * @param x line indent iterating through 0 and 1
+         */
+        for (int i = PLAYGROUND_OFFSET_Y - 1; i < PLAYGROUND_HEIGHT - PLAYGROUND_OFFSET_Y - 1; ++i) {
+            for (int j = PLAYGROUND_OFFSET_X + (i % 2) - 1; j < PLAYGROUND_WIDTH - PLAYGROUND_OFFSET_X - 1; j += 2) {
+                playground[j][i] = new Brick('l');
+                playground[j+1][i] = new Brick('r');
             }
         }
     }
@@ -71,7 +74,7 @@ public class World {
             x = PLAYGROUND_HEIGHT - 1;
         }
         for (int i = PLAYGROUND_CENTER_X - PANEL_WITH_P_SIDE; i < PLAYGROUND_CENTER_X + PANEL_WITH_P_SIDE; ++i) {
-            playground[x][i] = new Panel(player);
+            playground[i][x] = new Panel(player);
         }
     }
 }
