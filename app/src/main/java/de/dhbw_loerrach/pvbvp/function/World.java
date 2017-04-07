@@ -1,5 +1,7 @@
 package de.dhbw_loerrach.pvbvp.function;
 
+import android.util.Log;
+
 import de.dhbw_loerrach.pvbvp.Main;
 import de.dhbw_loerrach.pvbvp.gui.GameView;
 
@@ -11,6 +13,10 @@ import de.dhbw_loerrach.pvbvp.gui.GameView;
  */
 
 public class World {
+
+
+    private static final String TAG = "WORLD";
+
     public static final int PLAYGROUND_WIDTH = 27;
     public static final int PLAYGROUND_HEIGHT = 16;
     public static final int PLAYGROUND_OFFSET_X = 3;
@@ -42,6 +48,8 @@ public class World {
         panelCreate(1);
         panelCreate(2);
         masterBrickCreate();
+
+        debug();
     }
 
     private static void brickCreate() {
@@ -58,14 +66,15 @@ public class World {
                     random = Math.random();
                 }
                 if (random < 0.5) {
-                    playground[j][i] = new Brick('l');
-                    playground[j + 1][i] = new Brick('r');
+                    playground[j][i] = new Brick(GameObjType.BRICK,'l');
+                    playground[j + 1][i] = new Brick(GameObjType.BRICK,'r');
                 }
             }
         }
     }
 
     public static void masterBrickCreate() {
+        //BUG: Brick around the master bricks are not complete
         switch (playground[PLAYGROUND_CENTER_X][PLAYGROUND_CENTER_Y_FLOOR].getSide()) {
             case 'l':
                 playground[PLAYGROUND_CENTER_X + 1][PLAYGROUND_CENTER_Y_FLOOR] = new Air();
@@ -82,8 +91,11 @@ public class World {
                 playground[PLAYGROUND_CENTER_X - 1][PLAYGROUND_CENTER_Y_FLOOR - 1] = new Air();
                 break;
         }
-        playground[PLAYGROUND_CENTER_X][PLAYGROUND_CENTER_Y_FLOOR] = new Brick('m');
-        playground[PLAYGROUND_CENTER_X][PLAYGROUND_CENTER_Y_FLOOR - 1] = new Brick('m');
+
+        playground[PLAYGROUND_CENTER_X][PLAYGROUND_CENTER_Y_FLOOR] = new Brick(GameObjType.MASTER,'l');
+        playground[PLAYGROUND_CENTER_X+1][PLAYGROUND_CENTER_Y_FLOOR] = new Brick(GameObjType.MASTER,'r');
+        playground[PLAYGROUND_CENTER_X][PLAYGROUND_CENTER_Y_FLOOR - 1] = new Brick(GameObjType.MASTER,'l');
+        playground[PLAYGROUND_CENTER_X+1][PLAYGROUND_CENTER_Y_FLOOR - 1] = new Brick(GameObjType.MASTER,'r');
     }
 
     public static void panelCreate(int player) {
@@ -128,6 +140,30 @@ public class World {
                     return coords;
                 }
             }
+        }
+        return null;
+    }
+
+    //TEST
+    public void debug(){
+        String str = "";
+        for(int i=0; i < playground.length; i ++){
+            for(int j = 0; j < playground[i].length; j ++){
+                str += " | " + debug_helper(playground[i][j].type,playground[i][j].getSide()) + " | ";
+            }
+            Log.i(TAG,str);
+            str = "";
+        }
+    }
+
+    //TEST
+    private String debug_helper(GameObjType t,char s){
+        switch (t){
+            case BRICK: return "B"+s;
+            case MASTER: return "M"+s;
+            case PANEL: return "P"+s;
+            case BALL: return "B"+s;
+            case AIR: return "A"+s;
         }
         return null;
     }

@@ -1,6 +1,7 @@
 package de.dhbw_loerrach.pvbvp.gui;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -37,8 +38,19 @@ public class GameView extends View {
      */
     private GameObj[][] world;
 
-    private Paint paint;
 
+    private Paint paint;
+    //private Paint paintDrawFrame;
+
+
+    private ImageLoader imageLoader;
+    private Bitmap ball;
+    private Bitmap brickLeft;
+    private Bitmap brickRight;
+    private Bitmap masterLeft;
+    private Bitmap masterRight;
+    private Bitmap panel;
+    private Bitmap air;
 
     public GameView(Context context, Point windowDim) {
         super(context);
@@ -49,7 +61,23 @@ public class GameView extends View {
         blockWidth = (float) (SCREEN_WIDTH / World.PLAYGROUND_WIDTH  );
         blockHeight = (float) (SCREEN_HEIGHT / World.PLAYGROUND_HEIGHT );
 
+        imageLoader = new ImageLoader(context);
+        ball = imageLoader.getImage(GameObjImage.BALL,(int)blockWidth,(int)blockHeight);
+        brickLeft = imageLoader.getImage(GameObjImage.BRICK_LEFT,(int)blockWidth,(int)blockHeight);
+        brickRight = imageLoader.getImage(GameObjImage.BRICK_RIGHT,(int)blockWidth,(int)blockHeight);
+        masterLeft = imageLoader.getImage(GameObjImage.MASTER_LEFT,(int)blockWidth,(int)blockHeight);
+        masterRight = imageLoader.getImage(GameObjImage.MASTER_RIGHT,(int)blockWidth,(int)blockHeight);
+        panel = imageLoader.getImage(GameObjImage.PANEL,(int)blockWidth,(int)blockHeight);
+        air = imageLoader.getImage(GameObjImage.AIR, (int)blockWidth*2,(int)blockHeight);
+
+
         paint = new Paint();
+        /*
+        paintDrawFrame = new Paint();
+        paintDrawFrame.setColor(Color.BLACK);
+        paintDrawFrame.setStyle(Paint.Style.STROKE);
+        paintDrawFrame.setStrokeWidth(10);
+        */
 
         Log.i(TAG,"created");
     }
@@ -71,40 +99,36 @@ public class GameView extends View {
             for(int j = 0; j < world[i].length; j ++){
 
                 switch (world[i][j].getType()){
+
                     case BALL:
 
-                        paint.setColor(Color.CYAN);
-                        canvas.drawRect(i * blockWidth, j * blockHeight, i * blockWidth + blockWidth, j * blockHeight + blockHeight,paint);
+                        canvas.drawBitmap(ball,i * blockWidth, j * blockHeight, paint);
 
                         break;
                     case BRICK:
-                        switch (world[i][j].getSide()) {
-                            case 'l':
-                                paint.setColor(Color.BLUE);
-                                canvas.drawRect(i * blockWidth, j * blockHeight, i * blockWidth + (blockWidth * 2), j * blockHeight + blockHeight, paint);
 
-                                break;
-                            case 'r':
-                                paint.setColor(Color.BLUE);
-                                canvas.drawRect(i * blockWidth, j * blockHeight, i * blockWidth + (blockWidth * 2), j * blockHeight + blockHeight, paint);
-                                break;
+                        if(world[i][j].getSide() == 'r') {
+                            canvas.drawBitmap(brickRight, i * blockWidth, j * blockHeight, paint);
+                        }else {
+                            canvas.drawBitmap(brickLeft, i * blockWidth, j * blockHeight, paint);
                         }
-
                         break;
                     case MASTER:
 
-                        paint.setColor(Color.YELLOW);
-                        canvas.drawRect(i * blockWidth, j * blockHeight, i * blockWidth + blockWidth, j * blockHeight + blockHeight,paint);
+                        if(world[i][j].getSide() == 'r') {
+                            canvas.drawBitmap(masterRight, i * blockWidth, j * blockHeight, paint);
+                        }else {
+                            canvas.drawBitmap(masterLeft, i * blockWidth, j * blockHeight, paint);
+                        }
                         break;
                     case PANEL:
 
-                        paint.setColor(Color.MAGENTA);
-                        canvas.drawRect(i * blockWidth, j * blockHeight, i * blockWidth + blockWidth, j * blockHeight + blockHeight,paint);
+                        canvas.drawBitmap(panel,i * blockWidth, j * blockHeight, paint);
+
                         break;
                     case AIR:
-                        paint.setColor(Color.BLACK);
-                        canvas.drawRect(i * blockWidth, j * blockHeight, i * blockWidth + blockWidth, j * blockHeight + blockHeight,paint);
-                        break;
+
+                        canvas.drawBitmap(air,i * blockWidth, j * blockHeight, paint);
                 }
 
             }

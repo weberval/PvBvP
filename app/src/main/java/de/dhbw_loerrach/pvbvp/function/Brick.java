@@ -10,18 +10,13 @@ package de.dhbw_loerrach.pvbvp.function;
 public class Brick extends GameObj {
 
     private char side;
+
     /**
      * @param side select side (left / right) of Block, also sets master true if master block
      */
-
-    public Brick(char side) {
-        if (side == 'm') {
-            this.type = GameObjType.MASTER;
-        }
-        else {
-            this.side = side;
-            this.type = GameObjType.BRICK;
-        }
+    public Brick(GameObjType type, char side) {
+        this.type = type;
+        this.side = side;
     }
 
     public char getSide() {

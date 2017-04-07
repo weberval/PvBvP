@@ -8,7 +8,7 @@ import de.dhbw_loerrach.pvbvp.gui.GameView;
  * Class that manages the game
  */
 
-public class GameController {
+public class GameController extends Thread{
 
     private Main main;
     private World world;
@@ -23,8 +23,12 @@ public class GameController {
         //TEST
         world.init();
         view.update(world.playground);
-        world.panelMove(2, 'l');
-        view.update(world.playground);
+        //world.panelMove(2, 'l');
+        //view.update(world.playground);
+    }
+
+    public void run(){
+        mainLoop();
     }
 
     public void mainLoop(){
