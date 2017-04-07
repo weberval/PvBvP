@@ -20,4 +20,8 @@ public class Panel extends GameObj {
         this.type = "panel";
         this.player = player;
     }
+
+    public int getPlayer() {
+        return player;
+    }
 }

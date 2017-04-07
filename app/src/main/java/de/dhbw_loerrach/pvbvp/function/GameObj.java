@@ -18,6 +18,10 @@ public class GameObj {
         return (char)0;
     }
 
+    public int getPlayer(){
+        return 0;
+    }
+
     public String getType() {
         return type;
     }

@@ -104,21 +104,25 @@ public class World {
     public static void panelMove(int player, char direction) {
         int x;
         int y;
-        switch (player) {
-            case 1:
-                y = 0;
-                break;
-            case 2:
-                y = PLAYGROUND_HEIGHT - 1;
-                break;
+        int[] foo = findCoords(0, 0, PLAYGROUND_WIDTH, PLAYGROUND_HEIGHT, "panel", player);
+        if (direction == 'l') {
+            for (int i = foo[0] + PANEL_WITH_P_SIDE * 2 + 1; i >= foo[0]; --i) {
+                playground[i + 1][foo[1]] = playground[i][foo[1]];
+                playground[i][foo[1]] = new Air();
+            }
+        } else if (direction == 'r') {
+            for (int i = foo[0] + PANEL_WITH_P_SIDE * 2 + 1; i >= foo[0]; --i) {
+                playground[i + 1][foo[1]] = playground[i][foo[1]];
+                playground[i][foo[1]] = new Air();
+            }
         }
     }
 
-    public static int[] findCoords(int rangeXmin, int rangeYmin, int rangeXmax, int rangeYmax, String objType) {
+    public static int[] findCoords(int rangeXmin, int rangeYmin, int rangeXmax, int rangeYmax, String objType, int player) {
         int[] coords = new int[2];
         for (int i = rangeYmin; i < rangeYmax; ++i) {
-            for (int j = rangeXmin; i < rangeXmax; ++j) {
-                if (playground[j][i].getType() == objType) {
+            for (int j = rangeXmin; j < rangeXmax; ++j) {
+                if (playground[j][i].getType().equals(objType) && playground[j][i].getPlayer() == player) {
                     coords[0] = j;
                     coords[1] = i;
                     return coords;
