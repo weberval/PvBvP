@@ -71,49 +71,39 @@ public class GameView extends View {
             for(int j = 0; j < world[i].length; j ++){
 
                 switch (world[i][j].getType()){
-                    case "ball":
+                    case BALL:
 
                         paint.setColor(Color.CYAN);
                         canvas.drawRect(i * blockWidth, j * blockHeight, i * blockWidth + blockWidth, j * blockHeight + blockHeight,paint);
-                        Log.i(TAG,"ball drawn");
 
                         break;
-                    case "brick":
+                    case BRICK:
                         switch (world[i][j].getSide()) {
                             case 'l':
                                 paint.setColor(Color.BLUE);
                                 canvas.drawRect(i * blockWidth, j * blockHeight, i * blockWidth + (blockWidth * 2), j * blockHeight + blockHeight, paint);
-                                Log.i(TAG,"brick drawn");
 
                                 break;
                             case 'r':
                                 paint.setColor(Color.BLUE);
                                 canvas.drawRect(i * blockWidth, j * blockHeight, i * blockWidth + (blockWidth * 2), j * blockHeight + blockHeight, paint);
-                                Log.i(TAG,"brick drawn");
-
                                 break;
                         }
 
                         break;
-                    case "master":
+                    case MASTER:
 
                         paint.setColor(Color.YELLOW);
                         canvas.drawRect(i * blockWidth, j * blockHeight, i * blockWidth + blockWidth, j * blockHeight + blockHeight,paint);
-                        Log.i(TAG,"master drawn");
-
                         break;
-                    case "panel":
+                    case PANEL:
 
                         paint.setColor(Color.MAGENTA);
                         canvas.drawRect(i * blockWidth, j * blockHeight, i * blockWidth + blockWidth, j * blockHeight + blockHeight,paint);
-                        Log.i(TAG,"panel drawn");
-
                         break;
-                    case "air":
+                    case AIR:
                         paint.setColor(Color.BLACK);
                         canvas.drawRect(i * blockWidth, j * blockHeight, i * blockWidth + blockWidth, j * blockHeight + blockHeight,paint);
-                        Log.i(TAG,"air drawn");
-                        //Nothing, just black
                         break;
                 }
 

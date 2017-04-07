@@ -5,7 +5,7 @@ package de.dhbw_loerrach.pvbvp.function;
  * super GameObj
  */
 public class GameObj {
-    protected String type;
+    protected GameObjType type;
 
     /**
      * deny creation of GameObj
@@ -22,7 +22,9 @@ public class GameObj {
         return 0;
     }
 
-    public String getType() {
+    public GameObjType getType() {
         return type;
     }
 }
+
+

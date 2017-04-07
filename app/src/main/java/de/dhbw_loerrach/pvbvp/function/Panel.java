@@ -17,7 +17,7 @@ public class Panel extends GameObj {
      */
 
     public Panel(int player) {
-        this.type = "panel";
+        this.type = GameObjType.PANEL;
         this.player = player;
     }
 

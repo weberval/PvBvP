@@ -9,6 +9,6 @@ import java.security.PublicKey;
 public class Air extends GameObj {
 
     public Air() {
-        this.type = "air";
+        this.type = GameObjType.AIR;
     }
 }

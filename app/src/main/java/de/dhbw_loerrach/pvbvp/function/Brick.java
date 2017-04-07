@@ -16,11 +16,11 @@ public class Brick extends GameObj {
 
     public Brick(char side) {
         if (side == 'm') {
-            this.type = "master";
+            this.type = GameObjType.MASTER;
         }
         else {
             this.side = side;
-            this.type = "brick";
+            this.type = GameObjType.BRICK;
         }
     }
 

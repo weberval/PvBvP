@@ -15,7 +15,7 @@ public class Ball extends GameObj {
      */
 
     public Ball(int player) {
-        this.type = "ball";
+        this.type = GameObjType.BALL;
         if (player == 1) {
             this.direction = 1;
         }
