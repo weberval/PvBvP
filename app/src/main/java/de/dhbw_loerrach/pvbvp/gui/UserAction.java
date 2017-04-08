@@ -1,5 +1,7 @@
 package de.dhbw_loerrach.pvbvp.gui;
 
+import de.dhbw_loerrach.pvbvp.function.GameController;
+
 /**
  * Created by Renat on 05.04.2017.
  * This class connects the TouchHandler to the actual game.
@@ -7,20 +9,18 @@ package de.dhbw_loerrach.pvbvp.gui;
 public class UserAction {
 
     private static final String TAG = "UserAction";
+    private static GameController gameController;
+
+    public static void init(GameController gameController_){
+        gameController = gameController_;
+    }
 
     /**
-     * moves the panel of player 1.
-     * @param dir if true = move right, else move left
+     * moves the panel of player in dir.
+     * @param dir
      */
-   public void movePanelPlayerOne(boolean dir){
-
+   public void movePanelPlayerOne(int player, char dir){
+        gameController.movePanel(player,dir);
    }
 
-    /**
-     * moves the panel of player 2.
-     * @param dir if true = move right, else move left
-     */
-   public void movePanelPlayerTwo(boolean dir){
-
-   }
 }

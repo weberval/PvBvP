@@ -81,8 +81,10 @@ public class Main extends Activity {
         };
         gameView.setOnTouchListener(touchListener);
 
-        //setup Gamecontroller TEST
+
         gameController = new GameController(this,gameView);
+        //gameController.start();
+
 
         Log.i(TAG,"created");
     }

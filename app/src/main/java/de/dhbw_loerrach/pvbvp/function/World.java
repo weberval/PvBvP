@@ -28,7 +28,11 @@ public class World {
     private static final int PLAYGROUND_BRICK_SAFE_Y = 3;
     private static final int PANEL_WITH_P_SIDE = 3;
     public static int brickCount;
+
+    //Added ball and array of panels as new public attributes, since the playground will only contain bricks / masters
     public static GameObj[][] playground;
+    public static Ball ball;
+    public static Panel[] panels;
 
     private GameController gameController;
 
