@@ -78,7 +78,6 @@ public class World {
     }
 
     public static void masterBrickCreate() {
-        //BUG: Brick around the master bricks are not complete
         switch (playground[PLAYGROUND_CENTER_X][PLAYGROUND_CENTER_Y_FLOOR].getSide()) {
             case 'l':
                 playground[PLAYGROUND_CENTER_X + 1][PLAYGROUND_CENTER_Y_FLOOR] = new Air();
@@ -95,6 +94,8 @@ public class World {
                 playground[PLAYGROUND_CENTER_X - 1][PLAYGROUND_CENTER_Y_FLOOR - 1] = new Air();
                 break;
         }
+        //fix
+        playground[PLAYGROUND_CENTER_X+2][PLAYGROUND_CENTER_Y_FLOOR-1] = new Air();
 
         playground[PLAYGROUND_CENTER_X][PLAYGROUND_CENTER_Y_FLOOR] = new Brick(GameObjType.MASTER,'l');
         playground[PLAYGROUND_CENTER_X+1][PLAYGROUND_CENTER_Y_FLOOR] = new Brick(GameObjType.MASTER,'r');
