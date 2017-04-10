@@ -88,9 +88,11 @@ public class GameView extends View {
     /**
      * The gameview will be updated and redrawn.
      */
-    public void update(GameObj[][] world, Ball ball, GameObj[] panels){
+    public void update(GameObj[][] world, Ball ball, Panel[] panels){
 
         this.world = world;
+        this.panels = panels;
+        this.ball = ball;
         postInvalidate();
     }
 
@@ -127,7 +129,7 @@ public class GameView extends View {
         //canvas.drawBitmap(ballBM,ball.x * blockWidth, ball.y * blockHeight, paint);
 
         //draw panels
-        //for(int i = 0; i < panels.length; i ++)
-        //canvas.drawBitmap(panels[i],panels[i].x * blockWidth, panels[i].y * blockHeight, paint);
+        for(int i = 0; i < panels.length; i ++)
+        canvas.drawBitmap(panel,panels[i].getX() * blockWidth, panels[i].getY() * blockHeight, paint);
     }
 }

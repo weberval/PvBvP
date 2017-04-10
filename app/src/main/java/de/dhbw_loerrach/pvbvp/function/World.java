@@ -49,6 +49,12 @@ public class World {
                 playground[i][j] = new Air();
             }
         }
+
+        //add panels to world
+        panels = new Panel[2];
+        panels[0] = new Panel(1);
+        panels[1] = new Panel(2);
+
         brickCreate();
         masterBrickCreate();
         debug();
