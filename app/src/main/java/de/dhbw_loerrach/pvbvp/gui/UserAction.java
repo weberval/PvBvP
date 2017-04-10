@@ -15,12 +15,4 @@ public class UserAction {
         gameController = gameController_;
     }
 
-    /**
-     * moves the panel of player in dir.
-     * @param dir
-     */
-   public void movePanelPlayerOne(int player, char dir){
-        gameController.movePanel(player,dir);
-   }
-
 }

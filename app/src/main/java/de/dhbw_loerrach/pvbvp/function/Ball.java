@@ -10,17 +10,28 @@ public class Ball extends GameObj {
     private int direction;
 
     /**
-     *
      * @param player set fly direction on create
      */
 
     public Ball(int player) {
         this.type = GameObjType.BALL;
-        if (player == 1) {
-            this.direction = 1;
-        }
-        else if (player == 2) {
-            this.direction = -1;
+        switch (player){
+            case 1:
+                this.direction = 1;
+                break;
+            case 2:
+                this.direction = -1;
+                break;
         }
     }
+/*
+    public void move(World world) {
+        switch (collisionCheck()) {
+            case GameObjType.BRICK:
+                // TODO: implementation of ball move function
+        }
+    }
+
+*/
+
 }

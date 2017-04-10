@@ -6,6 +6,8 @@ package de.dhbw_loerrach.pvbvp.function;
  */
 public class GameObj {
     protected GameObjType type;
+    protected int x;
+    protected int y;
 
     /**
      * deny creation of GameObj
@@ -26,5 +28,3 @@ public class GameObj {
         return type;
     }
 }
-
-

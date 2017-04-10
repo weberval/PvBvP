@@ -22,8 +22,9 @@ public class World {
     public static final int PLAYGROUND_OFFSET_X = 3;
     public static final int PLAYGROUND_OFFSET_Y = 3;
 
-    private static final int PLAYGROUND_CENTER_X = PLAYGROUND_WIDTH / 2 + 1;
-    private static final int PLAYGROUND_CENTER_Y_FLOOR = PLAYGROUND_HEIGHT / 2;
+    static final int PLAYGROUND_CENTER_X = PLAYGROUND_WIDTH / 2 + 1;
+    static final int PLAYGROUND_CENTER_Y_FLOOR = PLAYGROUND_HEIGHT / 2;
+
     private static final int PLAYGROUND_BRICK_SAFE_X = 5;
     private static final int PLAYGROUND_BRICK_SAFE_Y = 3;
     private static final int PANEL_WITH_P_SIDE = 3;
@@ -37,7 +38,7 @@ public class World {
     private GameController gameController;
 
 
-    public World(GameController gameController){
+    public World(GameController gameController) {
         this.gameController = gameController;
     }
 
@@ -49,14 +50,11 @@ public class World {
             }
         }
         brickCreate();
-        panelCreate(1);
-        panelCreate(2);
         masterBrickCreate();
-
         debug();
     }
 
-    private static void brickCreate() {
+    private void brickCreate() {
         /**
          * @param x line indent iterating through 0 and 1
          */
@@ -70,28 +68,41 @@ public class World {
                     random = Math.random();
                 }
                 if (random < 0.5) {
-                    playground[j][i] = new Brick(GameObjType.BRICK,'l');
-                    playground[j + 1][i] = new Brick(GameObjType.BRICK,'r');
+                    this.playground[j][i] = new Brick(GameObjType.BRICK,'l');
+                    this.playground[j + 1][i] = new Brick(GameObjType.BRICK,'r');
                 }
+            }
+        }
+        for (int i = 0; i < brickCount; ++i) {
+            int x = (int)(Math.random() * PLAYGROUND_WIDTH);
+            int y = (int)(Math.random() * PLAYGROUND_HEIGHT);
+            switch (this.playground[x][y].getType()) {
+                case AIR:
+                    int offset = (x % 2) - (y % 2);
+                    this.playground[x + offset][y] = new Brick(GameObjType.BRICK, 'l');
+                    this.playground[x + offset + 1][y] = new Brick(GameObjType.BRICK, 'r');
+                    break;
+                default:
+                    i--;
             }
         }
     }
 
-    public static void masterBrickCreate() {
-        switch (playground[PLAYGROUND_CENTER_X][PLAYGROUND_CENTER_Y_FLOOR].getSide()) {
+    public void masterBrickCreate() {
+        switch (this.playground[PLAYGROUND_CENTER_X][PLAYGROUND_CENTER_Y_FLOOR].getSide()) {
             case 'l':
-                playground[PLAYGROUND_CENTER_X + 1][PLAYGROUND_CENTER_Y_FLOOR] = new Air();
+                this.brickDestroy(PLAYGROUND_CENTER_X + 1, PLAYGROUND_CENTER_Y_FLOOR);
                 break;
             case 'r':
-                playground[PLAYGROUND_CENTER_X - 1][PLAYGROUND_CENTER_Y_FLOOR] = new Air();
+                this.brickDestroy(PLAYGROUND_CENTER_X - 1, PLAYGROUND_CENTER_Y_FLOOR);
                 break;
         }
-        switch (playground[PLAYGROUND_CENTER_X][PLAYGROUND_CENTER_Y_FLOOR - 1].getSide()) {
+        switch (this.playground[PLAYGROUND_CENTER_X][PLAYGROUND_CENTER_Y_FLOOR - 1].getSide()) {
             case 'l':
-                playground[PLAYGROUND_CENTER_X + 1][PLAYGROUND_CENTER_Y_FLOOR - 1] = new Air();
+                this.playground[PLAYGROUND_CENTER_X + 1][PLAYGROUND_CENTER_Y_FLOOR - 1] = new Air();
                 break;
             case 'r':
-                playground[PLAYGROUND_CENTER_X - 1][PLAYGROUND_CENTER_Y_FLOOR - 1] = new Air();
+                this.brickDestroy(PLAYGROUND_CENTER_X - 1, PLAYGROUND_CENTER_Y_FLOOR - 1);
                 break;
         }
         //fix
@@ -103,50 +114,8 @@ public class World {
         playground[PLAYGROUND_CENTER_X+1][PLAYGROUND_CENTER_Y_FLOOR - 1] = new Brick(GameObjType.MASTER,'r');
     }
 
-    public static void panelCreate(int player) {
-        int x = -1;
-        switch (player) {
-            case 1:
-                x = 0;
-                break;
-            case 2:
-                x = PLAYGROUND_HEIGHT - 1;
-                break;
-        }
-        for (int i = PLAYGROUND_CENTER_X - PANEL_WITH_P_SIDE; i <= PLAYGROUND_CENTER_X + PANEL_WITH_P_SIDE; ++i) {
-            playground[i][x] = new Panel(player);
-        }
-    }
-
-    public static void panelMove(int player, char direction) {
-        int x;
-        int y;
-        int[] foo = findCoords(0, 0, PLAYGROUND_WIDTH, PLAYGROUND_HEIGHT, "panel", player);
-        if (direction == 'l') {
-            for (int i = foo[0] + PANEL_WITH_P_SIDE * 2 + 1; i >= foo[0]; --i) {
-                playground[i + 1][foo[1]] = playground[i][foo[1]];
-                playground[i][foo[1]] = new Air();
-            }
-        } else if (direction == 'r') {
-            for (int i = foo[0] + PANEL_WITH_P_SIDE * 2 + 1; i >= foo[0]; --i) {
-                playground[i + 1][foo[1]] = playground[i][foo[1]];
-                playground[i][foo[1]] = new Air();
-            }
-        }
-    }
-
-    public static int[] findCoords(int rangeXmin, int rangeYmin, int rangeXmax, int rangeYmax, String objType, int player) {
-        int[] coords = new int[2];
-        for (int i = rangeYmin; i < rangeYmax; ++i) {
-            for (int j = rangeXmin; j < rangeXmax; ++j) {
-                if (playground[j][i].getType().equals(objType) && playground[j][i].getPlayer() == player) {
-                    coords[0] = j;
-                    coords[1] = i;
-                    return coords;
-                }
-            }
-        }
-        return null;
+    public void brickDestroy(int x, int y){
+        this.playground[x][y] = new Air();
     }
 
     //TEST

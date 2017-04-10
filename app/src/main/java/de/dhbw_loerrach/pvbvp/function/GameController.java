@@ -81,13 +81,4 @@ public class GameController extends Thread{
 
     }
 
-    /**
-     * moves the panel
-     * @param player
-     * @param dir
-     */
-    public void movePanel(int player, char dir){
-        world.panelMove(player,dir);
-    }
-
 }
