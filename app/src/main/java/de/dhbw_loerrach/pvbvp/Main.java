@@ -68,7 +68,6 @@ public class Main extends Activity {
                 });
 
         //setting up touchlistener & handler
-        touchHandler = new TouchHandler();
         touchListener = new View.OnTouchListener(){
             @Override
             public boolean onTouch(View v, MotionEvent me){
@@ -83,7 +82,8 @@ public class Main extends Activity {
 
 
         gameController = new GameController(this,gameView);
-        //gameController.start();
+        touchHandler = new TouchHandler(gameController);
+        gameController.start();
 
 
         Log.i(TAG,"created");

@@ -1,10 +1,9 @@
 package de.dhbw_loerrach.pvbvp.function;
-
 import android.util.Log;
 
 import de.dhbw_loerrach.pvbvp.Main;
 import de.dhbw_loerrach.pvbvp.gui.GameView;
-import de.dhbw_loerrach.pvbvp.gui.UserAction;
+import de.dhbw_loerrach.pvbvp.gui.TouchHandler;
 
 /**
  * Created by Renat on 06.04.2017.
@@ -32,7 +31,6 @@ public class GameController extends Thread{
         world.init();
         view.update(world.playground,world.ball,world.panels);
 
-        UserAction.init(this);
 
         //world.panelMove(2, 'l');
         //view.update(world.playground);
@@ -79,6 +77,15 @@ public class GameController extends Thread{
      */
     public void action(){
 
+    }
+
+    /**
+     * moves the panel on world
+     * @param player
+     * @param dir
+     */
+    public void movePanel(int player, char dir){
+        world.movePanel(player,dir);
     }
 
 }

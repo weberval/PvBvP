@@ -124,6 +124,18 @@ public class World {
         this.playground[x][y] = new Air();
     }
 
+    public void movePanel(int player, char dir){
+        if(player < 0 || player > 2)
+            return;
+
+        if(dir == 'l') {
+            panels[player-1].moveLeft();
+        }
+        else if(dir == 'r'){
+            panels[player-1].moveRight();
+        }
+    }
+
     //TEST
     public void debug(){
         String str = "";

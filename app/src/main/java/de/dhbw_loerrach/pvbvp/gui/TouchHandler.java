@@ -2,6 +2,8 @@ package de.dhbw_loerrach.pvbvp.gui;
 
 import android.util.Log;
 
+import de.dhbw_loerrach.pvbvp.function.GameController;
+
 /**
  * Created by Renat on 05.04.2017.
  * This class handles the user input
@@ -9,6 +11,8 @@ import android.util.Log;
 public class TouchHandler {
 
     private static final String TAG = "TouchHandler";
+
+    private GameController gameController;
 
     /**
      * Vertical Fence, splits the screen through half vertically.
@@ -29,11 +33,25 @@ public class TouchHandler {
      */
     public void action(float x, float y){
         Log.i(TAG,"Screen touched at: x " + x + " y: " + y);
+        //TEST
+        movePanel(1,'r');
     }
 
-    public TouchHandler(){
+    public TouchHandler(GameController gameController){
+
+        this.gameController = gameController;
+
         VER_FENCE = GameView.SCREEN_WIDTH / 2;
         HOR_FENCE = GameView.SCREEN_HEIGHT / 2;
+    }
+
+    /**
+     * moves the panel on gameController
+     * @param player
+     * @param dir
+     */
+    public void movePanel(int player, char dir){
+        gameController.movePanel(player,dir);
     }
 
 
