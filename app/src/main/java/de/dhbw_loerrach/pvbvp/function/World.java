@@ -23,11 +23,11 @@ public class World {
     public static final int PLAYGROUND_OFFSET_Y = 3;
 
     static final int PLAYGROUND_CENTER_X = PLAYGROUND_WIDTH / 2 + 1;
-    static final int PLAYGROUND_CENTER_Y_FLOOR = PLAYGROUND_HEIGHT / 2;
+    static final int PLAYGROUND_CENTER_Y_FLOOR = (PLAYGROUND_HEIGHT - 1) / 2;
 
     private static final int PLAYGROUND_BRICK_SAFE_X = 5;
     private static final int PLAYGROUND_BRICK_SAFE_Y = 3;
-    private static final int PANEL_WITH_P_SIDE = 3;
+    public static final int PANEL_WITH_P_SIDE = 3;
     public static int brickCount = 100;
 
     //Added ball and array of panels as new public attributes, since the playground will only contain bricks / masters
@@ -112,19 +112,15 @@ public class World {
         }
         switch (this.playground[PLAYGROUND_CENTER_X][PLAYGROUND_CENTER_Y_FLOOR - 1].getSide()) {
             case 'l':
-                this.playground[PLAYGROUND_CENTER_X + 1][PLAYGROUND_CENTER_Y_FLOOR - 1] = new Air();
+                this.brickDestroy(PLAYGROUND_CENTER_X + 1, PLAYGROUND_CENTER_Y_FLOOR + 1);
                 break;
             case 'r':
-                this.brickDestroy(PLAYGROUND_CENTER_X - 1, PLAYGROUND_CENTER_Y_FLOOR - 1);
+                this.brickDestroy(PLAYGROUND_CENTER_X - 1, PLAYGROUND_CENTER_Y_FLOOR + 1);
                 break;
         }
-        //fix
-        playground[PLAYGROUND_CENTER_X+2][PLAYGROUND_CENTER_Y_FLOOR-1] = new Air();
 
-        playground[PLAYGROUND_CENTER_X][PLAYGROUND_CENTER_Y_FLOOR] = new Brick(GameObjType.MASTER,'l');
-        playground[PLAYGROUND_CENTER_X+1][PLAYGROUND_CENTER_Y_FLOOR] = new Brick(GameObjType.MASTER,'r');
-        playground[PLAYGROUND_CENTER_X][PLAYGROUND_CENTER_Y_FLOOR - 1] = new Brick(GameObjType.MASTER,'l');
-        playground[PLAYGROUND_CENTER_X+1][PLAYGROUND_CENTER_Y_FLOOR - 1] = new Brick(GameObjType.MASTER,'r');
+        playground[PLAYGROUND_CENTER_X][PLAYGROUND_CENTER_Y_FLOOR] = new Brick(GameObjType.MASTER,'m');
+        playground[PLAYGROUND_CENTER_X][PLAYGROUND_CENTER_Y_FLOOR + 1] = new Brick(GameObjType.MASTER,'m');
     }
 
     public void brickDestroy(int x, int y){

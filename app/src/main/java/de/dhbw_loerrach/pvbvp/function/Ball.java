@@ -31,7 +31,7 @@ public class Ball extends GameObj {
         }
     }
 
-    public void move(World world) {
+    public void move(World world, Panel Panel1, Panel panel2) {
         switch (this.direction) {
             case 1:
                 switch (world.collisionCheck(this.x + 1, this.y + 1)) {
