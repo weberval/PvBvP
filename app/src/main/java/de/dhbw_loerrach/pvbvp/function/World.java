@@ -131,10 +131,10 @@ public class World {
             return;
 
         if(dir == 'l') {
-            panels[player-1].moveLeft();
+            panels[player].moveLeft();
         }
         else if(dir == 'r'){
-            panels[player-1].moveRight();
+            panels[player].moveRight();
         }
     }
 
