@@ -9,8 +9,9 @@ import android.widget.TwoLineListItem;
  */
 public class Panel extends GameObj {
 
+    public static final int PANEL_WIDTH = 7;
     private int player;
-    private int sizePerSide = 3;
+    private int panelWidth = PANEL_WIDTH;
 
     /**
      *
@@ -32,13 +33,13 @@ public class Panel extends GameObj {
     }
 
     public void moveRight() {
-        if (this.x < World.PLAYGROUND_WIDTH - this.sizePerSide) {
+        if (this.x < World.PLAYGROUND_WIDTH - this.panelWidth) {
             this.x++;
         }
     }
 
     public void moveLeft(){
-        if (this.x > this.sizePerSide) {
+        if (this.x > 1) {
             this.x--;
         }
     }
