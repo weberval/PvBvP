@@ -1,15 +1,14 @@
 package de.dhbw_loerrach.pvbvp.function;
-import android.util.Log;
 
+import android.util.Log;
 import de.dhbw_loerrach.pvbvp.Main;
 import de.dhbw_loerrach.pvbvp.gui.GameView;
-import de.dhbw_loerrach.pvbvp.gui.TouchHandler;
 
 /**
  * Created by Renat on 06.04.2017.
  * Class that manages the game
  */
-public class GameController extends Thread{
+public class GameController extends Thread {
 
     private static final String TAG = "GameController";
 
@@ -23,13 +22,13 @@ public class GameController extends Thread{
     private World world;
     private GameView view;
 
-    public GameController(Main main, GameView view){
+    public GameController(Main main, GameView view) {
         this.main = main;
         this.view = view;
 
         world = new World(this);
         world.init();
-        view.update(world.playground,world.ball,world.panels);
+        view.update(world.playground, world.ball, world.panels);
 
 
         //world.panelMove(2, 'l');
@@ -39,7 +38,7 @@ public class GameController extends Thread{
     /**
      * starting the thread
      */
-    public void run(){
+    public void run() {
         mainLoop();
     }
 
@@ -47,13 +46,13 @@ public class GameController extends Thread{
     /**
      * mainloop of the game.
      */
-    public void mainLoop(){
+    public void mainLoop() {
 
-        for(;;){
+        for (; ; ) {
 
             action();
             wait_();
-            view.update(world.playground,world.ball,world.panels);
+            view.update(world.playground, world.ball, world.panels);
         }
     }
 
@@ -61,11 +60,11 @@ public class GameController extends Thread{
     /**
      * This method waits WAIT milliseconds between each routine
      */
-    public void wait_(){
-        try{
+    public void wait_() {
+        try {
             sleep(WAIT);
-        }catch(Exception e){
-            Log.e(TAG,e.getMessage());
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
         }
     }
 
@@ -75,17 +74,18 @@ public class GameController extends Thread{
      * Collisions and removal of bricks and the winning condition : hitting the master brick
      * Also changes levels and other
      */
-    public void action(){
+    public void action() {
 
     }
 
     /**
      * moves the panel on world
+     *
      * @param player
      * @param dir
      */
-    public void movePanel(int player, char dir){
-        world.movePanel(player,dir);
+    public void movePanel(int player, char dir) {
+        world.movePanel(player, dir);
     }
 
 }

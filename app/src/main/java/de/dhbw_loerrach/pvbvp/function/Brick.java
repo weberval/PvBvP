@@ -2,10 +2,10 @@ package de.dhbw_loerrach.pvbvp.function;
 
 /**
  * Created by weva on 06.04.2017.
- *
+ * <p>
  * Ball-Object extends GameObj
- *  var char side: 'l', 'r', 'm'
- *  var boolean master
+ * var char side: 'l', 'r', 'm'
+ * var boolean master
  */
 public class Brick extends GameObj {
 

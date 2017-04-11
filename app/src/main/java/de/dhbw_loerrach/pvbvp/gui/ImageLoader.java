@@ -3,7 +3,6 @@ package de.dhbw_loerrach.pvbvp.gui;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-
 import de.dhbw_loerrach.pvbvp.R;
 
 /**
@@ -16,16 +15,16 @@ public class ImageLoader {
     private int width;
     private int height;
 
-    public ImageLoader(Context context){
+    public ImageLoader(Context context) {
         this.context = context;
     }
 
-    public Bitmap getImage(GameObjImage obj, int width, int height){
+    public Bitmap getImage(GameObjImage obj, int width, int height) {
 
         this.width = width;
         this.height = height;
 
-        switch(obj){
+        switch (obj) {
             case BALL:
                 return scaleImage(R.drawable.ball);
             case BRICK_LEFT:
@@ -44,9 +43,9 @@ public class ImageLoader {
         return null;
     }
 
-    private Bitmap scaleImage(int id){
+    private Bitmap scaleImage(int id) {
         Bitmap bm = BitmapFactory.decodeResource(context.getResources(), id);
-        bm = Bitmap.createScaledBitmap(bm,width,height,false);
+        bm = Bitmap.createScaledBitmap(bm, width, height, false);
         return bm;
     }
 

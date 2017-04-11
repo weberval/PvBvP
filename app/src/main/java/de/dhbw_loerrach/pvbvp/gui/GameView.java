@@ -7,7 +7,6 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.util.Log;
 import android.view.View;
-
 import de.dhbw_loerrach.pvbvp.function.Ball;
 import de.dhbw_loerrach.pvbvp.function.GameObj;
 import de.dhbw_loerrach.pvbvp.function.Panel;
@@ -25,12 +24,12 @@ public class GameView extends View {
     public static int SCREEN_HEIGHT = 0;
 
     /**
-     *  Width of one single block in pixel.
+     * Width of one single block in pixel.
      */
     private float blockWidth;
 
     /**
-     *  Height of one single block in pixel.
+     * Height of one single block in pixel.
      */
     private float blockHeight;
 
@@ -67,26 +66,26 @@ public class GameView extends View {
         SCREEN_WIDTH = windowDim.x;
         SCREEN_HEIGHT = windowDim.y;
 
-        blockWidth = (float) (SCREEN_WIDTH / World.PLAYGROUND_WIDTH  );
-        blockHeight = (float) (SCREEN_HEIGHT / World.PLAYGROUND_HEIGHT );
+        blockWidth = (float) (SCREEN_WIDTH / World.PLAYGROUND_WIDTH);
+        blockHeight = (float) (SCREEN_HEIGHT / World.PLAYGROUND_HEIGHT);
 
         imageLoader = new ImageLoader(context);
-        ballBM = imageLoader.getImage(GameObjImage.BALL,(int)blockWidth,(int)blockHeight);
-        brickLeft = imageLoader.getImage(GameObjImage.BRICK_LEFT,(int)blockWidth,(int)blockHeight);
-        brickRight = imageLoader.getImage(GameObjImage.BRICK_RIGHT,(int)blockWidth,(int)blockHeight);
-        master= imageLoader.getImage(GameObjImage.MASTER,(int)blockWidth,(int)blockHeight);
-        panel = imageLoader.getImage(GameObjImage.PANEL,(int)blockWidth*7,(int)blockHeight);
-        air = imageLoader.getImage(GameObjImage.AIR, (int)blockWidth*2,(int)blockHeight);
+        ballBM = imageLoader.getImage(GameObjImage.BALL, (int) blockWidth, (int) blockHeight);
+        brickLeft = imageLoader.getImage(GameObjImage.BRICK_LEFT, (int) blockWidth, (int) blockHeight);
+        brickRight = imageLoader.getImage(GameObjImage.BRICK_RIGHT, (int) blockWidth, (int) blockHeight);
+        master = imageLoader.getImage(GameObjImage.MASTER, (int) blockWidth, (int) blockHeight);
+        panel = imageLoader.getImage(GameObjImage.PANEL, (int) blockWidth * Panel.PANEL_WIDTH, (int) blockHeight);
+        air = imageLoader.getImage(GameObjImage.AIR, (int) blockWidth * 2, (int) blockHeight);
 
         paint = new Paint();
 
-        Log.i(TAG,"created");
+        Log.i(TAG, "created");
     }
 
     /**
      * The gameview will be updated and redrawn.
      */
-    public void update(GameObj[][] world, Ball ball, Panel[] panels){
+    public void update(GameObj[][] world, Ball ball, Panel[] panels) {
 
         this.world = world;
         this.panels = panels;
@@ -95,26 +94,26 @@ public class GameView extends View {
     }
 
     @Override
-    public void onDraw(Canvas canvas){
+    public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
         //draw playground
-        for(int i = 0; i < world.length; i ++){
-            for(int j = 0; j < world[i].length; j ++){
+        for (int i = 0; i < world.length; i++) {
+            for (int j = 0; j < world[i].length; j++) {
 
-                switch (world[i][j].getType()){
+                switch (world[i][j].getType()) {
                     case BRICK:
-                        if(world[i][j].getSide() == 'r') {
+                        if (world[i][j].getSide() == 'r') {
                             canvas.drawBitmap(brickRight, i * blockWidth, j * blockHeight, paint);
-                        }else {
+                        } else {
                             canvas.drawBitmap(brickLeft, i * blockWidth, j * blockHeight, paint);
                         }
                         break;
                     case MASTER:
-                            canvas.drawBitmap(master, i * blockWidth, j * blockHeight, paint);
+                        canvas.drawBitmap(master, i * blockWidth, j * blockHeight, paint);
                         break;
                     case AIR:
-                        canvas.drawBitmap(air,i * blockWidth, j * blockHeight, paint);
+                        canvas.drawBitmap(air, i * blockWidth, j * blockHeight, paint);
                 }
             }
         }
@@ -123,7 +122,7 @@ public class GameView extends View {
         //canvas.drawBitmap(ballBM,ball.x * blockWidth, ball.y * blockHeight, paint);
 
         //draw panels
-        for(int i = 0; i < panels.length; i ++)
-        canvas.drawBitmap(panel,panels[i].getX() * blockWidth, panels[i].getY() * blockHeight, paint);
+        for (int i = 0; i < panels.length; i++)
+            canvas.drawBitmap(panel, panels[i].getX() * blockWidth, panels[i].getY() * blockHeight, paint);
     }
 }

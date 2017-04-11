@@ -2,29 +2,23 @@ package de.dhbw_loerrach.pvbvp.function;
 
 import android.util.Log;
 
-import de.dhbw_loerrach.pvbvp.Main;
-import de.dhbw_loerrach.pvbvp.gui.GameView;
-
 /**
  * Created by weva on 04.04.2017.
- *  const PLAYGROUND_WIDTH has to be odd
- *  const PLAYGROUND_HEIGHT has to be even
- *  const PANEL_WITH has to be even
+ * const PLAYGROUND_WIDTH has to be odd
+ * const PLAYGROUND_HEIGHT has to be even
+ * const PANEL_WITH has to be even
  */
 
 public class World {
 
 
-    private static final String TAG = "WORLD";
-
     public static final int PLAYGROUND_WIDTH = 27;
     public static final int PLAYGROUND_HEIGHT = 16;
     public static final int PLAYGROUND_OFFSET_X = 3;
     public static final int PLAYGROUND_OFFSET_Y = 3;
-
     static final int PLAYGROUND_CENTER_X = PLAYGROUND_WIDTH / 2 + 1;
     static final int PLAYGROUND_CENTER_Y_FLOOR = (PLAYGROUND_HEIGHT - 1) / 2;
-
+    private static final String TAG = "WORLD";
     private static final int PLAYGROUND_BRICK_SAFE_X = 5;
     private static final int PLAYGROUND_BRICK_SAFE_Y = 3;
     public static int brickCount = 100;
@@ -51,13 +45,11 @@ public class World {
 
         //add panels to world
         panels = new Panel[2];
-        panels[0] = new Panel(1);
-        panels[1] = new Panel(2);
+        panels[0] = new Panel(PanelPlayer.PLAYER1);
+        panels[1] = new Panel(PanelPlayer.PLAYER2);
 
         brickCreate();
         masterBrickCreate();
-        Panel player1 = new Panel(1);
-        Panel player2 = new Panel(2);
         debug();
     }
 
@@ -75,8 +67,8 @@ public class World {
                     random = Math.random();
                 }
                 if (random < 0.5) {
-                    this.playground[j][i] = new Brick(GameObjType.BRICK,'l');
-                    this.playground[j + 1][i] = new Brick(GameObjType.BRICK,'r');
+                    this.playground[j][i] = new Brick(GameObjType.BRICK, 'l');
+                    this.playground[j + 1][i] = new Brick(GameObjType.BRICK, 'r');
                 }
             }
         }
@@ -118,40 +110,39 @@ public class World {
                 break;
         }
 
-        playground[PLAYGROUND_CENTER_X][PLAYGROUND_CENTER_Y_FLOOR] = new Brick(GameObjType.MASTER,'m');
-        playground[PLAYGROUND_CENTER_X][PLAYGROUND_CENTER_Y_FLOOR + 1] = new Brick(GameObjType.MASTER,'m');
+        playground[PLAYGROUND_CENTER_X][PLAYGROUND_CENTER_Y_FLOOR] = new Brick(GameObjType.MASTER, 'm');
+        playground[PLAYGROUND_CENTER_X][PLAYGROUND_CENTER_Y_FLOOR + 1] = new Brick(GameObjType.MASTER, 'm');
     }
 
-    public void brickDestroy(int x, int y){
+    public void brickDestroy(int x, int y) {
         this.playground[x][y] = new Air();
     }
 
-    public void movePanel(int player, char dir){
-        if(player < 0 || player > 2)
+    public void movePanel(int player, char dir) {
+        if (player < 0 || player > 2)
             return;
 
-        if(dir == 'l') {
+        if (dir == 'l') {
             panels[player].moveLeft();
-        }
-        else if(dir == 'r'){
+        } else if (dir == 'r') {
             panels[player].moveRight();
         }
     }
 
     //TEST
-    public void debug(){
+    public void debug() {
         String str = "";
-        for(int i=0; i < playground.length; i ++){
-            for(int j = 0; j < playground[i].length; j ++){
-                str += " | " + debug_helper(playground[i][j].type,playground[i][j].getSide()) + " | ";
+        for (int i = 0; i < playground.length; i++) {
+            for (int j = 0; j < playground[i].length; j++) {
+                str += " | " + debug_helper(playground[i][j].type, playground[i][j].getSide()) + " | ";
             }
-            Log.i(TAG,str);
+            Log.i(TAG, str);
             str = "";
         }
     }
 
     public GameObjType collisionCheck(int x, int y) {
-        switch (x){
+        switch (x) {
             case -1:
                 return GameObjType.OUTOFBOUNDX;
             case World.PLAYGROUND_WIDTH:
@@ -167,13 +158,18 @@ public class World {
     }
 
     //TEST
-    private String debug_helper(GameObjType t,char s){
-        switch (t){
-            case BRICK: return "B"+s;
-            case MASTER: return "M"+s;
-            case PANEL: return "P"+s;
-            case BALL: return "B"+s;
-            case AIR: return "A"+s;
+    private String debug_helper(GameObjType t, char s) {
+        switch (t) {
+            case BRICK:
+                return "B" + s;
+            case MASTER:
+                return "M" + s;
+            case PANEL:
+                return "P" + s;
+            case BALL:
+                return "B" + s;
+            case AIR:
+                return "A" + s;
         }
         return null;
     }

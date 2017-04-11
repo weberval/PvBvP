@@ -1,50 +1,46 @@
 package de.dhbw_loerrach.pvbvp.function;
 
-import android.widget.TwoLineListItem;
-
 /**
  * Created by weva on 04.04.2017.
  * Panel-Object extends GameObj
- *  var int player
+ * var int player
  */
 public class Panel extends GameObj {
 
     public static final int PANEL_WIDTH = 7;
-    private int player;
-    private int panelWidth = PANEL_WIDTH;
+    private PanelPlayer player;
 
     /**
-     *
      * @param player sets player for panel
      */
 
-    public Panel(int player) {
+    public Panel(PanelPlayer player) {
         this.type = GameObjType.PANEL;
         this.player = player;
-        this.x = World.PLAYGROUND_CENTER_X;
+        this.x = World.PLAYGROUND_CENTER_X - (PANEL_WIDTH / 2);
         switch (player) {
-            case 1:
+            case PLAYER1:
                 this.y = 0;
                 break;
-            case 2:
+            case PLAYER2:
                 this.y = World.PLAYGROUND_HEIGHT - 1;
                 break;
         }
     }
 
     public void moveRight() {
-        if (this.x < World.PLAYGROUND_WIDTH - this.panelWidth) {
+        if (this.x < World.PLAYGROUND_WIDTH - PANEL_WIDTH) {
             this.x++;
         }
     }
 
-    public void moveLeft(){
+    public void moveLeft() {
         if (this.x > 1) {
             this.x--;
         }
     }
 
-    public int getPlayer() {
+    public PanelPlayer getPlayer() {
         return player;
     }
 }

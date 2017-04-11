@@ -16,23 +16,23 @@ public class GameObj {
     protected GameObj() {
     }
 
-    public char getSide(){
-        return (char)0;
+    public char getSide() {
+        return (char) 0;
     }
 
-    public int getPlayer(){
-        return 0;
+    public PanelPlayer getPlayer() {
+        return null;
     }
 
     public GameObjType getType() {
         return type;
     }
 
-    public int getX(){
+    public int getX() {
         return x;
     }
 
-    public int getY(){
-        return  y;
+    public int getY() {
+        return y;
     }
 }
