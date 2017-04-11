@@ -32,10 +32,8 @@ public class ImageLoader {
                 return scaleImage(R.drawable.brick_left);
             case BRICK_RIGHT:
                 return scaleImage(R.drawable.brick_right);
-            case MASTER_LEFT:
-                return scaleImage(R.drawable.master_left);
-            case MASTER_RIGHT:
-                return scaleImage(R.drawable.master_right);
+            case MASTER:
+                return scaleImage(R.drawable.master);
             case PANEL:
                 return scaleImage(R.drawable.panel);
             case AIR:

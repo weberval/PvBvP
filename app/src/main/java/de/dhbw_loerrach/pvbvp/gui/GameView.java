@@ -57,8 +57,7 @@ public class GameView extends View {
     private Bitmap ballBM;
     private Bitmap brickLeft;
     private Bitmap brickRight;
-    private Bitmap masterLeft;
-    private Bitmap masterRight;
+    private Bitmap master;
     private Bitmap panel;
     private Bitmap air;
 
@@ -75,8 +74,7 @@ public class GameView extends View {
         ballBM = imageLoader.getImage(GameObjImage.BALL,(int)blockWidth,(int)blockHeight);
         brickLeft = imageLoader.getImage(GameObjImage.BRICK_LEFT,(int)blockWidth,(int)blockHeight);
         brickRight = imageLoader.getImage(GameObjImage.BRICK_RIGHT,(int)blockWidth,(int)blockHeight);
-        masterLeft = imageLoader.getImage(GameObjImage.MASTER_LEFT,(int)blockWidth,(int)blockHeight);
-        masterRight = imageLoader.getImage(GameObjImage.MASTER_RIGHT,(int)blockWidth,(int)blockHeight);
+        master= imageLoader.getImage(GameObjImage.MASTER,(int)blockWidth,(int)blockHeight);
         panel = imageLoader.getImage(GameObjImage.PANEL,(int)blockWidth*7,(int)blockHeight);
         air = imageLoader.getImage(GameObjImage.AIR, (int)blockWidth*2,(int)blockHeight);
 
@@ -113,12 +111,7 @@ public class GameView extends View {
                         }
                         break;
                     case MASTER:
-                        if(world[i][j].getSide() == 'r') {
-                            canvas.drawBitmap(masterRight, i * blockWidth, j * blockHeight, paint);
-                        }else {
-                            canvas.drawBitmap(masterLeft, i * blockWidth, j * blockHeight, paint);
-                        }
-
+                            canvas.drawBitmap(master, i * blockWidth, j * blockHeight, paint);
                         break;
                     case AIR:
                         canvas.drawBitmap(air,i * blockWidth, j * blockHeight, paint);

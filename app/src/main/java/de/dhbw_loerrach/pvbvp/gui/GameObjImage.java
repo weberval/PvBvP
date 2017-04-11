@@ -6,8 +6,7 @@ package de.dhbw_loerrach.pvbvp.gui;
 public enum GameObjImage {
     BRICK_LEFT,
     BRICK_RIGHT,
-    MASTER_LEFT,
-    MASTER_RIGHT,
+    MASTER,
     PANEL,
     AIR,
     BALL;
