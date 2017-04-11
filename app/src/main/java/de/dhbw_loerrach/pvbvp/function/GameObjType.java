@@ -5,11 +5,11 @@ package de.dhbw_loerrach.pvbvp.function;
  */
 
 public enum GameObjType {
-    AIR,
-    MASTER,
-    BRICK,
-    PANEL,
-    BALL,
-    OUTOFBOUNDX,
-    OUTOFBOUNDY;
+	AIR,
+	MASTER,
+	BRICK,
+	PANEL,
+	BALL,
+	OUTOFBOUNDX,
+	OUTOFBOUNDY;
 }

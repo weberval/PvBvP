@@ -5,8 +5,8 @@ package de.dhbw_loerrach.pvbvp.function;
  * Air-Object extends GamoObj
  */
 public class Air extends GameObj {
-
-    public Air() {
-        this.type = GameObjType.AIR;
-    }
+	
+	public Air() {
+		this.type = GameObjType.AIR;
+	}
 }
