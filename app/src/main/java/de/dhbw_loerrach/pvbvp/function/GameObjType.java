@@ -9,5 +9,7 @@ public enum GameObjType {
     MASTER,
     BRICK,
     PANEL,
-    BALL;
+    BALL,
+    OUTOFBOUNDX,
+    OUTOFBOUNDY;
 }

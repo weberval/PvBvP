@@ -118,6 +118,7 @@ public class GameView extends View {
                         }else {
                             canvas.drawBitmap(masterLeft, i * blockWidth, j * blockHeight, paint);
                         }
+
                         break;
                     case AIR:
                         canvas.drawBitmap(air,i * blockWidth, j * blockHeight, paint);

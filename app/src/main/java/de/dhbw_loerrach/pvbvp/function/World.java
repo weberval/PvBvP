@@ -28,7 +28,7 @@ public class World {
     private static final int PLAYGROUND_BRICK_SAFE_X = 5;
     private static final int PLAYGROUND_BRICK_SAFE_Y = 3;
     private static final int PANEL_WITH_P_SIDE = 3;
-    public static int brickCount;
+    public static int brickCount = 100;
 
     //Added ball and array of panels as new public attributes, since the playground will only contain bricks / masters
     public static GameObj[][] playground;
@@ -57,6 +57,8 @@ public class World {
 
         brickCreate();
         masterBrickCreate();
+        Panel player1 = new Panel(1);
+        Panel player2 = new Panel(2);
         debug();
     }
 
@@ -79,9 +81,14 @@ public class World {
                 }
             }
         }
+
+        /**
+         * @deprecated alternative way to create blocks
+         */
+        /*
         for (int i = 0; i < brickCount; ++i) {
-            int x = (int)(Math.random() * PLAYGROUND_WIDTH);
-            int y = (int)(Math.random() * PLAYGROUND_HEIGHT);
+            int x = PLAYGROUND_OFFSET_X + (int)((Math.random() - .1) * (PLAYGROUND_WIDTH - PLAYGROUND_OFFSET_X));
+            int y = PLAYGROUND_OFFSET_Y + (int)((Math.random() - .1) * (PLAYGROUND_HEIGHT - PLAYGROUND_OFFSET_Y));
             switch (this.playground[x][y].getType()) {
                 case AIR:
                     int offset = (x % 2) - (y % 2);
@@ -89,9 +96,9 @@ public class World {
                     this.playground[x + offset + 1][y] = new Brick(GameObjType.BRICK, 'r');
                     break;
                 default:
-                    i--;
+                    --i;
             }
-        }
+        } */
     }
 
     public void masterBrickCreate() {
@@ -146,6 +153,22 @@ public class World {
             Log.i(TAG,str);
             str = "";
         }
+    }
+
+    public GameObjType collisionCheck(int x, int y) {
+        switch (x){
+            case -1:
+                return GameObjType.OUTOFBOUNDX;
+            case World.PLAYGROUND_WIDTH:
+                return GameObjType.OUTOFBOUNDX;
+        }
+        switch (y) {
+            case -1:
+                return GameObjType.OUTOFBOUNDY;
+            case World.PLAYGROUND_HEIGHT:
+                return GameObjType.OUTOFBOUNDY;
+        }
+        return this.playground[x][y].getType();
     }
 
     //TEST
