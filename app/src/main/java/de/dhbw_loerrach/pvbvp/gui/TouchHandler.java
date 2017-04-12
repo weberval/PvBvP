@@ -1,7 +1,10 @@
 package de.dhbw_loerrach.pvbvp.gui;
 
 import android.util.Log;
+import android.view.MotionEvent;
+
 import de.dhbw_loerrach.pvbvp.function.GameController;
+import de.dhbw_loerrach.pvbvp.function.Panel;
 import de.dhbw_loerrach.pvbvp.function.PanelPlayer;
 
 /**
@@ -23,10 +26,14 @@ public class TouchHandler {
 	private static int HOR_FENCE;
 
 	private GameController gameController;
-	
+
+	private boolean playerPanelThread[];
+
 	public TouchHandler(GameController gameController) {
 		
 		this.gameController = gameController;
+
+		playerPanelThread = new boolean[2];
 		
 		VER_FENCE = GameView.SCREEN_WIDTH / 2;
 		HOR_FENCE = GameView.SCREEN_HEIGHT / 2;
@@ -38,19 +45,53 @@ public class TouchHandler {
 	 * @param x Coordinate in pixel
 	 * @param y Coordinate in pixel
 	 */
-	public void action(float x, float y) {
+	public void action(float x, float y, MotionEvent me) {
 		Log.i(TAG, "Screen touched at: x " + x + " y: " + y);
 
+		int p = 2;
+		char dir =' ';
+
 		if (x < VER_FENCE && y < HOR_FENCE){
-			movePanel(PanelPlayer.PLAYER1.index,'l');
+			p = PanelPlayer.PLAYER1.index;
+			dir = 'l';
 		}else if (x > VER_FENCE && y < HOR_FENCE){
-			movePanel(PanelPlayer.PLAYER1.index,'r');
+			p = PanelPlayer.PLAYER1.index;
+			dir = 'r';
 		}else if(x < VER_FENCE && y > HOR_FENCE){
-			movePanel(PanelPlayer.PLAYER2.index,'l');
+			p = PanelPlayer.PLAYER2.index;
+			dir = 'l';
 		}else if(x > VER_FENCE && y > HOR_FENCE) {
-			movePanel(PanelPlayer.PLAYER2.index,'r');
+			p = PanelPlayer.PLAYER2.index;
+			dir = 'r';
+		}
+
+
+		if(me.getAction() == MotionEvent.ACTION_DOWN || me.getAction() == MotionEvent.ACTION_POINTER_DOWN){
+			//start thread to move
+			startThread(p,dir);
+			playerPanelThread[p] = true;
+		}
+
+		if(me.getAction() == MotionEvent.ACTION_UP || me.getAction() == MotionEvent.ACTION_POINTER_UP){
+			//end thread
+			playerPanelThread[p] = false;
 		}
 	}
+
+	public void startThread(final int player, final char dir){
+		Thread thread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				while(playerPanelThread[player]) {
+					movePanel(player, dir);
+					try{Thread.sleep(50);}catch (Exception e){}
+				}
+			}
+		});
+		thread.start();
+	}
+
+
 	
 	/**
 	 * moves the panel on gameController

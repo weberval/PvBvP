@@ -61,8 +61,9 @@ public class Main extends Activity {
 			@Override
 			public boolean onTouch(View v, MotionEvent me) {
 				//action will be executed only on release.
-				if (me.getAction() == MotionEvent.ACTION_UP || me.getAction() == MotionEvent.ACTION_POINTER_UP) {
-					touchHandler.action(me.getX(), me.getY());
+				if (me.getAction() == MotionEvent.ACTION_UP || me.getAction() == MotionEvent.ACTION_POINTER_UP
+						|| me.getAction() == MotionEvent.ACTION_POINTER_DOWN || me.getAction() == MotionEvent.ACTION_DOWN) {
+					touchHandler.action(me.getX(), me.getY(),me);
 				}
 				return true;
 			}
