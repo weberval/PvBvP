@@ -2,6 +2,7 @@ package de.dhbw_loerrach.pvbvp.gui;
 
 import android.util.Log;
 import de.dhbw_loerrach.pvbvp.function.GameController;
+import de.dhbw_loerrach.pvbvp.function.PanelPlayer;
 
 /**
  * Created by Renat on 05.04.2017.
@@ -20,6 +21,7 @@ public class TouchHandler {
 	 * Any touch smaller than HOR_FENCE is accounted the left, any touch larger to the right side.
 	 */
 	private static int HOR_FENCE;
+
 	private GameController gameController;
 	
 	public TouchHandler(GameController gameController) {
@@ -38,8 +40,16 @@ public class TouchHandler {
 	 */
 	public void action(float x, float y) {
 		Log.i(TAG, "Screen touched at: x " + x + " y: " + y);
-		//TEST
-		movePanel(1, 'r');
+
+		if (x < VER_FENCE && y < HOR_FENCE){
+			movePanel(PanelPlayer.PLAYER1.index,'l');
+		}else if (x > VER_FENCE && y < HOR_FENCE){
+			movePanel(PanelPlayer.PLAYER1.index,'r');
+		}else if(x < VER_FENCE && y > HOR_FENCE){
+			movePanel(PanelPlayer.PLAYER2.index,'l');
+		}else if(x > VER_FENCE && y > HOR_FENCE) {
+			movePanel(PanelPlayer.PLAYER2.index,'r');
+		}
 	}
 	
 	/**
