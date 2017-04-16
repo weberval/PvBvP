@@ -34,8 +34,14 @@ public class World {
 	public World(GameController gameController) {
 		this.gameController = gameController;
 	}
-	
-	public void init() {
+
+
+	/**
+	 * TODO(?): depending on level, the blocks are set and where the ball spawns.
+	 * (for example: all even level start with player1, all odd level start with player2)
+	 * @param level
+	 */
+	public void init(int level) {
 		playground = new GameObj[PLAYGROUND_WIDTH][PLAYGROUND_HEIGHT];
 		for (int i = 0; i < PLAYGROUND_WIDTH; ++i) {
 			for (int j = 0; j < PLAYGROUND_HEIGHT; ++j) {
@@ -50,7 +56,7 @@ public class World {
 		
 		brickCreate();
 		masterBrickCreate();
-		debug();
+
 	}
 	
 	private void brickCreate() {
@@ -127,19 +133,7 @@ public class World {
 			panels[player].moveRight();
 		}
 	}
-	
-	//TEST
-	public void debug() {
-		String str = "";
-		for (int i = 0; i < playground.length; i++) {
-			for (int j = 0; j < playground[i].length; j++) {
-				str += " | " + debug_helper(playground[i][j].type, playground[i][j].getSide()) + " | ";
-			}
-			Log.i(TAG, str);
-			str = "";
-		}
-	}
-	
+
 	public GameObjType collisionCheck(int x, int y) {
 		switch (x) {
 			case -1:
@@ -155,21 +149,22 @@ public class World {
 		}
 		return this.playground[x][y].getType();
 	}
-	
-	//TEST
-	private String debug_helper(GameObjType t, char s) {
-		switch (t) {
-			case BRICK:
-				return "B" + s;
-			case MASTER:
-				return "M" + s;
-			case PANEL:
-				return "P" + s;
-			case BALL:
-				return "B" + s;
-			case AIR:
-				return "A" + s;
-		}
-		return null;
+
+
+	/**
+	 * checks if the ball got out of the world
+	 * @return
+	 */
+	public boolean checkOutOfBounds(){
+		return (playground[ball.x][ball.y].type == GameObjType.OUTOFBOUNDY ? true : false);
+	}
+
+
+	/**
+	 * checks if the masterbrick was hit
+	 * @return
+	 */
+	public boolean hitMasterBrick(){
+		return (playground[ball.x][ball.y].type == GameObjType.MASTER ? true : false);
 	}
 }

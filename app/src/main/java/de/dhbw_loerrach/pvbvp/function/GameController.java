@@ -21,18 +21,22 @@ public class GameController extends Thread {
 	private Main main;
 	private World world;
 	private GameView view;
-	
+
+
+	/**
+	 * level of current game. higher level -> higher difficulty
+	 */
+	private int level;
+
 	public GameController(Main main, GameView view) {
 		this.main = main;
 		this.view = view;
-		
+
+		level = 1;
+
 		world = new World(this);
-		world.init();
-		view.update(world.playground, world.ball, world.panels);
-		
-		
-		//world.panelMove(2, 'l');
-		//view.update(world.playground);
+		world.init(level);
+
 	}
 	
 	/**
@@ -47,9 +51,7 @@ public class GameController extends Thread {
 	 * mainloop of the game.
 	 */
 	public void mainLoop() {
-		
 		for (; ; ) {
-			
 			action();
 			wait_();
 			view.update(world.playground, world.ball, world.panels);
@@ -75,7 +77,18 @@ public class GameController extends Thread {
 	 * Also changes levels and other
 	 */
 	public void action() {
-	
+
+		world.ball.move(world,world.panels[0],world.panels[1]);
+
+		if (world.checkOutOfBounds()) {
+			reset();
+			return;
+		}
+
+		if (world.hitMasterBrick()) {
+			levelUp();
+			return;
+		}
 	}
 	
 	/**
@@ -87,5 +100,20 @@ public class GameController extends Thread {
 	public void movePanel(int player, char dir) {
 		world.movePanel(player, dir);
 	}
-	
+
+
+	/**
+	 * reset game to level 1 (?)
+	 */
+	public void reset(){
+		level = 1;
+		world.init(level);
+	}
+
+	/**
+	 * next level
+	 */
+	public void levelUp(){
+		world.init(++level);
+	}
 }
