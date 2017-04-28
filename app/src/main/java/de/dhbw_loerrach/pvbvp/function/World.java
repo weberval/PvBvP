@@ -10,8 +10,8 @@ import android.util.Log;
  */
 
 public class World {
-	
-	
+
+
 	public static final int PLAYGROUND_WIDTH = 27;
 	public static final int PLAYGROUND_HEIGHT = 16;
 	public static final int PLAYGROUND_OFFSET_X = 3;
@@ -22,15 +22,15 @@ public class World {
 	private static final int PLAYGROUND_BRICK_SAFE_X = 5;
 	private static final int PLAYGROUND_BRICK_SAFE_Y = 3;
 	public static int brickCount = 100;
-	
+
 	//Added ball and array of panels as new public attributes, since the playground will only contain bricks / masters
 	public static GameObj[][] playground;
 	public static Ball ball;
 	public static Panel[] panels;
-	
+
 	private GameController gameController;
-	
-	
+
+
 	public World(GameController gameController) {
 		this.gameController = gameController;
 	}
@@ -39,6 +39,7 @@ public class World {
 	/**
 	 * TODO(?): depending on level, the blocks are set and where the ball spawns.
 	 * (for example: all even level start with player1, all odd level start with player2)
+	 *
 	 * @param level
 	 */
 	public void init(int level) {
@@ -48,10 +49,11 @@ public class World {
 				playground[i][j] = new Air();
 			}
 		}
-		
+
 		//add panels to world
 		panels = new Panel[2];
 		panels[0] = new Panel(PanelPlayer.PLAYER1);
+		panels[1] = new Panel(PanelPlayer.PLAYER2);
 
 		ball = new Ball(PanelPlayer.PLAYER1.index);
 
@@ -59,7 +61,7 @@ public class World {
 		masterBrickCreate();
 
 	}
-	
+
 	private void brickCreate() {
 		/**
 		 * @param x line indent iterating through 0 and 1
@@ -76,7 +78,7 @@ public class World {
 				}
 			}
 		}
-		
+
 		/**
 		 * @deprecated alternative way to create blocks
 		 */
@@ -95,42 +97,34 @@ public class World {
             }
         } */
 	}
-	
+
 	public void masterBrickCreate() {
-		switch (this.playground[PLAYGROUND_CENTER_X][PLAYGROUND_CENTER_Y_FLOOR].getSide()) {
-			case 'l':
-				this.brickDestroy(PLAYGROUND_CENTER_X + 1, PLAYGROUND_CENTER_Y_FLOOR);
-				break;
-			case 'r':
-				this.brickDestroy(PLAYGROUND_CENTER_X - 1, PLAYGROUND_CENTER_Y_FLOOR);
-				break;
-		}
-		switch (this.playground[PLAYGROUND_CENTER_X][PLAYGROUND_CENTER_Y_FLOOR - 1].getSide()) {
-			case 'l':
-				this.brickDestroy(PLAYGROUND_CENTER_X + 1, PLAYGROUND_CENTER_Y_FLOOR + 1);
-				break;
-			case 'r':
-				this.brickDestroy(PLAYGROUND_CENTER_X - 1, PLAYGROUND_CENTER_Y_FLOOR + 1);
-				break;
-		}
-		
+		this.brickDestroy(PLAYGROUND_CENTER_X, PLAYGROUND_CENTER_Y_FLOOR);
+		this.brickDestroy(PLAYGROUND_CENTER_X, PLAYGROUND_CENTER_Y_FLOOR + 1);
+
 		playground[PLAYGROUND_CENTER_X][PLAYGROUND_CENTER_Y_FLOOR] = new Brick(GameObjType.MASTER, 'm');
 		playground[PLAYGROUND_CENTER_X][PLAYGROUND_CENTER_Y_FLOOR + 1] = new Brick(GameObjType.MASTER, 'm');
 	}
-	
+
 	public void brickDestroy(int x, int y) {
-		this.playground[x][y] = new Air();
+		switch (this.playground[x][y].getSide()) {
+			case 'l':
+				this.brickDestroy(x + 1, y);
+				break;
+			case 'r':
+				this.brickDestroy(x - 1, y);
+				break;
+		}
 	}
-	
+
 	public void movePanel(int player, char dir) {
 		if (player < 0 || player > 2) {
 			return;
 		}
-		
+
 		if (dir == 'l') {
 			panels[player].moveLeft();
-		}
-		else if (dir == 'r') {
+		} else if (dir == 'r') {
 			panels[player].moveRight();
 		}
 	}
@@ -154,6 +148,7 @@ public class World {
 
 	/**
 	 * checks if the ball got out of the world
+	 *
 	 * @return
 	 */
 	public boolean checkOutOfBounds(){
@@ -163,6 +158,7 @@ public class World {
 
 	/**
 	 * checks if the masterbrick was hit
+	 *
 	 * @return
 	 */
 	public boolean hitMasterBrick(){

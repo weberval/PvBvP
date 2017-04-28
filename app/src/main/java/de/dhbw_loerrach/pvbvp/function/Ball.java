@@ -36,7 +36,7 @@ public class Ball extends GameObj {
 			case 1:
 				switch (world.collisionCheck(this.x + 1, this.y + 1)) {
 					case BRICK:
-						// TODO: insert destruction of brick and reflect Ball
+
 						break;
 					case PANEL:
 						// TODO: reflect Ball
@@ -148,5 +148,8 @@ public class Ball extends GameObj {
 				break;
 		}
 	}
-	
+	public void setDirection(int direction) {
+		this.direction = direction;
+	}
+
 }
