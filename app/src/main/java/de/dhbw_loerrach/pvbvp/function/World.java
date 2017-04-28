@@ -129,18 +129,21 @@ public class World {
 		}
 	}
 
-	public GameObjType collisionCheck(int x, int y) {
+	public GameObjType collisionCheck(int x, int y, Panel panel) {
+		switch (y) {
+			case -1:
+				return GameObjType.OUTOFBOUNDY;
+			case World.PLAYGROUND_HEIGHT:
+				return GameObjType.OUTOFBOUNDY;
+		}
 		switch (x) {
 			case -1:
 				return GameObjType.OUTOFBOUNDX;
 			case World.PLAYGROUND_WIDTH:
 				return GameObjType.OUTOFBOUNDX;
 		}
-		switch (y) {
-			case -1:
-				return GameObjType.OUTOFBOUNDY;
-			case World.PLAYGROUND_HEIGHT:
-				return GameObjType.OUTOFBOUNDY;
+		if (panel.getX() == x && panel.getY() == y){
+			return GameObjType.PANEL;
 		}
 		return this.playground[x][y].getType();
 	}
