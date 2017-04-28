@@ -120,7 +120,7 @@ public class GameView extends View {
 		}
 		
 		//draw ball
-		//canvas.drawBitmap(ballBM,ball.x * blockWidth, ball.y * blockHeight, paint);
+		canvas.drawBitmap(ballBM,ball.getX() * blockWidth, ball.getY() * blockHeight, paint);
 		
 		//draw panels
 		for (int i = 0; i < panels.length; i++) {

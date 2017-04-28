@@ -53,6 +53,8 @@ public class World {
 		panels = new Panel[2];
 		panels[0] = new Panel(PanelPlayer.PLAYER1);
 		panels[1] = new Panel(PanelPlayer.PLAYER2);
+
+		ball = new Ball(PanelPlayer.PLAYER1.index);
 		
 		brickCreate();
 		masterBrickCreate();
