@@ -109,10 +109,10 @@ public class World {
 	public void brickDestroy(int x, int y) {
 		switch (this.playground[x][y].getSide()) {
 			case 'l':
-				this.brickDestroy(x + 1, y);
+				this.playground[x + 1][y] = new Air();
 				break;
 			case 'r':
-				this.brickDestroy(x - 1, y);
+				this.playground[x - 1][y] = new Air();
 				break;
 		}
 	}
