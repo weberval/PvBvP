@@ -52,10 +52,9 @@ public class World {
 		//add panels to world
 		panels = new Panel[2];
 		panels[0] = new Panel(PanelPlayer.PLAYER1);
-		panels[1] = new Panel(PanelPlayer.PLAYER2);
 
 		ball = new Ball(PanelPlayer.PLAYER1.index);
-		
+
 		brickCreate();
 		masterBrickCreate();
 
@@ -158,7 +157,7 @@ public class World {
 	 * @return
 	 */
 	public boolean checkOutOfBounds(){
-		return (playground[ball.x][ball.y].type == GameObjType.OUTOFBOUNDY ? true : false);
+		return ((ball.getY() < 0 || ball.getY() >= World.PLAYGROUND_HEIGHT) ? true : false);
 	}
 
 
