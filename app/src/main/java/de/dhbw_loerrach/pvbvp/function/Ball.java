@@ -24,11 +24,11 @@ public class Ball extends GameObj {
 		this.x = World.PLAYGROUND_CENTER_X;
 		this.player = player;
 		if(player == PanelPlayer.PLAYER1.index) {
-			this.direction = 2; //down
+			this.direction = 1; //down
 			this.y = 1;
 		}
 		if(player == PanelPlayer.PLAYER2.index){
-			this.direction = -2; //up
+			this.direction = -1; //up
 			this.y = World.PLAYGROUND_HEIGHT - 2;
 		}
 	}
