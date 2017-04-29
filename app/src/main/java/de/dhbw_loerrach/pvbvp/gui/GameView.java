@@ -98,33 +98,36 @@ public class GameView extends View {
 		super.onDraw(canvas);
 		
 		//draw playground
-		for (int i = 0; i < world.length; i++) {
-			for (int j = 0; j < world[i].length; j++) {
-				
-				switch (world[i][j].getType()) {
-					case BRICK:
-						if (world[i][j].getSide() == 'r') {
-							canvas.drawBitmap(brickRight, i * blockWidth, j * blockHeight, paint);
-						}
-						else {
-							canvas.drawBitmap(brickLeft, i * blockWidth, j * blockHeight, paint);
-						}
-						break;
-					case MASTER:
-						canvas.drawBitmap(master, i * blockWidth, j * blockHeight, paint);
-						break;
-					case AIR:
-						canvas.drawBitmap(air, i * blockWidth, j * blockHeight, paint);
-				}
-			}
-		}
-		
+        if(world != null) {
+            for (int i = 0; i < world.length; i++) {
+                for (int j = 0; j < world[i].length; j++) {
+
+                    switch (world[i][j].getType()) {
+                        case BRICK:
+                            if (world[i][j].getSide() == 'r') {
+                                canvas.drawBitmap(brickRight, i * blockWidth, j * blockHeight, paint);
+                            } else {
+                                canvas.drawBitmap(brickLeft, i * blockWidth, j * blockHeight, paint);
+                            }
+                            break;
+                        case MASTER:
+                            canvas.drawBitmap(master, i * blockWidth, j * blockHeight, paint);
+                            break;
+                        case AIR:
+                            canvas.drawBitmap(air, i * blockWidth, j * blockHeight, paint);
+                    }
+                }
+            }
+        }
 		//draw ball
-		canvas.drawBitmap(ballBM,ball.getX() * blockWidth, ball.getY() * blockHeight, paint);
-		
+		if(ball != null)
+			canvas.drawBitmap(ballBM,ball.getX() * blockWidth, ball.getY() * blockHeight, paint);
+
 		//draw panels
-		for (int i = 0; i < panels.length; i++) {
-			canvas.drawBitmap(panel, panels[i].getX() * blockWidth, panels[i].getY() * blockHeight, paint);
+		if(panels != null) {
+			for (int i = 0; i < panels.length; i++) {
+				canvas.drawBitmap(panel, panels[i].getX() * blockWidth, panels[i].getY() * blockHeight, paint);
+			}
 		}
 	}
 }

@@ -107,6 +107,7 @@ public class GameController extends Thread {
 
 	public void gameOver(PanelPlayer ply){
 		//TODO: do some player related work
+		Log.i(TAG,"Game Over");
 		RUNNING = false;
 	}
 

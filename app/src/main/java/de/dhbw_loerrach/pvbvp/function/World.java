@@ -115,6 +115,8 @@ public class World {
 				this.playground[x - 1][y] = new Air();
 				break;
 		}
+		if(playground[x][y].type == GameObjType.BRICK)
+			playground[x][y] = new Air();
 	}
 
 	public void movePanel(int player, char dir) {
@@ -142,10 +144,23 @@ public class World {
 			case World.PLAYGROUND_WIDTH:
 				return GameObjType.OUTOFBOUNDX;
 		}
-		if (panel.getX() == x && panel.getY() == y){
+		if (hitPanel(panel,x,y)){
 			return GameObjType.PANEL;
 		}
 		return this.playground[x][y].getType();
+	}
+
+	/**
+	 * returns true if the ball hit the panel
+	 * @return
+	 */
+	public boolean hitPanel(Panel panel,int x, int y){
+		Log.i(TAG,"hitPanel ( " + x + " " + y + ") panel from " + panel.getX() + " - " + panel.getX() + Panel.PANEL_WIDTH);
+		if(panel.getY() == y){
+			if(x > panel.getX() && x < panel.getX() + Panel.PANEL_WIDTH)
+				return true;
+		}
+		return false;
 	}
 
 	/**
