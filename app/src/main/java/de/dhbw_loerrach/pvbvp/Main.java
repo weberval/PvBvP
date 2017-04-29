@@ -2,6 +2,7 @@ package de.dhbw_loerrach.pvbvp;
 
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -12,6 +13,7 @@ import android.widget.LinearLayout;
 import de.dhbw_loerrach.pvbvp.function.GameController;
 import de.dhbw_loerrach.pvbvp.gui.GameView;
 import de.dhbw_loerrach.pvbvp.gui.TouchHandler;
+import de.dhbw_loerrach.pvbvp.screens.Screen;
 
 /**
  * Start of application.
@@ -89,5 +91,11 @@ public class Main extends Activity {
 		DisplayMetrics metrics = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(metrics);
 		return new Point(metrics.widthPixels, metrics.heightPixels);
+	}
+
+	public void gameOver(){
+		Screen.TYPE = 'e';
+		Intent intent = new Intent(this,Screen.class);
+		startActivity(intent);
 	}
 }

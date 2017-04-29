@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import de.dhbw_loerrach.pvbvp.Main;
@@ -37,6 +38,8 @@ public class Screen extends Activity {
      */
     private Button play_button;
 
+    private static final String GAME_NAME = "The Game Ultimate Deluxe 3000";
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -46,15 +49,26 @@ public class Screen extends Activity {
         play_button = (Button) findViewById(R.id.screen_button);
 
         if(TYPE == 's'){
-            title.setText("Welcome to PvBvP!");
+            title.setText(GAME_NAME);
             play_button.setText("Start");
         }
         if(TYPE == 'e'){
             title.setText("Game Over!");
             play_button.setText("Replay");
 
-            //Additional Button for Endscreen to close the app, TODO
             Button closeApp = new Button(this);
+            closeApp.setText("Close");
+            closeApp.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    System.exit(0);
+                }
+            });
+            RelativeLayout rl = ((RelativeLayout)findViewById(R.id.screen_layout));
+            //RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams)rl.getLayoutParams();
+            //rlp.addRule(RelativeLayout.CENTER_IN_PARENT,closeApp.getId());
+            //rlp.addRule(RelativeLayout.BELOW,((Button)findViewById(R.id.screen_button)).getId());
+            rl.addView(closeApp);
 
         }
 
