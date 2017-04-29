@@ -148,14 +148,12 @@ public class World {
 		return this.playground[x][y].getType();
 	}
 
-
 	/**
-	 * checks if the ball got out of the world
-	 *
-	 * @return
+	 * will be called when the ball goes out of bounds on y-axis
+	 * @param ply
 	 */
-	public boolean checkOutOfBounds(){
-		return ((ball.getY() < 0 || ball.getY() >= World.PLAYGROUND_HEIGHT) ? true : false);
+	public void gameOver(PanelPlayer ply){
+		gameController.gameOver(ply);
 	}
 
 

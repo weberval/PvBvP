@@ -22,6 +22,8 @@ public class GameController extends Thread {
 	private World world;
 	private GameView view;
 
+	private boolean RUNNING = false;
+
 
 	/**
 	 * level of current game. higher level -> higher difficulty
@@ -43,15 +45,17 @@ public class GameController extends Thread {
 	 * starting the thread
 	 */
 	public void run() {
+		RUNNING = true;
 		mainLoop();
 	}
 	
 	
 	/**
 	 * mainloop of the game.
+	 * In case of gameover, return to Main and handle there if a new game starts
 	 */
 	public void mainLoop() {
-		for (; ; ) {
+		while(RUNNING) {
 			action();
 			wait_();
 			view.update(world.playground, world.ball, world.panels);
@@ -80,15 +84,6 @@ public class GameController extends Thread {
 
 		world.ball.move(world,world.panels[0],world.panels[1]);
 
-		if (world.checkOutOfBounds()) {
-			reset();
-			return;
-		}
-
-		if (world.hitMasterBrick()) {
-			levelUp();
-			return;
-		}
 	}
 	
 	/**
@@ -108,6 +103,11 @@ public class GameController extends Thread {
 	public void reset(){
 		level = 1;
 		world.init(level);
+	}
+
+	public void gameOver(PanelPlayer ply){
+		//TODO: do some player related work
+		RUNNING = false;
 	}
 
 	/**
