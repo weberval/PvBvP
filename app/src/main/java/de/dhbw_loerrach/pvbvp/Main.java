@@ -97,5 +97,6 @@ public class Main extends Activity {
 		Screen.TYPE = 'e';
 		Intent intent = new Intent(this,Screen.class);
 		startActivity(intent);
+		finish();
 	}
 }

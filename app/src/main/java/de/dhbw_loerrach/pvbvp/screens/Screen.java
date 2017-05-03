@@ -78,6 +78,7 @@ public class Screen extends Activity {
     public void startGame(View view){
         Intent intent = new Intent(this,Main.class);
         startActivity(intent);
+        finish();
     }
 
     @Override
