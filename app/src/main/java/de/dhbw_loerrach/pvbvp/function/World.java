@@ -131,17 +131,11 @@ public class World {
 	}
 
 	public GameObjType collisionCheck(int x, int y, Panel panel) {
-		switch (y) {
-			case -1:
-				return GameObjType.OUTOFBOUNDY;
-			case World.PLAYGROUND_HEIGHT:
-				return GameObjType.OUTOFBOUNDY;
+		if (y <= -1 || y >= World.PLAYGROUND_HEIGHT) {
+			return GameObjType.OUTOFBOUNDY;
 		}
-		switch (x) {
-			case -1:
-				return GameObjType.OUTOFBOUNDX;
-			case World.PLAYGROUND_WIDTH:
-				return GameObjType.OUTOFBOUNDX;
+		if (x <= -1 || x >= World.PLAYGROUND_WIDTH) {
+			return GameObjType.OUTOFBOUNDX;
 		}
 		if (hitPanel(panel,x,y)){
 			return GameObjType.PANEL;

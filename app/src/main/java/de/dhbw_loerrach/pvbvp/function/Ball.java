@@ -109,9 +109,9 @@ public class Ball extends GameObj {
 					this.direction = -3;
 				}
 				try {
-					world.brickDestroy(this.x + 1, this.y + 1);
+					world.brickDestroy(this.x - 1, this.y + 1);
 					world.brickDestroy(this.x, this.y + 1);
-					world.brickDestroy(this.x + 1, this.y);
+					world.brickDestroy(this.x - 1, this.y);
 				} catch (ArrayIndexOutOfBoundsException e) {
 					Log.i(TAG,"brick destroy");
 				}
