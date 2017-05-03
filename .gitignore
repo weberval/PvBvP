@@ -4,3 +4,8 @@
 !*/
 # And all the file types you're interested in.
 !*.java
+!*.png
+!*.xml
+!*.jpg
+!*.svg
+!*.gif
