@@ -9,21 +9,23 @@ import de.dhbw_loerrach.pvbvp.gui.GameView;
  * Class that manages the game
  */
 public class GameController extends Thread {
-	
+
 	private static final String TAG = "GameController";
-	
+
 	/**
 	 * The pause between each mainLoop routine in milliseconds
 	 */
 	private static final int WAIT = 150;
-	
-	
+
+	private static int BALL_DELAY = 3;
+
+
 	private Main main;
 	private World world;
 	private GameView view;
 
 	private boolean RUNNING = false;
-
+	private int ball_counter;
 
 	/**
 	 * level of current game. higher level -> higher difficulty
@@ -40,7 +42,7 @@ public class GameController extends Thread {
 		world.init(level);
 
 	}
-	
+
 	/**
 	 * starting the thread
 	 */
@@ -48,8 +50,8 @@ public class GameController extends Thread {
 		RUNNING = true;
 		mainLoop();
 	}
-	
-	
+
+
 	/**
 	 * mainloop of the game.
 	 * In case of gameover, return to Main and handle there if a new game starts
@@ -61,8 +63,8 @@ public class GameController extends Thread {
 			view.update(world.playground, world.ball, world.panels);
 		}
 	}
-	
-	
+
+
 	/**
 	 * This method waits WAIT milliseconds between each routine
 	 */
@@ -73,19 +75,20 @@ public class GameController extends Thread {
 			Log.e(TAG, e.getMessage());
 		}
 	}
-	
-	
+
+
 	/**
 	 * This method checks for any event happening ingame.
 	 * Collisions and removal of bricks and the winning condition : hitting the master brick
 	 * Also changes levels and other
 	 */
 	public void action() {
-
-		world.ball.move(world,world.panels[0],world.panels[1]);
-
+		if(ball_counter == 0){
+			world.ball.move(world,world.panels[0],world.panels[1]);
+			ball_counter = BALL_DELAY;
+		}else ball_counter--;
 	}
-	
+
 	/**
 	 * moves the panel on world
 	 *
