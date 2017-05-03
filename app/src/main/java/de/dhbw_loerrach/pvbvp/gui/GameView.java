@@ -3,6 +3,7 @@ package de.dhbw_loerrach.pvbvp.gui;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.util.Log;
@@ -96,7 +97,10 @@ public class GameView extends View {
 	@Override
 	public void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-		
+
+		paint.setColor(Color.BLACK);
+		canvas.drawRect(0,0,SCREEN_WIDTH,SCREEN_HEIGHT,paint);
+
 		//draw playground
         if(world != null) {
             for (int i = 0; i < world.length; i++) {
@@ -113,8 +117,6 @@ public class GameView extends View {
                         case MASTER:
                             canvas.drawBitmap(master, i * blockWidth, j * blockHeight, paint);
                             break;
-                        case AIR:
-                            canvas.drawBitmap(air, i * blockWidth, j * blockHeight, paint);
                     }
                 }
             }
