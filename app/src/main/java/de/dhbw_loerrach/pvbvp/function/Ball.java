@@ -89,9 +89,9 @@ public class Ball extends GameObj {
 			case 3:
 				this.x -= 1;
 				this.y += 1;
-				ro = world.collisionCheck(this.x + 1, this.y + 1, panel2);
+				ro = world.collisionCheck(this.x - 1, this.y + 1, panel2);
 				mo = world.collisionCheck(this.x, this.y + 1, panel2);
-				rm = world.collisionCheck(this.x + 1, this.y, panel2);
+				rm = world.collisionCheck(this.x - 1, this.y, panel2);
 
 				if (mo == GameObjType.OUTOFBOUNDY) {
 					world.gameOver(panel2.getPlayer());

@@ -15,7 +15,7 @@ public class GameController extends Thread {
 	/**
 	 * The pause between each mainLoop routine in milliseconds
 	 */
-	private static final int WAIT = 150;
+	private static final int WAIT = 1050;
 	
 	
 	private Main main;

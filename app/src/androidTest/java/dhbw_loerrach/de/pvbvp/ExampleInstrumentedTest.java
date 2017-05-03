@@ -1,4 +1,4 @@
-package de.dhbw_loerrach.pvbvp;
+package dhbw_loerrach.de.pvbvp;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("de.dhbw_loerrach.pvbvp", appContext.getPackageName());
+        assertEquals("dhbw_loerrach.de.pvbvp", appContext.getPackageName());
     }
 }

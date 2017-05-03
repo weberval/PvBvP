@@ -1,4 +1,4 @@
-package de.dhbw_loerrach.pvbvp;
+package dhbw_loerrach.de.pvbvp;
 
 import org.junit.Test;
 
