@@ -35,8 +35,6 @@ public class ImageLoader {
 				return scaleImage(R.drawable.master);
 			case PANEL:
 				return scaleImage(R.drawable.panel);
-			case AIR:
-				return scaleImage(R.drawable.air);
 		}
 		
 		this.width = this.height = 0;

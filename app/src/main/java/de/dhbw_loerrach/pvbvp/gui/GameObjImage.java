@@ -8,6 +8,5 @@ public enum GameObjImage {
 	BRICK_RIGHT,
 	MASTER,
 	PANEL,
-	AIR,
 	BALL;
 }

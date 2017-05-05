@@ -59,7 +59,6 @@ public class GameView extends View {
 	private Bitmap brickRight;
 	private Bitmap master;
 	private Bitmap panel;
-	private Bitmap air;
 	
 	public GameView(Context context, Point windowDim) {
 		super(context);
@@ -76,7 +75,6 @@ public class GameView extends View {
 		brickRight = imageLoader.getImage(GameObjImage.BRICK_RIGHT, (int) blockWidth, (int) blockHeight);
 		master = imageLoader.getImage(GameObjImage.MASTER, (int) blockWidth, (int) blockHeight);
 		panel = imageLoader.getImage(GameObjImage.PANEL, (int) blockWidth * Panel.PANEL_WIDTH, (int) blockHeight);
-		air = imageLoader.getImage(GameObjImage.AIR, (int) blockWidth * 2, (int) blockHeight);
 		
 		paint = new Paint();
 		

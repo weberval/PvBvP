@@ -67,12 +67,14 @@ public class TouchHandler {
 
 
 		if(me.getAction() == MotionEvent.ACTION_DOWN || me.getAction() == MotionEvent.ACTION_POINTER_DOWN){
+			Log.i(TAG,"start thread for " + p );
 			//start thread to move
 			startThread(p,dir);
 			playerPanelThread[p] = true;
 		}
 
 		if(me.getAction() == MotionEvent.ACTION_UP || me.getAction() == MotionEvent.ACTION_POINTER_UP){
+			Log.i(TAG,"end thread for " + p );
 			//end thread
 			playerPanelThread[p] = false;
 		}
