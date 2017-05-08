@@ -47,6 +47,7 @@ public class GameController extends Thread {
 	 * starting the thread
 	 */
 	public void run() {
+		wait_(1000);
 		RUNNING = true;
 		mainLoop();
 	}
@@ -59,7 +60,7 @@ public class GameController extends Thread {
 	public void mainLoop() {
 		while(RUNNING) {
 			action();
-			wait_();
+			wait_(WAIT);
 			view.update(world.playground, world.ball, world.panels);
 		}
 	}
@@ -68,9 +69,9 @@ public class GameController extends Thread {
 	/**
 	 * This method waits WAIT milliseconds between each routine
 	 */
-	public void wait_() {
+	public void wait_(int wait) {
 		try {
-			sleep(WAIT);
+			sleep(wait);
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage());
 		}
