@@ -148,7 +148,6 @@ public class World {
 	 * @return
 	 */
 	public boolean hitPanel(Panel panel,int x, int y){
-		Log.i(TAG,"hitPanel ( " + x + " " + y + ") panel from " + panel.getX() + " - " + panel.getX() + Panel.PANEL_WIDTH);
 		if(panel.getY() == y){
 			if(x > panel.getX() && x < panel.getX() + Panel.PANEL_WIDTH)
 				return true;

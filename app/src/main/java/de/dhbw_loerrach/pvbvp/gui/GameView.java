@@ -75,7 +75,7 @@ public class GameView extends View {
 		brickRight = imageLoader.getImage(GameObjImage.BRICK_RIGHT, (int) blockWidth, (int) blockHeight);
 		master = imageLoader.getImage(GameObjImage.MASTER, (int) blockWidth, (int) blockHeight);
 		panel = imageLoader.getImage(GameObjImage.PANEL, (int) blockWidth * Panel.PANEL_WIDTH, (int) blockHeight);
-		
+
 		paint = new Paint();
 		
 		Log.i(TAG, "created");
