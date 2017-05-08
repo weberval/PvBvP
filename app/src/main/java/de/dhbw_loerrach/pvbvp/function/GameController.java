@@ -47,7 +47,6 @@ public class GameController extends Thread {
 	 * starting the thread
 	 */
 	public void run() {
-		wait_(1000);
 		RUNNING = true;
 		mainLoop();
 	}
@@ -58,6 +57,9 @@ public class GameController extends Thread {
 	 * In case of gameover, return to Main and handle there if a new game starts
 	 */
 	public void mainLoop() {
+
+		view.update(world.playground,world.ball,world.panels);
+		wait_(1000);
 		while(RUNNING) {
 			action();
 			wait_(WAIT);
