@@ -106,7 +106,7 @@ public class Ball extends GameObj {
 				} else if (ro == GameObjType.BRICK) {
 					this.direction = -1;
 				} else if (mo == GameObjType.PANEL || ro == GameObjType.PANEL) {
-					this.direction = -3;
+					this.direction = -1;
 				}
 				try {
 					world.brickDestroy(this.x - 1, this.y + 1);
