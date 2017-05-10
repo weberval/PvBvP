@@ -38,7 +38,7 @@ public class GameController extends Thread {
 
 		level = 1;
 
-		world = new World(this);
+		world = new  World(this);
 		world.init(level);
 
 	}

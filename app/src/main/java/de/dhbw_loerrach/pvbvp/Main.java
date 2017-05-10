@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.support.v4.view.MotionEventCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -62,10 +63,15 @@ public class Main extends Activity {
 		touchListener = new View.OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent me) {
-				//action will be executed only on release.
-				if (me.getAction() == MotionEvent.ACTION_UP || me.getAction() == MotionEvent.ACTION_POINTER_UP
-						|| me.getAction() == MotionEvent.ACTION_POINTER_DOWN || me.getAction() == MotionEvent.ACTION_DOWN) {
-					touchHandler.action(me.getX(), me.getY(),me);
+
+				int index = MotionEventCompat.getActionIndex(me);
+				Log.i(TAG,"index of event " + index);
+
+
+				Log.i(TAG,"Event "+MotionEvent.actionToString(me.getAction()) + " as int " + me.getAction());
+				if (me.getAction() == MotionEvent.ACTION_UP || me.getAction() == 262
+						|| me.getAction() == 261 || me.getAction() == MotionEvent.ACTION_DOWN) {
+					touchHandler.action(MotionEventCompat.getX(me,index), MotionEventCompat.getY(me,index),me);
 				}
 				return true;
 			}
