@@ -71,7 +71,7 @@ public class Main extends Activity {
 				Log.i(TAG,"Event "+MotionEvent.actionToString(me.getAction()) + " as int " + me.getAction());
 				if (me.getAction() == MotionEvent.ACTION_UP || me.getAction() == 262
 						|| me.getAction() == 261 || me.getAction() == MotionEvent.ACTION_DOWN) {
-					touchHandler.action(MotionEventCompat.getX(me,index), MotionEventCompat.getY(me,index),me);
+					touchHandler.action(me.getX(index), me.getX(index),me);
 				}
 				return true;
 			}

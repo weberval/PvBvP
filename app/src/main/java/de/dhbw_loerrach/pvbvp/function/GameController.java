@@ -118,6 +118,11 @@ public class GameController extends Thread {
 		main.gameOver();
 	}
 
+	public void win(PanelPlayer ply){
+        Log.i(TAG,"Player " + ply + " wins!");
+        levelUp();
+    }
+
 	/**
 	 * next level
 	 */

@@ -163,10 +163,17 @@ public class World {
 		gameController.gameOver(ply);
 	}
 
+	/**
+	 * will be call when the balls hits the masterbrick
+	 * @param ply
+	 */
+	public void win(PanelPlayer ply){
+		gameController.win(ply);
+	}
 
 	/**
 	 * checks if the masterbrick was hit
-	 *
+	 *  not in use now
 	 * @return
 	 */
 	public boolean hitMasterBrick(){

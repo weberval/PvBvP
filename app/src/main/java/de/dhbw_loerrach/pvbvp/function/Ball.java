@@ -47,7 +47,14 @@ public class Ball extends GameObj {
 				if (mo == GameObjType.OUTOFBOUNDY) {
 					world.gameOver(panel2.getPlayer());
 					return;
-				} else if (rm == GameObjType.OUTOFBOUNDX) {
+				}
+
+				if(mo == GameObjType.MASTER || ro == GameObjType.MASTER) {
+					world.win(panel2.getPlayer());
+					return;
+				}
+
+				if (rm == GameObjType.OUTOFBOUNDX) {
 					this.direction = 3;
 				} else if (ro == GameObjType.BRICK && rm == GameObjType.BRICK) {
 					this.direction = -1;
@@ -77,6 +84,12 @@ public class Ball extends GameObj {
 					world.gameOver(panel2.getPlayer());
 					return;
 				}
+
+				if(mo == GameObjType.MASTER){
+					world.win(panel2.getPlayer());
+					return;
+				}
+
 				if(mo == GameObjType.BRICK || mo == GameObjType.PANEL)
 					direction = -2;
 				try {
@@ -95,7 +108,16 @@ public class Ball extends GameObj {
 
 				if (mo == GameObjType.OUTOFBOUNDY) {
 					world.gameOver(panel2.getPlayer());
-				} else if (rm == GameObjType.OUTOFBOUNDX) {
+					return;
+				}
+
+				if(ro == GameObjType.MASTER || rm == GameObjType.MASTER){
+					world.win(panel2.getPlayer());
+					return;
+				}
+
+
+				if (rm == GameObjType.OUTOFBOUNDX) {
 					this.direction = 3;
 				} else if (ro == GameObjType.BRICK && rm == GameObjType.BRICK) {
 					this.direction = -1;
@@ -121,7 +143,6 @@ public class Ball extends GameObj {
 				x--;
 				y--;
 
-				//sorry, kann mit den Abkürzungen da oben nichts anfangen, änder ich vielleicht später.
 				GameObjType leftup = world.collisionCheck(x-1,y-1,panel1);
 				GameObjType left = world.collisionCheck(x-1,y,panel1);
 				GameObjType up = world.collisionCheck(x,y-1,panel1);
@@ -131,6 +152,12 @@ public class Ball extends GameObj {
 					world.gameOver(panel1.getPlayer());
 					return;
 				}
+
+				if(leftup == GameObjType.MASTER || up == GameObjType.MASTER){
+					world.win(panel1.getPlayer());
+					return;
+				}
+
 
 				//ball hits the edge of the panel, total reflection (left up -> right down)
 				if(leftup == GameObjType.PANEL && up == GameObjType.AIR)
@@ -169,7 +196,15 @@ public class Ball extends GameObj {
 
 				if(up2 == GameObjType.OUTOFBOUNDY){
 					world.gameOver(panel1.getPlayer());
+					return;
 				}
+
+				if(up2 == GameObjType.MASTER){
+					world.win(panel1.getPlayer());
+					return;
+				}
+
+
 				//change direction in any case
 				if(up2 == GameObjType.BRICK || up2 == GameObjType.PANEL)
 					direction = 2;
@@ -193,6 +228,12 @@ public class Ball extends GameObj {
 					world.gameOver(panel1.getPlayer());
 					return;
 				}
+
+				if(rightup == GameObjType.MASTER || up3 == GameObjType.MASTER){
+					world.win(panel1.getPlayer());
+					return;
+				}
+
 
 				//ball hits the edge of the panel, total reflection (right up -> left down)
 				if(rightup == GameObjType.PANEL && up3 == GameObjType.AIR)
