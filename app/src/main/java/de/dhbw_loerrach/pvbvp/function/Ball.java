@@ -2,6 +2,8 @@ package de.dhbw_loerrach.pvbvp.function;
 
 import android.util.Log;
 
+import static de.dhbw_loerrach.pvbvp.Main.PORTAL;
+
 /**
  * Created by weva on 04.04.2017.
  * Ball-Object extends GameObj
@@ -20,29 +22,29 @@ public class Ball extends GameObj {
 	 */
 	
 	public Ball(int player) {
-		this.type = GameObjType.BALL;
-		this.x = World.PLAYGROUND_CENTER_X;
-		this.player = player;
+		type = GameObjType.BALL;
+		x = World.PLAYGROUND_CENTER_X;
+		player = player;
 		if(player == PanelPlayer.PLAYER1.index) {
-			this.direction = 1; //down
-			this.y = 1;
+			direction = 2;
+			y = 1;
 		}
 		if(player == PanelPlayer.PLAYER2.index){
-			this.direction = -1; //up
-			this.y = World.PLAYGROUND_HEIGHT - 2;
+			direction = -1;
+			y = World.PLAYGROUND_HEIGHT - 2;
 		}
 	}
 	
 	public void move(World world, Panel panel1, Panel panel2) {
 		GameObjType lo, lm, lu, mo, mu, ro, rm, ru = GameObjType.AIR;
-		switch (this.direction) {
+		switch (direction) {
 			//right down
 			case 1:
-				this.x += 1;
-				this.y += 1;
-				ro = world.collisionCheck(this.x + 1, this.y + 1, panel2);
-				mo = world.collisionCheck(this.x, this.y + 1, panel2);
-				rm = world.collisionCheck(this.x + 1, this.y, panel2);
+				x += 1;
+				y += 1;
+				ro = world.collisionCheck(x + 1, y + 1, panel2);
+				mo = world.collisionCheck(x, y + 1, panel2);
+				rm = world.collisionCheck(x + 1, y, panel2);
 
 				if (mo == GameObjType.OUTOFBOUNDY) {
 					world.gameOver(panel2.getPlayer());
@@ -55,30 +57,32 @@ public class Ball extends GameObj {
 				}
 
 				if (rm == GameObjType.OUTOFBOUNDX) {
-					this.direction = 3;
+					direction = 3;
 				} else if (ro == GameObjType.BRICK && rm == GameObjType.BRICK) {
-					this.direction = -1;
+					direction = -1;
 				} else if (mo == GameObjType.BRICK) {
-					this.direction = -3;
+					direction = -3;
 				} else if (rm == GameObjType.BRICK) {
-					this.direction = 3;
+					direction = 3;
 				} else if (ro == GameObjType.BRICK) {
-					this.direction = -1;
+					direction = -1;
 				} else if (mo == GameObjType.PANEL || ro == GameObjType.PANEL) {
-					this.direction = -3;
+					onPanelHit(panel2,panel1);
+					//direction = -3;
 				}
+				//TODO: Case where the ball hits the edge and is reflect totally
 				try {
-					world.brickDestroy(this.x + 1, this.y + 1);
-					world.brickDestroy(this.x, this.y + 1);
-					world.brickDestroy(this.x + 1, this.y);
+					world.brickDestroy(x + 1, y + 1);
+					world.brickDestroy(x, y + 1);
+					world.brickDestroy(x + 1, y);
 				} catch (ArrayIndexOutOfBoundsException e) {
 					Log.i(TAG,"brick destroy");
 				}
 				break;
 			//down
 			case 2:
-				this.y += 1;
-				mo = world.collisionCheck(this.x, this.y + 1, panel2);
+				y += 1;
+				mo = world.collisionCheck(x, y + 1, panel2);
 
 				if (mo == GameObjType.OUTOFBOUNDY) {
 					world.gameOver(panel2.getPlayer());
@@ -90,21 +94,25 @@ public class Ball extends GameObj {
 					return;
 				}
 
-				if(mo == GameObjType.BRICK || mo == GameObjType.PANEL)
+				if(mo == GameObjType.BRICK)
 					direction = -2;
+
+				if(mo == GameObjType.PANEL)
+					onPanelHit(panel2,panel1);
+
 				try {
-					world.brickDestroy(this.x, this.y + 1);
+					world.brickDestroy(x, y + 1);
 				} catch (ArrayIndexOutOfBoundsException e) {
 					Log.i(TAG,"brick destroy");
 				}
 				break;
 			//left down
 			case 3:
-				this.x -= 1;
-				this.y += 1;
-				ro = world.collisionCheck(this.x - 1, this.y + 1, panel2);
-				mo = world.collisionCheck(this.x, this.y + 1, panel2);
-				rm = world.collisionCheck(this.x - 1, this.y, panel2);
+				x -= 1;
+				y += 1;
+				ro = world.collisionCheck(x - 1, y + 1, panel2);
+				mo = world.collisionCheck(x, y + 1, panel2);
+				rm = world.collisionCheck(x - 1, y, panel2);
 
 				if (mo == GameObjType.OUTOFBOUNDY) {
 					world.gameOver(panel2.getPlayer());
@@ -118,22 +126,24 @@ public class Ball extends GameObj {
 
 
 				if (rm == GameObjType.OUTOFBOUNDX) {
-					this.direction = 3;
+					direction = 3;
 				} else if (ro == GameObjType.BRICK && rm == GameObjType.BRICK) {
-					this.direction = -1;
+					direction = -1;
 				} else if (mo == GameObjType.BRICK) {
-					this.direction = -3;
+					direction = -3;
 				} else if (rm == GameObjType.BRICK) {
-					this.direction = 3;
+					direction = 3;
 				} else if (ro == GameObjType.BRICK) {
-					this.direction = -1;
+					direction = -1;
 				} else if (mo == GameObjType.PANEL || ro == GameObjType.PANEL) {
-					this.direction = -1;
+					onPanelHit(panel2,panel1);
+					//direction = -1;
 				}
+				//TODO: case where the ball hits the edge and is reflected totally.
 				try {
-					world.brickDestroy(this.x - 1, this.y + 1);
-					world.brickDestroy(this.x, this.y + 1);
-					world.brickDestroy(this.x - 1, this.y);
+					world.brickDestroy(x - 1, y + 1);
+					world.brickDestroy(x, y + 1);
+					world.brickDestroy(x - 1, y);
 				} catch (ArrayIndexOutOfBoundsException e) {
 					Log.i(TAG,"brick destroy");
 				}
@@ -160,11 +170,14 @@ public class Ball extends GameObj {
 
 
 				//ball hits the edge of the panel, total reflection (left up -> right down)
-				if(leftup == GameObjType.PANEL && up == GameObjType.AIR)
-					direction = 1;
+				if(leftup == GameObjType.PANEL && up == GameObjType.AIR) {
+					//direction = 1;
+					onPanelHit(panel1,panel2); //for now
+				}
 				//if the ball hits the panel, reflect it on x-axis ( left up -> left down)
-				else if(up == GameObjType.PANEL || leftup == GameObjType.PANEL)
-					direction = 3;
+				else if(up == GameObjType.PANEL || leftup == GameObjType.PANEL) {
+					onPanelHit(panel1,panel2); //direction = 3; for now
+				}
 				//if the ball hits just bricks, reflect it totally (left up -> right down) leftup doesn't matter in this case
 				else if(up == GameObjType.BRICK && left == GameObjType.BRICK)
 					direction = 1;
@@ -189,7 +202,7 @@ public class Ball extends GameObj {
 					Log.i(TAG,"brick destroy");
 				}
 				break;
-			//down
+			//up
 			case -2:
 				y--;
 				GameObjType up2 = world.collisionCheck(x,y-1,panel1);
@@ -206,8 +219,11 @@ public class Ball extends GameObj {
 
 
 				//change direction in any case
-				if(up2 == GameObjType.BRICK || up2 == GameObjType.PANEL)
+				if(up2 == GameObjType.BRICK)
 					direction = 2;
+
+				if(up2 == GameObjType.PANEL)
+					onPanelHit(panel1,panel2);
 
 				try{
 					world.brickDestroy(x,y-1);
@@ -237,10 +253,10 @@ public class Ball extends GameObj {
 
 				//ball hits the edge of the panel, total reflection (right up -> left down)
 				if(rightup == GameObjType.PANEL && up3 == GameObjType.AIR)
-					direction = 3;
+					onPanelHit(panel1,panel2); //direction = 3;
 				//ball hits the panel, reflection on x-axis (right up -> right down)
 				else if(up3 == GameObjType.PANEL)
-					direction = 1;
+					onPanelHit(panel1,panel2); //direction = 1;
 				//if ball hits just bricks, total reflection (right up -> left down)
 				else if(up3 == GameObjType.BRICK && right == GameObjType.BRICK)
 					direction = 3;
@@ -268,9 +284,18 @@ public class Ball extends GameObj {
 		}
 	}
 
+	public void onPanelHit(Panel p1, Panel p2){
+		if(PORTAL){
+			if(y == World.PLAYGROUND_HEIGHT-2)
+				y = 1;
+			else y = World.PLAYGROUND_HEIGHT-2;
 
-	public void setDirection(int direction) {
-		this.direction = direction;
+			int xdiff = x - p1.getX();
+
+			x = p2.getX()+xdiff;
+
+			return;
+		}
+		direction = -direction;
 	}
-
 }
