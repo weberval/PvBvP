@@ -11,6 +11,7 @@ import android.util.Log;
 
 public class World {
 
+	private static final String TAG = "WORLD";
 
 	public static final int PLAYGROUND_WIDTH = 27;
 	public static final int PLAYGROUND_HEIGHT = 16;
@@ -18,7 +19,7 @@ public class World {
 	public static final int PLAYGROUND_OFFSET_Y = 3;
 	static final int PLAYGROUND_CENTER_X = PLAYGROUND_WIDTH / 2 + 1;
 	static final int PLAYGROUND_CENTER_Y_FLOOR = (PLAYGROUND_HEIGHT - 1) / 2;
-	private static final String TAG = "WORLD";
+
 	private static final int PLAYGROUND_BRICK_SAFE_X = 5;
 	private static final int PLAYGROUND_BRICK_SAFE_Y = 3;
 	public static int brickCount = 100;
@@ -103,6 +104,11 @@ public class World {
 
 		playground[PLAYGROUND_CENTER_X][PLAYGROUND_CENTER_Y_FLOOR] = new Brick(GameObjType.MASTER, 'm');
 		playground[PLAYGROUND_CENTER_X][PLAYGROUND_CENTER_Y_FLOOR + 1] = new Brick(GameObjType.MASTER, 'm');
+
+		/* for testing
+		for(int i = 0; i < 10; i ++)
+			playground[i][7] = new Brick(GameObjType.MASTER,'m');
+		*/
 	}
 
 	public void brickDestroy(int x, int y) {

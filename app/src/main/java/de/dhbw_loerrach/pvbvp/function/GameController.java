@@ -15,9 +15,12 @@ public class GameController extends Thread {
 	/**
 	 * The pause between each mainLoop routine in milliseconds
 	 */
-	private static final int WAIT = 150;
+	private static final int WAIT = 50;
 
-	private static int BALL_DELAY = 3;
+	/**
+	 * Only every BALL_DELAY Ticks the ball will be moved.
+	 */
+	private static int BALL_DELAY = 12;
 
 
 	private Main main;
@@ -127,6 +130,9 @@ public class GameController extends Thread {
 	 * next level
 	 */
 	public void levelUp(){
+		if(BALL_DELAY <= 1)
+			Log.i(TAG,"Hardest Level reached!");
+		else BALL_DELAY--;
 		world.init(++level);
 	}
 }
