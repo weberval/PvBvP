@@ -23,6 +23,8 @@ import de.dhbw_loerrach.pvbvp.screens.Screen;
 public class Main extends Activity {
 	
 	private static final String TAG = "MAIN";
+
+	public static boolean PORTAL = true;
 	
 	private GameController gameController;
 	private GameView gameView;
