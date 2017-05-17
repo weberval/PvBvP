@@ -26,7 +26,7 @@ public class Ball extends GameObj {
 		x = World.PLAYGROUND_CENTER_X;
 		player = player;
 		if(player == PanelPlayer.PLAYER1.index) {
-			direction = 2;
+			direction = 3;
 			y = 1;
 		}
 		if(player == PanelPlayer.PLAYER2.index){
@@ -126,7 +126,7 @@ public class Ball extends GameObj {
 
 
 				if (rm == GameObjType.OUTOFBOUNDX) {
-					direction = 3;
+					direction = 1;
 				} else if (ro == GameObjType.BRICK && rm == GameObjType.BRICK) {
 					direction = -1;
 				} else if (mo == GameObjType.BRICK) {

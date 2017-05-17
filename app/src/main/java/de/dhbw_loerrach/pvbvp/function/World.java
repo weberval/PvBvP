@@ -149,7 +149,7 @@ public class World {
 	 */
 	public boolean hitPanel(Panel panel,int x, int y){
 		if(panel.getY() == y){
-			if(x > panel.getX() && x < panel.getX() + Panel.PANEL_WIDTH)
+			if(x >= panel.getX() && x <= panel.getX() + Panel.PANEL_WIDTH)
 				return true;
 		}
 		return false;
