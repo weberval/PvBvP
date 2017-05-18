@@ -6,8 +6,13 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 import android.view.View;
+
+import java.util.LinkedList;
+
+import de.dhbw_loerrach.pvbvp.R;
 import de.dhbw_loerrach.pvbvp.function.Ball;
 import de.dhbw_loerrach.pvbvp.function.GameObj;
 import de.dhbw_loerrach.pvbvp.function.Panel;
@@ -38,6 +43,16 @@ public class GameView extends View {
 	 * The game world to be drawn
 	 */
 	private GameObj[][] world;
+
+	/**
+	 * The trace of the ball to be drawn
+	 */
+	private LinkedList<int[]> ballTrace;
+
+	/**
+	 * Number of after images of the ball
+	 */
+	private int numberofTraces = 5;
 	
 	/**
 	 * ball to be drawn
@@ -50,16 +65,17 @@ public class GameView extends View {
 	private Panel[] panels;
 	
 	private Paint paint;
-	//private Paint paintDrawFrame;
 	
-	
+
+	private Bitmap[] ballTraceImages;
+
 	private ImageLoader imageLoader;
 	private Bitmap ballBM;
 	private Bitmap brickLeft;
 	private Bitmap brickRight;
 	private Bitmap master;
 	private Bitmap panel;
-	
+
 	public GameView(Context context, Point windowDim) {
 		super(context);
 		
@@ -76,6 +92,11 @@ public class GameView extends View {
 		master = imageLoader.getImage(GameObjImage.MASTER, (int) blockWidth, (int) blockHeight);
 		panel = imageLoader.getImage(GameObjImage.PANEL, (int) blockWidth * Panel.PANEL_WIDTH, (int) blockHeight);
 
+		ballTraceImages = imageLoader.getBallTrace((int)blockWidth,(int)blockHeight);
+
+
+		ballTrace = new LinkedList<>();
+
 		paint = new Paint();
 		
 		Log.i(TAG, "created");
@@ -85,18 +106,24 @@ public class GameView extends View {
 	 * The gameview will be updated and redrawn.
 	 */
 	public void update(GameObj[][] world, Ball ball, Panel[] panels) {
-		
 		this.world = world;
 		this.panels = panels;
 		this.ball = ball;
 		postInvalidate();
 	}
-	
+
+
+	public void ballMovementUpdate(Ball ball){
+		ballTrace.add(new int[]{ball.getX(),ball.getY()});
+		if(ballTrace.size() > numberofTraces) {
+			ballTrace.pop();
+		}
+	}
+
 	@Override
 	public void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 
-		paint.setColor(Color.BLACK);
 		canvas.drawRect(0,0,SCREEN_WIDTH,SCREEN_HEIGHT,paint);
 
 		//draw playground
@@ -119,15 +146,22 @@ public class GameView extends View {
                 }
             }
         }
-		//draw ball
+
 		if(ball != null)
 			canvas.drawBitmap(ballBM,ball.getX() * blockWidth, ball.getY() * blockHeight, paint);
 
-		//draw panels
+
 		if(panels != null) {
 			for (int i = 0; i < panels.length; i++) {
 				canvas.drawBitmap(panel, panels[i].getX() * blockWidth, panels[i].getY() * blockHeight, paint);
 			}
 		}
+
+		for(int i = 0; i < ballTrace.size(); i ++) {
+			int[] e = ballTrace.get(i);
+			canvas.drawBitmap(ballTraceImages[i],e[0] * blockWidth,e[1] * blockHeight,paint);
+		}
+
+
 	}
 }

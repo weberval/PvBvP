@@ -91,6 +91,7 @@ public class GameController extends Thread {
 	public void action() {
 		if(ball_counter == 0){
 			world.ball.move(world,world.panels[0],world.panels[1]);
+			view.ballMovementUpdate(world.ball);
 			ball_counter = BALL_DELAY;
 		}else ball_counter--;
 	}

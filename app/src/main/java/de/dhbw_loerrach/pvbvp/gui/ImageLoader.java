@@ -3,6 +3,7 @@ package de.dhbw_loerrach.pvbvp.gui;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+
 import de.dhbw_loerrach.pvbvp.R;
 
 /**
@@ -40,11 +41,26 @@ public class ImageLoader {
 		this.width = this.height = 0;
 		return null;
 	}
-	
+
+	public Bitmap[] getBallTrace(int width, int height){
+		this.width = width;
+		this.height = height;
+
+		Bitmap[] bm = new Bitmap[5];
+		bm[0] = scaleImage(R.drawable.ball_t5);
+		bm[1] = scaleImage(R.drawable.ball_t4);
+		bm[2] = scaleImage(R.drawable.ball_t3);
+		bm[3] = scaleImage(R.drawable.ball_t2);
+		bm[4] = scaleImage(R.drawable.ball_t1);
+
+		return bm;
+
+	}
+
+
 	private Bitmap scaleImage(int id) {
 		Bitmap bm = BitmapFactory.decodeResource(context.getResources(), id);
 		bm = Bitmap.createScaledBitmap(bm, width, height, false);
 		return bm;
 	}
-	
 }
