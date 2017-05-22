@@ -46,12 +46,10 @@ public class ImageLoader {
 		this.width = width;
 		this.height = height;
 
-		Bitmap[] bm = new Bitmap[5];
-		bm[0] = scaleImage(R.drawable.ball_t5);
-		bm[1] = scaleImage(R.drawable.ball_t4);
-		bm[2] = scaleImage(R.drawable.ball_t3);
-		bm[3] = scaleImage(R.drawable.ball_t2);
-		bm[4] = scaleImage(R.drawable.ball_t1);
+		Bitmap[] bm = new Bitmap[GameView.numberOfTraces];
+		bm[0] = scaleImage(R.drawable.ball_t3);
+		bm[1] = scaleImage(R.drawable.ball_t2);
+		bm[2] = scaleImage(R.drawable.ball_t1);
 
 		return bm;
 

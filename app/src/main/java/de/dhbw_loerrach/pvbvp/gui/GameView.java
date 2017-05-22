@@ -52,7 +52,7 @@ public class GameView extends View {
 	/**
 	 * Number of after images of the ball
 	 */
-	private int numberofTraces = 5;
+	public static int numberOfTraces = 3;
 	
 	/**
 	 * ball to be drawn
@@ -115,7 +115,7 @@ public class GameView extends View {
 
 	public void ballMovementUpdate(Ball ball){
 		ballTrace.add(new int[]{ball.getX(),ball.getY()});
-		if(ballTrace.size() > numberofTraces) {
+		if(ballTrace.size() > numberOfTraces) {
 			ballTrace.pop();
 		}
 	}
