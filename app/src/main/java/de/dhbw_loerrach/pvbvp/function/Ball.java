@@ -70,7 +70,6 @@ public class Ball extends GameObj {
 					onPanelHit(panel2,panel1);
 					//direction = -3;
 				}
-				//TODO: Case where the ball hits the edge and is reflect totally
 				try {
 					world.brickDestroy(x + 1, y + 1);
 					world.brickDestroy(x, y + 1);
@@ -139,7 +138,6 @@ public class Ball extends GameObj {
 					onPanelHit(panel2,panel1);
 					//direction = -1;
 				}
-				//TODO: case where the ball hits the edge and is reflected totally.
 				try {
 					world.brickDestroy(x - 1, y + 1);
 					world.brickDestroy(x, y + 1);

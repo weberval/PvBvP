@@ -73,13 +73,16 @@ public class Main extends Activity {
 				Log.i(TAG,"Event "+MotionEvent.actionToString(me.getAction()) + " as int " + me.getAction());
 				if (me.getAction() == MotionEvent.ACTION_UP || me.getAction() == 262
 						|| me.getAction() == 261 || me.getAction() == MotionEvent.ACTION_DOWN) {
-					touchHandler.action(me.getX(index), me.getX(index),me);
+					//touchHandler.action(me.getX(index), me.getX(index),me);
+					touchHandler.action(MotionEventCompat.getX(me,index),MotionEventCompat.getY(me,index),me);
+					//touchHandler.action(me.getX(),me.getY(),me);
+					Log.i(TAG,""+MotionEventCompat.getX(me,index) + " is ? " + me.getX(index) + " is ? " + me.getX());
 				}
 				return true;
 			}
 		};
 		gameView.setOnTouchListener(touchListener);
-		
+
 		
 		gameController = new GameController(this, gameView);
 		touchHandler = new TouchHandler(gameController);

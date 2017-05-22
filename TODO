@@ -1,0 +1,10 @@
+-Bugfix: Ball slips through panel, when panel is moved "last moment".
+-Bugfix: Remove unused area on right side.  
+-Bugfix: Center "Close" Button
+
+-Todo: Counter for points
+
+-Additional: Animations, nice look
+-Additional: Expanded leveldesign (more than just "getting faster")
+-Additional: Networking
+-Additional: Sounds / Music
