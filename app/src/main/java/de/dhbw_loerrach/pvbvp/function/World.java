@@ -110,7 +110,7 @@ public class World {
 			playground[i][7] = new Brick(GameObjType.MASTER,'m');
 		*/
 	}
-
+q
 	public void brickDestroy(int x, int y) {
 		switch (this.playground[x][y].getSide()) {
 			case 'l':
@@ -184,5 +184,58 @@ public class World {
 	 */
 	public boolean hitMasterBrick(){
 		return (playground[ball.x][ball.y].type == GameObjType.MASTER ? true : false);
+	}
+
+	/**
+	 * returns the width of the array, 3 chars
+	 * @return
+	 */
+	public static String getWidthfixedlenght(){
+		String output = PLAYGROUND_WIDTH + "";
+		for (int i = 0; i < 3 - output.length();i++){
+			output += "_";
+		}
+		return output;
+	}
+
+	/**
+	 * returns the height of the array, 3 chars
+	 * @return
+	 */
+	public static String getHeightfixedlenght(){
+		String output = PLAYGROUND_HEIGHT + "";
+		for (int i = 0; i < 3 - output.length();i++){
+			output += "_";
+		}
+		return output;
+	}
+
+	/**
+	 * Every GameObj will be converted to a Sting, consisting of the width, the height, the Type (A,B,M), the Coordinates (three digit form each), and the side
+	 * @return
+	 */
+	public String toString() {
+		String string = getWidthfixedlenght()+getHeightfixedlenght();
+		for (int i = 0; i < PLAYGROUND_WIDTH; ++i) {
+			for (int j = 0; j < PLAYGROUND_HEIGHT; ++j) {
+				string += playground[i][j].toString();
+			}
+		}
+		return string;
+	}
+
+	public static void decode(String string) {
+		int x = string.charAt(0)-30;
+		int y = string.charAt(1)-30;
+		char[] array = string.substring(2).toCharArray();
+		playground = new GameObj[x][y];
+		for (int i = 0; i < y; i++) {
+			for (int j = 0; j < x; j++) {
+				switch (array[(i+1)*j]){
+					case 'A':
+						// TODO
+				}
+			}
+		}
 	}
 }

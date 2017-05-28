@@ -22,4 +22,8 @@ public class Brick extends GameObj {
 	public char getSide() {
 		return side;
 	}
+
+	public String toString() {
+		return ""+this.getTypefixedString()+this.getXfixedString()+this.getYfixedString()+side;
+	}
 }

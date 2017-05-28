@@ -9,4 +9,8 @@ public class Air extends GameObj {
 	public Air() {
 		this.type = GameObjType.AIR;
 	}
+
+	public String toString() {
+		return ""+this.getTypefixedString()+this.getXfixedString()+this.getYfixedString()+"_";
+	}
 }
