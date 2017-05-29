@@ -110,7 +110,7 @@ public class World {
 			playground[i][7] = new Brick(GameObjType.MASTER,'m');
 		*/
 	}
-q
+
 	public void brickDestroy(int x, int y) {
 		switch (this.playground[x][y].getSide()) {
 			case 'l':

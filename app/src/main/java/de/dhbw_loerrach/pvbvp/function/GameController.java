@@ -35,10 +35,16 @@ public class GameController extends Thread {
 	 */
 	private int level;
 
+	/**
+	 * counter of points
+	 */
+	public static int[] points;
+
 	public GameController(Main main, GameView view) {
 		this.main = main;
 		this.view = view;
 
+		points = new int[]{0,0};
 		level = 1;
 
 		world = new  World(this);
@@ -123,6 +129,7 @@ public class GameController extends Thread {
 	}
 
 	public void win(PanelPlayer ply){
+		points[ply.index]++;
         Log.i(TAG,"Player " + ply + " wins!");
         levelUp();
     }

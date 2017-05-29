@@ -14,6 +14,7 @@ import java.util.LinkedList;
 
 import de.dhbw_loerrach.pvbvp.R;
 import de.dhbw_loerrach.pvbvp.function.Ball;
+import de.dhbw_loerrach.pvbvp.function.GameController;
 import de.dhbw_loerrach.pvbvp.function.GameObj;
 import de.dhbw_loerrach.pvbvp.function.Panel;
 import de.dhbw_loerrach.pvbvp.function.World;
@@ -65,8 +66,19 @@ public class GameView extends View {
 	private Panel[] panels;
 	
 	private Paint paint;
-	
+	private Paint paint_points;
 
+	/**
+	 * positions for the point counter
+	 */
+	private int x_pos_ply1;
+	private int y_pos_ply1;
+	private int x_pos_ply2;
+	private int y_pos_ply2;
+
+	/**
+	 * images for the traces (3)
+	 */
 	private Bitmap[] ballTraceImages;
 
 	private ImageLoader imageLoader;
@@ -81,7 +93,12 @@ public class GameView extends View {
 		
 		SCREEN_WIDTH = windowDim.x;
 		SCREEN_HEIGHT = windowDim.y;
-		
+
+		x_pos_ply1 = SCREEN_WIDTH-10;
+		y_pos_ply1 = SCREEN_HEIGHT-10;
+		x_pos_ply2 = 20;
+		y_pos_ply2 = 30;
+
 		blockWidth = (float) (SCREEN_WIDTH / World.PLAYGROUND_WIDTH);
 		blockHeight = (float) (SCREEN_HEIGHT / World.PLAYGROUND_HEIGHT);
 		
@@ -98,7 +115,11 @@ public class GameView extends View {
 		ballTrace = new LinkedList<>();
 
 		paint = new Paint();
-		
+
+		paint_points = new Paint();
+		paint_points.setColor(Color.WHITE);
+		paint_points.setTextSize(35);
+
 		Log.i(TAG, "created");
 	}
 	
@@ -162,6 +183,10 @@ public class GameView extends View {
 			canvas.drawBitmap(ballTraceImages[i],e[0] * blockWidth,e[1] * blockHeight,paint);
 		}
 
-
+		canvas.save();
+		canvas.drawText(""+ GameController.points[0],x_pos_ply1,y_pos_ply1,paint_points);
+		canvas.rotate(180,x_pos_ply2,y_pos_ply2);
+		canvas.drawText(""+ GameController.points[1],x_pos_ply2,y_pos_ply2,paint_points);
+		canvas.restore();
 	}
 }

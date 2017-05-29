@@ -15,10 +15,10 @@ public class Networking {
     public static final String TAG_SERVER = "Server";
     public static final String TAG_CLIENT = "Client";
 
-    public static boolean SERVER = false;       // TODO: lowercase?
-    public static int PORT = 4567;              // TODO: lowercase?
+    public static boolean SERVER = false;
+    public static int PORT = 4567;
 
-    public static boolean CLIENT_CONNECTED = false;  // TODO: lowercase?
+    public static boolean CLIENT_CONNECTED = false;
 
     private static DatagramSocket socket;
     private static DatagramSocket socketReceive;
