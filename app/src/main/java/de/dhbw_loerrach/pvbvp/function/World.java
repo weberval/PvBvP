@@ -2,6 +2,10 @@ package de.dhbw_loerrach.pvbvp.function;
 
 import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import java.util.Arrays;
+
 /**
  * Created by weva on 04.04.2017.
  * const PLAYGROUND_WIDTH has to be odd

@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import de.dhbw_loerrach.pvbvp.Main;
+import de.dhbw_loerrach.pvbvp.Network.Networking;
 import de.dhbw_loerrach.pvbvp.R;
 
 /**
@@ -48,9 +49,12 @@ public class Screen extends Activity {
         title = (TextView) findViewById(R.id.screen_title);
         play_button = (Button) findViewById(R.id.screen_button);
 
+        RelativeLayout rl = ((RelativeLayout)findViewById(R.id.screen_layout));
+
         if(TYPE == 's'){
             title.setText(GAME_NAME);
             play_button.setText("Start");
+
         }
         if(TYPE == 'e'){
             title.setText("Game Over!");
@@ -64,7 +68,6 @@ public class Screen extends Activity {
                     System.exit(0);
                 }
             });
-            RelativeLayout rl = ((RelativeLayout)findViewById(R.id.screen_layout));
             //RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams)rl.getLayoutParams();
             //rlp.addRule(RelativeLayout.CENTER_IN_PARENT,closeApp.getId());
             //rlp.addRule(RelativeLayout.BELOW,((Button)findViewById(R.id.screen_button)).getId());
@@ -84,6 +87,17 @@ public class Screen extends Activity {
     @Override
     protected void onDestroy(){
         super.onDestroy();
+    }
+
+    public void server(View v){
+        Log.i(TAG,"server click");
+        Networking.startServerReceiver();
+    }
+
+    public void client(View v){
+        Log.i(TAG,"client click");
+        Networking.startClientReceiver();
+        Networking.startClient();
     }
 
 }

@@ -20,4 +20,22 @@
         android:layout_centerInParent="true"
         android:onClick="startGame"/>
 
+    <Button
+        android:id="@+id/serverb"
+        android:text="server"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/screen_button"
+        android:onClick="server"
+        />
+
+    <Button
+        android:id="@+id/clientb"
+        android:text="client"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/serverb"
+        android:onClick="client"
+        />
+
 </RelativeLayout>
