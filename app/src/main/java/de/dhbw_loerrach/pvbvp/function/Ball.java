@@ -24,7 +24,6 @@ public class Ball extends GameObj {
 	public Ball(int player) {
 		type = GameObjType.BALL;
 		x = World.PLAYGROUND_CENTER_X;
-		player = player;
 		if(player == PanelPlayer.PLAYER1.index) {
 			direction = 3;
 			y = 1;

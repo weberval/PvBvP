@@ -5,7 +5,6 @@ import android.util.Log;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.InetSocketAddress;
 
 /**
  * Created by renat on 23.05.17.
@@ -24,7 +23,7 @@ public class Networking {
     private static DatagramSocket socket;
     private static DatagramSocket socketReceive;
 
-    private static InetAddress partnerAddress;
+    public static InetAddress partnerAddress = null;
 
     /**
      * starting the server.
@@ -38,17 +37,10 @@ public class Networking {
                 SERVER = true;
                 DatagramPacket packet = new DatagramPacket(new byte[1024],1024);
                 try {
+                    Log.i(TAG_SERVER,"Server listening...");
                     socketReceive = new DatagramSocket(PORT);
                     while(true){
-                        //TEST
-                        Log.i(TAG_SERVER,"Server listening");
-                        //TEST
                         socketReceive.receive(packet);
-
-                        //TEST
-                        Log.i(TAG_SERVER, packet.toString());
-                        //TEST
-
                         Protocol.clientMsg(packet);
                     }
                 }catch (Exception e){
@@ -68,9 +60,8 @@ public class Networking {
         try {
             socket.send(packet);
         }catch(Exception e){
-            Log.i((SERVER) ? TAG_SERVER : TAG_CLIENT,e.getMessage());
+            Log.i((SERVER) ? TAG_SERVER : TAG_CLIENT,"Error in send():" + e.getMessage());
         }
-        Protocol.msg_ID++;
     }
 
     /**
@@ -83,23 +74,23 @@ public class Networking {
             @Override
             public void run() {
                 try {
-                    socket = new DatagramSocket(null);
+                    socket = new DatagramSocket();
                     socket.setReuseAddress(true);
                     socket.setBroadcast(true);
-                    socket.bind(new InetSocketAddress(PORT));
 
-                    Log.i(TAG_CLIENT+": add",socket.getInetAddress().getAddress().toString());
 
                     InetAddress broadcast = InetAddress.getByName("255.255.255.255");
-                    byte[] data = "CLIENT;TEST".getBytes();
+                    byte[] data = Protocol.createMsg(Protocol.CLT_MSG_HELLO,null).getBytes();
                     DatagramPacket packet = new DatagramPacket(data,data.length,broadcast,PORT);
 
+                    Log.i(TAG_CLIENT,"connecting...");
                     while(!CLIENT_CONNECTED) {
                         socket.send(packet);
                         Thread.sleep(100);
                     }
+                    Log.i(TAG_CLIENT,"connected!");
                 }catch (Exception e){
-                    Log.i(TAG_CLIENT + " : startClient",e.getMessage());
+                    Log.i(TAG_CLIENT,"Error in startClient() : " + e.getMessage());
                 }
             }
         }).start();
@@ -115,14 +106,13 @@ public class Networking {
                 try {
                     socketReceive = new DatagramSocket(null);
                     socketReceive.setReuseAddress(true);
-                    socketReceive.bind(new InetSocketAddress(PORT));
                     DatagramPacket packet = new DatagramPacket(new byte[1024],1024);
                     while(true){
                         socketReceive.receive(packet);
                         Protocol.serverMsg(packet);
                     }
                 }catch(Exception e){
-                    Log.i(TAG_CLIENT + " : startCReceiver",e.getMessage());
+                    Log.i(TAG_CLIENT,"Error in startClientReceiver() : " + e.getMessage());
                 }
             }
         }).start();
