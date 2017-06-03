@@ -1,8 +1,8 @@
 -Bugfix: Ball slips through panel, when panel is moved "last moment".
--Bugfix: Remove unused area on right side.  
 -Bugfix: Center "Close" Button
+-Bugfix: Non capitalized text
 
--Todo: Counter for points
+-TouchHandler getX from motionevent ??
 
 -Additional: Animations, nice look
 -Additional: Expanded leveldesign (more than just "getting faster")

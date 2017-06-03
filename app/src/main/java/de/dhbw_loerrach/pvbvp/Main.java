@@ -25,11 +25,14 @@ public class Main extends Activity {
 	private static final String TAG = "MAIN";
 
 	public static boolean PORTAL = true;
-	
+	public static String MODE;
+
+
 	private GameController gameController;
 	private GameView gameView;
 	private View.OnTouchListener touchListener;
 	private TouchHandler touchHandler;
+
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -67,16 +70,18 @@ public class Main extends Activity {
 			public boolean onTouch(View v, MotionEvent me) {
 
 				int index = MotionEventCompat.getActionIndex(me);
-				Log.i(TAG,"index of event " + index);
+				//Log.i(TAG,"index of event " + index);
 
 
-				Log.i(TAG,"Event "+MotionEvent.actionToString(me.getAction()) + " as int " + me.getAction());
+				//Log.i(TAG,"Event "+MotionEvent.actionToString(me.getAction()) + " as int " + me.getAction());
 				if (me.getAction() == MotionEvent.ACTION_UP || me.getAction() == 262
 						|| me.getAction() == 261 || me.getAction() == MotionEvent.ACTION_DOWN) {
 					//touchHandler.action(me.getX(index), me.getX(index),me);
-					touchHandler.action(MotionEventCompat.getX(me,index),MotionEventCompat.getY(me,index),me);
+					if(MODE.equals(Screen.LOCAL))
+						touchHandler.action(MotionEventCompat.getX(me,index),MotionEventCompat.getY(me,index),me);
+					else touchHandler.action_remote(MotionEventCompat.getX(me,index),me);
 					//touchHandler.action(me.getX(),me.getY(),me);
-					Log.i(TAG,""+MotionEventCompat.getX(me,index) + " is ? " + me.getX(index) + " is ? " + me.getX());
+					//Log.i(TAG,""+MotionEventCompat.getX(me,index) + " is ? " + me.getX(index) + " is ? " + me.getX());
 				}
 				return true;
 			}

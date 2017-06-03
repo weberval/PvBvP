@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import de.dhbw_loerrach.pvbvp.Main;
 import de.dhbw_loerrach.pvbvp.Network.Networking;
+import de.dhbw_loerrach.pvbvp.Network.Protocol;
 import de.dhbw_loerrach.pvbvp.R;
 
 /**
@@ -39,7 +40,16 @@ public class Screen extends Activity {
      */
     private Button play_button;
 
+    /**
+     * for server / client / local
+     */
+    private Button mode_button;
+
     private static final String GAME_NAME = "The Game Ultimate Deluxe 3000";
+
+    public static final String SERVER = "Server";
+    public static final String CLIENT = "Client";
+    public static final String LOCAL = "Local";
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -47,7 +57,11 @@ public class Screen extends Activity {
         setContentView(R.layout.screen);
 
         title = (TextView) findViewById(R.id.screen_title);
+        mode_button = (Button) findViewById(R.id.gamemode);
+        mode_button.setText(LOCAL);
         play_button = (Button) findViewById(R.id.screen_button);
+
+        Protocol.con = this.getApplicationContext();
 
         RelativeLayout rl = ((RelativeLayout)findViewById(R.id.screen_layout));
 
@@ -79,6 +93,28 @@ public class Screen extends Activity {
     }
 
     public void startGame(View view){
+
+        String mode = mode_button.getText().toString();
+        Main.MODE = mode;
+        switch (mode){
+            case SERVER:
+                //display server waiting... message
+                play_button.setEnabled(false); //will be enabled when connected
+                Networking.startServerReceiver();
+                break;
+            case CLIENT:
+                play_button.setEnabled(false); //will not be enabled if you're the client. game starts automatically when the INIT from server is received.
+                //display client connecting message
+                Networking.startClientReceiver();
+                Networking.startClient();
+                break;
+        }
+        /*
+        if(Main.MODE.equals(SERVER)){
+            //if this is the server, this button will cause the START message to be send to the client
+
+        }
+        */
         Intent intent = new Intent(this,Main.class);
         startActivity(intent);
         finish();
@@ -89,15 +125,19 @@ public class Screen extends Activity {
         super.onDestroy();
     }
 
-    public void server(View v){
-        Log.i(TAG,"server click");
-        Networking.startServerReceiver();
-    }
-
-    public void client(View v){
-        Log.i(TAG,"client click");
-        Networking.startClientReceiver();
-        Networking.startClient();
+    /**
+     * decides if the game is local, or remote (client / server)
+     * @param v
+     */
+    public void gameMode(View v){
+        String mode = mode_button.getText().toString();
+        if(mode.equals(LOCAL))
+            mode = CLIENT;
+        else if(mode.equals(CLIENT))
+            mode = SERVER;
+        else if(mode.equals(SERVER))
+            mode = LOCAL;
+        mode_button.setText(mode);
     }
 
 }

@@ -1,8 +1,16 @@
 package de.dhbw_loerrach.pvbvp.Network;
 
+import android.content.Context;
 import android.util.Log;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
+
+import de.dhbw_loerrach.pvbvp.function.GameObj;
 
 
 /**
@@ -13,6 +21,7 @@ import java.net.DatagramPacket;
  *
  *  ":" Being the separator
  *  "::" Being the secondary separator
+ *  "\n" Being the terminate signal, the message ends here
  *
  *  SIDE is either "SERVER" or "CLIENT"
  *
@@ -92,112 +101,115 @@ import java.net.DatagramPacket;
  */
 public class Protocol {
 
-   public static final String TAG = "PROTOCOL";
+    public static final String TAG = "PROTOCOL";
+    public static Context con;
 
-   private static final String SEPARATOR = ":";
-   private static final String DATA_SEPARATOR = "::";
+    private static final String SEPARATOR = ":";
+    private static final String DATA_SEPARATOR = "::";
+    private static final String END = "\n";
 
-   public static final int SRV_MSG_INIT = 0;
-   public static final int SRV_MSG_START = 1;
-   public static final int SRV_MSG_UPDATE = 2;
-   public static final int SRV_MSG_WIN = 3;
-   public static final int SRV_MSG_GAMEOVER = 4;
-   public static final int SRV_MSG_HBOK = 5;
+    public static final int SRV_MSG_INIT = 0;
+    public static final int SRV_MSG_START = 1;
+    public static final int SRV_MSG_UPDATE = 2;
+    public static final int SRV_MSG_WIN = 3;
+    public static final int SRV_MSG_GAMEOVER = 4;
+    public static final int SRV_MSG_HBOK = 5;
 
-   public static final int CLT_MSG_HELLO = 0;
-   public static final int CLT_MSG_DOWN = 1;
-   public static final int CLT_MSG_UP = 2;
-   public static final int CLT_MSG_HB = 3;
+    public static final int CLT_MSG_HELLO = 0;
+    public static final int CLT_MSG_DOWN = 1;
+    public static final int CLT_MSG_UP = 2;
+    public static final int CLT_MSG_HB = 3;
 
-   public static final int SERVER = 0;
-   public static final int CLIENT = 1;
+    public static final int SERVER = 0;
+    public static final int CLIENT = 1;
 
-   private static int type;
-   private static DatagramPacket packet;
+    private static int type;
+    private static DatagramPacket packet;
 
-   /**
-    * server side
-    * every message received from the client
-    * @param input
+    /**
+     * server side
+     * every message received from the client
+     * @param input
+     */
+    public static void clientMsg(DatagramPacket input) {
+        packet = input;
+        String[] msg;
+        try {
+            msg = new String(input.getData(),"utf-8").split(SEPARATOR+"|"+END);
+            type = Integer.parseInt(msg[1]);
+        }catch (Exception e){
+            Log.i(TAG,"CORRUPT PACKET from CLIENT: " + e.getMessage());
+            return;
+        }
+        switch (type) {
+            case CLT_MSG_HELLO:
+                cltHello();
+                break;
+            case CLT_MSG_HB:
+                cltHb();
+                break;
+            case CLT_MSG_UP:
+                cltUp();
+                break;
+            case CLT_MSG_DOWN:
+                if (msg.length == 3)
+                    cltDown(msg[2]);
+                else
+                    Log.i(TAG, "CORRUPT PACKET: CLT_MSG_DOWN");
+                break;
+         }
+    }
+
+
+    /**
+     * client side
+     * every message received from the server
+     * @param input
     */
-   public static void clientMsg(DatagramPacket input) {
-      packet = input;
-      String[] msg;
-      try {
-         msg = new String(input.getData(),"utf-8").split(SEPARATOR);
-         type = Integer.parseInt(msg[1]);
-      }catch (Exception e){
-         Log.i(TAG,"CORRUPT PACKET from CLIENT: " + e.getMessage());
-         return;
-      }
-      switch (type) {
-         case CLT_MSG_HELLO:
-            cltHello();
-            break;
-         case CLT_MSG_HB:
-            cltHb();
-            break;
-         case CLT_MSG_UP:
-            cltUp();
-            break;
-         case CLT_MSG_DOWN:
-            if (msg.length == 3)
-               cltDown(msg[2]);
-            else
-               Log.i(TAG, "CORRUPT PACKET: CLT_MSG_DOWN");
-            break;
-      }
-   }
-
-
-   /**
-    * client side
-    * every message received from the server
-    * @param input
-    */
-   public static void serverMsg(DatagramPacket input){
-      packet = input;
-      String[] msg;
-      try {
-         msg = new String(input.getData(),"utf-8").split(SEPARATOR);
-         type = Integer.parseInt(msg[1]);
-      }catch (Exception e){
-         Log.i(TAG,"CORRUPT PACKET from SERVER" + e.getMessage());
-         return;
-      }
-      switch (type){
-         case SRV_MSG_UPDATE:
-            if(msg.length == 3)
-               srvUpdate(msg[2]);
-            else
-               Log.i(TAG,"CORRUPT PACKET: SRV_MSG_UPDATE");
-            break;
-         case SRV_MSG_HBOK:
-            srvHbOK();
-            break;
-         case SRV_MSG_INIT:
-            if(msg.length == 3)
-               srvInit(msg[2]);
-            else
-               Log.i(TAG,"CORRUPT PACKET: SRV_MSG_INIT");
-            break;
-         case SRV_MSG_START:
-            srvStart();
-            break;
-         case SRV_MSG_WIN:
-            if(msg.length == 3)
-               srvWin(msg[2]);
-            else
-               Log.i(TAG,"CORRUPT PACKET: SRV_MSG_WIN");
-            break;
-         case SRV_MSG_GAMEOVER:
-            if(msg.length == 3)
-               srvGameover(msg[2]);
-            else
-               Log.i(TAG,"CORRUPT PACKET: SRV_MSG_GAMEOVER");
-            break;
-      }
-   }
+    public static void serverMsg(DatagramPacket input){
+        packet = input;
+        Log.i(TAG, "received message from server!");
+        String[] msg;
+        try {
+            msg = new String(input.getData(),"utf-8").split(SEPARATOR+"|"+END);
+            type = Integer.parseInt(msg[1]);
+        }catch (Exception e){
+            Log.i(TAG,"CORRUPT PACKET from SERVER" + e.getMessage());
+            return;
+        }
+        switch (type){
+            case SRV_MSG_UPDATE:
+                if(msg.length == 3)
+                    srvUpdate(msg[2]);
+                else
+                    Log.i(TAG,"CORRUPT PACKET: SRV_MSG_UPDATE");
+                break;
+            case SRV_MSG_HBOK:
+                srvHbOK();
+                break;
+            case SRV_MSG_INIT:
+                if(msg.length == 3)
+                    srvInit(msg[2]);
+                else
+                    Log.i(TAG,"CORRUPT PACKET: SRV_MSG_INIT");
+                break;
+            case SRV_MSG_START:
+                srvStart();
+                break;
+            case SRV_MSG_WIN:
+                if(msg.length == 3)
+                    srvWin(msg[2]);
+                else
+                    Log.i(TAG,"CORRUPT PACKET: SRV_MSG_WIN");
+                break;
+            case SRV_MSG_GAMEOVER:
+                if(msg.length == 3)
+                    srvGameover(msg[2]);
+                else
+                    Log.i(TAG,"CORRUPT PACKET: SRV_MSG_GAMEOVER");
+                break;
+        }
+    }
 
 
    /**
@@ -209,24 +221,42 @@ public class Protocol {
     * if it's not for the fist time, ignore it. we only accept one client (the one we're playing with)
     * send an INIT back
     */
-   private static void cltHello(){
-      if(Networking.partnerAddress == null) {
-         Networking.partnerAddress = packet.getAddress();
-         Networking.send(createMsg(SRV_MSG_INIT,new String[]{"TESTDATA"}));
-      }
-   }
+    private static void cltHello(){
+        Log.i(TAG,"SERVER : Hello received from " + packet.getAddress().getHostAddress());
+        if(Networking.partnerAddress == null) {
+            Networking.partnerAddress = packet.getAddress();
 
-   private static void cltHb(){
+            try {
+                //writing serialized file
+                File file = new File(con.getFilesDir(), "plyg.ser");
+                ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));
+                out.flush();
+                out.close();
 
-   }
 
-   private static void cltUp(){
+                ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
+                byte[] data = new byte[1024]; //dummy value
+                in.readFully(data);
+                in.close();
 
-   }
+                Networking.send(createMsg(SRV_MSG_INIT, new String[]{data.toString()}));
+            }catch (Exception e){
+                Log.i(TAG,"Error processing a CLT_MSG_HELLO " + e.getMessage()  +  " " + e.getClass());
+            }
+        }
+    }
 
-   private static void cltDown(String para){
+    private static void cltHb(){
 
-   }
+    }
+
+    private static void cltUp(){
+
+    }
+
+    private static void cltDown(String para){
+
+    }
 
 
    /**
@@ -234,51 +264,53 @@ public class Protocol {
     */
 
 
-   private static void srvUpdate(String para){
+    private static void srvUpdate(String para){
 
-   }
+    }
 
-   private static void srvHbOK(){
+    private static void srvHbOK(){
 
-   }
+    }
 
-   /**
-    * An INIT was received from the server
-    *
-    */
-   private static void srvInit(String para){
-      if(Networking.partnerAddress == null) {
-         Networking.partnerAddress = packet.getAddress();
-         Networking.CLIENT_CONNECTED = true;
+    /**
+     * An INIT was received from the server
+     *
+     */
+    private static void srvInit(String para){
+        Log.i(TAG,"CLIENT : INIT RECEIVED");
+        if(Networking.partnerAddress == null) {
+            Networking.partnerAddress = packet.getAddress();
+            Networking.CLIENT_CONNECTED = true;
 
-         //start heartbeating etc...
-      }
-   }
+            //start heartbeating etc...
+            //
+        }
+    }
 
-   private static void srvStart(){
+    private static void srvStart(){
 
-   }
+    }
 
-   private static void srvWin(String para){
+    private static void srvWin(String para){
 
-   }
+    }
 
-   private static void srvGameover(String para){
+    private static void srvGameover(String para){
 
-   }
+    }
 
 
-   /**
-    * creating a valid message
-    */
-   public static String createMsg(int type,String[] data){
-      int sender = (Networking.SERVER) ? SERVER : CLIENT;
-      String result = Integer.toString(sender) + SEPARATOR + Integer.toString(type);
-      if(data != null) {
-         for (String s : data) {
-            result += s + DATA_SEPARATOR;
-         }
-      }
-      return result;
-   }
+    /**
+     * creating a valid message
+     */
+    public static String createMsg(int type,String[] data){
+        int sender = (Networking.SERVER) ? SERVER : CLIENT;
+        String result = Integer.toString(sender) + SEPARATOR + Integer.toString(type) + SEPARATOR;
+        if(data != null) {
+            for (String s : data) {
+                result += s + DATA_SEPARATOR;
+            }
+        }
+        return result+END;
+    }
 }

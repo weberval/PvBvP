@@ -1,5 +1,6 @@
 package de.dhbw_loerrach.pvbvp.gui;
 
+import android.media.midi.MidiOutputPort;
 import android.util.Log;
 import android.view.MotionEvent;
 
@@ -41,12 +42,12 @@ public class TouchHandler {
 	
 	/**
 	 * Will be called when the screen is touched / swiped at x, y
+	 * for local players
 	 *
 	 * @param x Coordinate in pixel
 	 * @param y Coordinate in pixel
 	 */
 	public void action(float x, float y, MotionEvent me) {
-		Log.i(TAG, "Screen touched at: x " + x + " y: " + y);
 
 		int p = 2;
 		char dir =' ';
@@ -77,6 +78,29 @@ public class TouchHandler {
 			Log.i(TAG,"end thread for " + p + " in direction " + dir);
 			//end thread
 			playerPanelThread[p] = false;
+		}
+	}
+
+	/**
+	 * touch handling for remote games, y doesn't matter since only one player is on the device
+	 * you are always player 0 on your device
+	 * @param x
+	 * @param me
+	 */
+	public void action_remote(float x, MotionEvent me){
+		char dir = ' ';
+
+		if(x < VER_FENCE)
+			dir = 'l';
+		else dir = 'r';
+
+		if(me.getAction() == MotionEvent.ACTION_DOWN || me.getAction() == MotionEvent.ACTION_POINTER_DOWN){
+			playerPanelThread[0] = true;
+			startThread(0,dir);
+		}
+
+		if(me.getAction() == MotionEvent.ACTION_UP || me.getAction() == MotionEvent.ACTION_POINTER_UP){
+			playerPanelThread[0] = false;
 		}
 	}
 

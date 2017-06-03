@@ -37,6 +37,10 @@ public class Networking {
                 SERVER = true;
                 DatagramPacket packet = new DatagramPacket(new byte[1024],1024);
                 try {
+
+                    socket = new DatagramSocket();
+                    socket.setReuseAddress(true);
+
                     Log.i(TAG_SERVER,"Server listening...");
                     socketReceive = new DatagramSocket(PORT);
                     while(true){
@@ -59,6 +63,7 @@ public class Networking {
         DatagramPacket packet = new DatagramPacket(data,data.length,partnerAddress,PORT);
         try {
             socket.send(packet);
+            Log.i("Sending","packet to " + partnerAddress.getHostAddress() + " with the data : " + msg);
         }catch(Exception e){
             Log.i((SERVER) ? TAG_SERVER : TAG_CLIENT,"Error in send():" + e.getMessage());
         }
@@ -107,6 +112,7 @@ public class Networking {
                     socketReceive = new DatagramSocket(null);
                     socketReceive.setReuseAddress(true);
                     DatagramPacket packet = new DatagramPacket(new byte[1024],1024);
+                    Log.i(TAG_CLIENT,"Starting ClientReceiver");
                     while(true){
                         socketReceive.receive(packet);
                         Protocol.serverMsg(packet);

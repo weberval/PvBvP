@@ -1,6 +1,8 @@
 package de.dhbw_loerrach.pvbvp.function;
 
+
 import android.util.Log;
+
 import de.dhbw_loerrach.pvbvp.Main;
 import de.dhbw_loerrach.pvbvp.gui.GameView;
 
@@ -60,7 +62,6 @@ public class GameController extends Thread {
 		mainLoop();
 	}
 
-
 	/**
 	 * mainloop of the game.
 	 * In case of gameover, return to Main and handle there if a new game starts
@@ -91,8 +92,6 @@ public class GameController extends Thread {
 
 	/**
 	 * This method checks for any event happening ingame.
-	 * Collisions and removal of bricks and the winning condition : hitting the master brick
-	 * Also changes levels and other
 	 */
 	public void action() {
 		if(ball_counter == 0){
@@ -112,14 +111,6 @@ public class GameController extends Thread {
 		world.movePanel(player, dir);
 	}
 
-
-	/**
-	 * reset game to level 1 (?)
-	 */
-	public void reset(){
-		level = 1;
-		world.init(level);
-	}
 
 	public void gameOver(PanelPlayer ply){
 		//TODO: do some player related work
