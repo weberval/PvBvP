@@ -92,32 +92,42 @@ public class Screen extends Activity {
         Log.i(TAG,"created");
     }
 
+    /**
+     * in case of a local game this button will function as expected, starting the game
+     * in case this device is the server, pressing the button will cause the game to start (but freezed) and a message saying "waiting for other to connect"
+     * will appear. when the other player connected, the game can be started with a button click
+     * in case this device is the client, the game will start but freezed. As soon as the server sends the message the game starts
+     * @param view
+     */
     public void startGame(View view){
 
         String mode = mode_button.getText().toString();
         Main.MODE = mode;
+        Intent intent;
         switch (mode){
             case SERVER:
                 //display server waiting... message
-                play_button.setEnabled(false); //will be enabled when connected
+                intent = new Intent(this,WaitScreen.class);
+                WaitScreen.TEXT = "Server waiting...";
+                startActivity(intent);
+
                 Networking.startServerReceiver();
                 break;
             case CLIENT:
-                play_button.setEnabled(false); //will not be enabled if you're the client. game starts automatically when the INIT from server is received.
                 //display client connecting message
+                intent = new Intent(this,WaitScreen.class);
+                WaitScreen.TEXT = "Client trying to connect...";
+                startActivity(intent);
+
                 Networking.startClientReceiver();
                 Networking.startClient();
                 break;
+            case LOCAL:
+                intent = new Intent(this,Main.class);
+                startActivity(intent);
+                finish();
+                break;
         }
-        /*
-        if(Main.MODE.equals(SERVER)){
-            //if this is the server, this button will cause the START message to be send to the client
-
-        }
-        */
-        Intent intent = new Intent(this,Main.class);
-        startActivity(intent);
-        finish();
     }
 
     @Override
