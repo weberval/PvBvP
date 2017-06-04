@@ -7,6 +7,12 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 
 /**
+ * Class for handling the networking.
+ *
+ * startServerReceiver : Starts the thread that listens. runs the whole time.
+ * startClientReceiver: Starts the thread for the client. runs the whole time.
+ * startClient: Sends broadcasts, is finished when connection is established.
+ *
  * Created by renat on 23.05.17.
  */
 
@@ -17,6 +23,14 @@ public class Networking {
 
     public static boolean SERVER = false;
     public static int PORT = 4567;
+
+    public static boolean HB_STARTED = false;
+    public static final int SLEEP_TIME = 100;
+    public static final int TIME_OUT = 5;
+    public static int TIME_OUT_COUNTER = 0;
+
+    //while true receivers AND heartbeat are running.
+    public static boolean RECEIVER_RUNNING = true;
 
     public static boolean CLIENT_CONNECTED = false;
 
@@ -43,7 +57,7 @@ public class Networking {
 
                     Log.i(TAG_SERVER,"Server listening...");
                     socketReceive = new DatagramSocket(PORT);
-                    while(true){
+                    while(RECEIVER_RUNNING){
                         socketReceive.receive(packet);
                         Protocol.clientMsg(packet);
                     }
@@ -113,12 +127,40 @@ public class Networking {
                     socketReceive.setReuseAddress(true);
                     DatagramPacket packet = new DatagramPacket(new byte[1024],1024);
                     Log.i(TAG_CLIENT,"Starting ClientReceiver");
-                    while(true){
+                    while(RECEIVER_RUNNING){
                         socketReceive.receive(packet);
                         Protocol.serverMsg(packet);
                     }
                 }catch(Exception e){
                     Log.i(TAG_CLIENT,"Error in startClientReceiver() : " + e.getMessage());
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * closes all connections and reset
+     */
+    public static void time_out(){
+        Log.i((SERVER) ? TAG_SERVER :  TAG_CLIENT,"time out!");
+        RECEIVER_RUNNING = false;
+        //Main.time_out -> start new waitscreen or screen with time out message and options to restart connection
+    }
+
+
+    public static void heartbeat(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(RECEIVER_RUNNING) {
+                    try {
+                        Thread.sleep(SLEEP_TIME);
+                        TIME_OUT_COUNTER++;
+                        if (TIME_OUT_COUNTER == TIME_OUT)
+                            time_out();
+                    } catch (Exception e) {
+                        Log.i("HEARTBEAT", e.getMessage());
+                    }
                 }
             }
         }).start();

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import de.dhbw_loerrach.pvbvp.Main;
+import de.dhbw_loerrach.pvbvp.Network.Protocol;
 import de.dhbw_loerrach.pvbvp.R;
 
 /**
@@ -23,6 +24,7 @@ public class WaitScreen extends Activity {
     protected void onCreate(Bundle bundle){
         super.onCreate(bundle);
         setContentView(R.layout.waitscreen);
+        Protocol.waitscreen = this;
 
         message = (TextView) findViewById(R.id.msg_ws);
 
@@ -34,6 +36,15 @@ public class WaitScreen extends Activity {
         Intent intent = new Intent(this,Main.class);
         startActivity(intent);
         finish();
+    }
+
+
+    public void clt_connected(){
+
+    }
+
+    public void srv_connected(){
+
     }
 
 }

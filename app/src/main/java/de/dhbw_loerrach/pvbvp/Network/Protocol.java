@@ -10,7 +10,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 
-import de.dhbw_loerrach.pvbvp.function.GameObj;
+import de.dhbw_loerrach.pvbvp.function.World;
+import de.dhbw_loerrach.pvbvp.screens.WaitScreen;
 
 
 /**
@@ -103,6 +104,7 @@ public class Protocol {
 
     public static final String TAG = "PROTOCOL";
     public static Context con;
+    public static WaitScreen waitscreen = null;
 
     private static final String SEPARATOR = ":";
     private static final String DATA_SEPARATOR = "::";
@@ -230,9 +232,9 @@ public class Protocol {
                 //writing serialized file
                 File file = new File(con.getFilesDir(), "plyg.ser");
                 ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));
+                out.writeObject(World.playground);
                 out.flush();
                 out.close();
-
 
                 ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
                 byte[] data = new byte[1024]; //dummy value
@@ -240,14 +242,28 @@ public class Protocol {
                 in.close();
 
                 Networking.send(createMsg(SRV_MSG_INIT, new String[]{data.toString()}));
+
+                //tell the user through the waitscreen, that someone connected, and the game is ready to start
+                if(waitscreen != null)
+                    waitscreen.srv_connected();
+
+
             }catch (Exception e){
                 Log.i(TAG,"Error processing a CLT_MSG_HELLO " + e.getMessage()  +  " " + e.getClass());
             }
         }
     }
 
+    /**
+     * server received a heartbeat from client
+     * send one back
+     */
     private static void cltHb(){
-
+        if(!Networking.HB_STARTED){
+            Networking.HB_STARTED = true;
+            Networking.heartbeat();
+        }
+        Networking.send(createMsg(SRV_MSG_HBOK,null));
     }
 
     private static void cltUp(){
@@ -269,21 +285,32 @@ public class Protocol {
     }
 
     private static void srvHbOK(){
-
+        if(!Networking.HB_STARTED){
+            Networking.HB_STARTED = true;
+            Networking.heartbeat();
+        }
+        Networking.send(createMsg(CLT_MSG_HB,null));
     }
 
     /**
      * An INIT was received from the server
+     * (First signal from the server)
      *
      */
     private static void srvInit(String para){
         Log.i(TAG,"CLIENT : INIT RECEIVED");
         if(Networking.partnerAddress == null) {
+
             Networking.partnerAddress = packet.getAddress();
             Networking.CLIENT_CONNECTED = true;
 
-            //start heartbeating etc...
-            //
+
+            //tell the user through the waitscreen that he/she is connected to the server, and have to wait til the game is started
+            if(waitscreen != null)
+                waitscreen.clt_connected();
+
+            //start heartbeating
+            Networking.send(createMsg(CLT_MSG_HB,null));
         }
     }
 
