@@ -13,7 +13,9 @@ import static de.dhbw_loerrach.pvbvp.Main.PORTAL;
 
 public class Ball extends GameObj {
 	private int direction;
-	private int player;
+
+	private Panel panel1;
+	private Panel panel2;
 
 	private static final String TAG = "BALL";
 
@@ -34,24 +36,26 @@ public class Ball extends GameObj {
 		}
 	}
 	
-	public void move(World world, Panel panel1, Panel panel2) {
+	public void move() {
+		panel1 = World.panels[0];
+		panel2 = World.panels[1];
 		GameObjType lo, lm, lu, mo, mu, ro, rm, ru = GameObjType.AIR;
 		switch (direction) {
 			//right down
 			case 1:
 				x += 1;
 				y += 1;
-				ro = world.collisionCheck(x + 1, y + 1, panel2);
-				mo = world.collisionCheck(x, y + 1, panel2);
-				rm = world.collisionCheck(x + 1, y, panel2);
+				ro = World.collisionCheck(x + 1, y + 1, panel2);
+				mo = World.collisionCheck(x, y + 1, panel2);
+				rm = World.collisionCheck(x + 1, y, panel2);
 
 				if (mo == GameObjType.OUTOFBOUNDY) {
-					world.gameOver(panel2.getPlayer());
+					World.gameOver(panel2.getPlayer());
 					return;
 				}
 
 				if(mo == GameObjType.MASTER || ro == GameObjType.MASTER) {
-					world.win(panel2.getPlayer());
+					World.win(panel2.getPlayer());
 					return;
 				}
 
@@ -70,9 +74,9 @@ public class Ball extends GameObj {
 					//direction = -3;
 				}
 				try {
-					world.brickDestroy(x + 1, y + 1);
-					world.brickDestroy(x, y + 1);
-					world.brickDestroy(x + 1, y);
+					World.brickDestroy(x + 1, y + 1);
+					World.brickDestroy(x, y + 1);
+					World.brickDestroy(x + 1, y);
 				} catch (ArrayIndexOutOfBoundsException e) {
 					Log.i(TAG,"brick destroy");
 				}
@@ -80,15 +84,15 @@ public class Ball extends GameObj {
 			//down
 			case 2:
 				y += 1;
-				mo = world.collisionCheck(x, y + 1, panel2);
+				mo = World.collisionCheck(x, y + 1, panel2);
 
 				if (mo == GameObjType.OUTOFBOUNDY) {
-					world.gameOver(panel2.getPlayer());
+					World.gameOver(panel2.getPlayer());
 					return;
 				}
 
 				if(mo == GameObjType.MASTER){
-					world.win(panel2.getPlayer());
+					World.win(panel2.getPlayer());
 					return;
 				}
 
@@ -99,7 +103,7 @@ public class Ball extends GameObj {
 					onPanelHit(panel2,panel1);
 
 				try {
-					world.brickDestroy(x, y + 1);
+					World.brickDestroy(x, y + 1);
 				} catch (ArrayIndexOutOfBoundsException e) {
 					Log.i(TAG,"brick destroy");
 				}
@@ -108,17 +112,17 @@ public class Ball extends GameObj {
 			case 3:
 				x -= 1;
 				y += 1;
-				ro = world.collisionCheck(x - 1, y + 1, panel2);
-				mo = world.collisionCheck(x, y + 1, panel2);
-				rm = world.collisionCheck(x - 1, y, panel2);
+				ro = World.collisionCheck(x - 1, y + 1, panel2);
+				mo = World.collisionCheck(x, y + 1, panel2);
+				rm = World.collisionCheck(x - 1, y, panel2);
 
 				if (mo == GameObjType.OUTOFBOUNDY) {
-					world.gameOver(panel2.getPlayer());
+					World.gameOver(panel2.getPlayer());
 					return;
 				}
 
 				if(ro == GameObjType.MASTER || rm == GameObjType.MASTER){
-					world.win(panel2.getPlayer());
+					World.win(panel2.getPlayer());
 					return;
 				}
 
@@ -138,9 +142,9 @@ public class Ball extends GameObj {
 					//direction = -1;
 				}
 				try {
-					world.brickDestroy(x - 1, y + 1);
-					world.brickDestroy(x, y + 1);
-					world.brickDestroy(x - 1, y);
+					World.brickDestroy(x - 1, y + 1);
+					World.brickDestroy(x, y + 1);
+					World.brickDestroy(x - 1, y);
 				} catch (ArrayIndexOutOfBoundsException e) {
 					Log.i(TAG,"brick destroy");
 				}
@@ -150,18 +154,18 @@ public class Ball extends GameObj {
 				x--;
 				y--;
 
-				GameObjType leftup = world.collisionCheck(x-1,y-1,panel1);
-				GameObjType left = world.collisionCheck(x-1,y,panel1);
-				GameObjType up = world.collisionCheck(x,y-1,panel1);
+				GameObjType leftup = World.collisionCheck(x-1,y-1,panel1);
+				GameObjType left = World.collisionCheck(x-1,y,panel1);
+				GameObjType up = World.collisionCheck(x,y-1,panel1);
 
 				//game over
 				if(leftup == GameObjType.OUTOFBOUNDY){
-					world.gameOver(panel1.getPlayer());
+					World.gameOver(panel1.getPlayer());
 					return;
 				}
 
 				if(leftup == GameObjType.MASTER || up == GameObjType.MASTER){
-					world.win(panel1.getPlayer());
+					World.win(panel1.getPlayer());
 					return;
 				}
 
@@ -192,9 +196,9 @@ public class Ball extends GameObj {
 					direction = -3;
 
 				try{
-					world.brickDestroy(x-1,y-1);
-					world.brickDestroy(x-1,y);
-					world.brickDestroy(x,y-1);
+					World.brickDestroy(x-1,y-1);
+					World.brickDestroy(x-1,y);
+					World.brickDestroy(x,y-1);
 				}catch(Exception e){
 					Log.i(TAG,"brick destroy");
 				}
@@ -202,15 +206,15 @@ public class Ball extends GameObj {
 			//up
 			case -2:
 				y--;
-				GameObjType up2 = world.collisionCheck(x,y-1,panel1);
+				GameObjType up2 = World.collisionCheck(x,y-1,panel1);
 
 				if(up2 == GameObjType.OUTOFBOUNDY){
-					world.gameOver(panel1.getPlayer());
+					World.gameOver(panel1.getPlayer());
 					return;
 				}
 
 				if(up2 == GameObjType.MASTER){
-					world.win(panel1.getPlayer());
+					World.win(panel1.getPlayer());
 					return;
 				}
 
@@ -223,7 +227,7 @@ public class Ball extends GameObj {
 					onPanelHit(panel1,panel2);
 
 				try{
-					world.brickDestroy(x,y-1);
+					World.brickDestroy(x,y-1);
 				}catch (Exception e) {
 					Log.i(TAG, "brick destroy");
 				}
@@ -233,17 +237,17 @@ public class Ball extends GameObj {
 				x++;
 				y--;
 
-				GameObjType up3 = world.collisionCheck(x,y-1,panel1);
-				GameObjType right = world.collisionCheck(x+1,y,panel1);
-				GameObjType rightup = world.collisionCheck(x+1,y-1,panel1);
+				GameObjType up3 = World.collisionCheck(x,y-1,panel1);
+				GameObjType right = World.collisionCheck(x+1,y,panel1);
+				GameObjType rightup = World.collisionCheck(x+1,y-1,panel1);
 
 				if(rightup == GameObjType.OUTOFBOUNDY){
-					world.gameOver(panel1.getPlayer());
+					World.gameOver(panel1.getPlayer());
 					return;
 				}
 
 				if(rightup == GameObjType.MASTER || up3 == GameObjType.MASTER){
-					world.win(panel1.getPlayer());
+					World.win(panel1.getPlayer());
 					return;
 				}
 
@@ -271,9 +275,9 @@ public class Ball extends GameObj {
 					direction = -1;
 
 				try{
-					world.brickDestroy(x+1,y-1);
-					world.brickDestroy(x+1,y);
-					world.brickDestroy(x,y-1);
+					World.brickDestroy(x+1,y-1);
+					World.brickDestroy(x+1,y);
+					World.brickDestroy(x,y-1);
 				}catch(Exception e){
 					Log.i(TAG,"brick destroy");
 				}

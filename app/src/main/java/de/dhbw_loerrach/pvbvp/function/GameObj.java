@@ -1,10 +1,12 @@
 package de.dhbw_loerrach.pvbvp.function;
 
+import java.io.Serializable;
+
 /**
  * Created by weva on 04.04.2017.
  * super GameObj
  */
-public class GameObj {
+public class GameObj implements Serializable {
 	protected GameObjType type;
 	protected int x;
 	protected int y;

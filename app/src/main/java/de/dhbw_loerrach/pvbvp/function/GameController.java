@@ -22,11 +22,10 @@ public class GameController extends Thread {
 	/**
 	 * Only every BALL_DELAY Ticks the ball will be moved.
 	 */
-	private static int BALL_DELAY = 12;
+	private static int BALL_DELAY = 10;
 
 
 	private Main main;
-	private World world;
 	private GameView view;
 
 	private boolean RUNNING = false;
@@ -49,8 +48,8 @@ public class GameController extends Thread {
 		points = new int[]{0,0};
 		level = 1;
 
-		world = new  World(this);
-		world.init(level);
+		World.setController(this);
+		World.init(level); //switch case: server / client this must not happen. world will be initialized before
 
 	}
 
@@ -64,16 +63,15 @@ public class GameController extends Thread {
 
 	/**
 	 * mainloop of the game.
-	 * In case of gameover, return to Main and handle there if a new game starts
 	 */
 	public void mainLoop() {
 
-		view.update(world.playground,world.ball,world.panels);
+		view.update();
 		wait_(1000);
 		while(RUNNING) {
 			action();
 			wait_(WAIT);
-			view.update(world.playground, world.ball, world.panels);
+			view.update();
 		}
 	}
 
@@ -95,8 +93,8 @@ public class GameController extends Thread {
 	 */
 	public void action() {
 		if(ball_counter == 0){
-			world.ball.move(world,world.panels[0],world.panels[1]);
-			view.ballMovementUpdate(world.ball);
+			World.ball.move();
+			view.ballMovementUpdate();
 			ball_counter = BALL_DELAY;
 		}else ball_counter--;
 	}
@@ -108,7 +106,7 @@ public class GameController extends Thread {
 	 * @param dir
 	 */
 	public void movePanel(int player, char dir) {
-		world.movePanel(player, dir);
+		World.movePanel(player, dir);
 	}
 
 
@@ -132,6 +130,6 @@ public class GameController extends Thread {
 		if(BALL_DELAY <= 1)
 			Log.i(TAG,"Hardest Level reached!");
 		else BALL_DELAY--;
-		world.init(++level);
+		World.init(++level);
 	}
 }

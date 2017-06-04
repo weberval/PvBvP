@@ -40,11 +40,16 @@ public class WaitScreen extends Activity {
 
 
     public void clt_connected(){
-
+        //end the screen activity
+        //display message that we have connection
+        //write to World.playground (from INIT)
+        //when Protocol receives "START" kill this activity and start main (killme)
     }
 
     public void srv_connected(){
-
+        //end the screen activity
+        //display button for "start"
+        //show message that we have connection and pressing start, will run the game
     }
 
 }

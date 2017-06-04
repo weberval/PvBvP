@@ -15,6 +15,7 @@
 
     <Button
         android:layout_width="wrap_content"
+        android:textAllCaps="false"
         android:layout_height="wrap_content"
         android:id="@+id/screen_button"
         android:layout_centerInParent="true"
@@ -22,10 +23,45 @@
 
     <Button
         android:id="@+id/gamemode"
+        android:textAllCaps="false"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/screen_button"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/screen_button"
         android:onClick="gameMode"
         />
+
+    <Button
+        android:id="@+id/close_button"
+        android:textAllCaps="false"
+        android:text="Close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/gamemode"
+        android:onClick="close"
+        />
+
+    <!-- DEBUG -->
+    <Button
+        android:id="@+id/DEBUG_server"
+        android:textAllCaps="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/gamemode"
+        android:text="DEBUG server"
+        android:onClick="debug_server"
+        />
+
+    <Button
+        android:id="@+id/DEBUG_client"
+        android:textAllCaps="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/DEBUG_server"
+        android:text="DEBUG Client"
+        android:onClick="debug_client"
+        />
+    <!-- DEBUG -->
 
 </RelativeLayout>

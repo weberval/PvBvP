@@ -6,6 +6,8 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
+import de.dhbw_loerrach.pvbvp.screens.WaitScreen;
+
 /**
  * Class for handling the networking.
  *

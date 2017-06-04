@@ -1,10 +1,12 @@
 -Bugfix: Ball slips through panel, when panel is moved "last moment".
--Bugfix: Center "Close" Button
--Bugfix: Non capitalized text
+-Behaviour if app is minimized ??
 
 -TouchHandler getX from motionevent ??
 
 -Additional: Animations, nice look
 -Additional: Expanded leveldesign (more than just "getting faster")
 -Additional: Networking
+	- Check if Wifi is activated
+
+
 -Additional: Sounds / Music

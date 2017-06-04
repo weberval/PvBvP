@@ -3,6 +3,7 @@ package de.dhbw_loerrach.pvbvp.Network;
 import android.content.Context;
 import android.util.Log;
 
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -229,26 +230,43 @@ public class Protocol {
             Networking.partnerAddress = packet.getAddress();
 
             try {
+                //test
+                World.init(1);
+
                 //writing serialized file
                 File file = new File(con.getFilesDir(), "plyg.ser");
                 ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));
                 out.writeObject(World.playground);
                 out.flush();
+                int len = (int)file.length();
                 out.close();
 
                 ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
-                byte[] data = new byte[1024]; //dummy value
-                in.readFully(data);
+                byte[] data = new byte[len];
+
+                int i = 0;
+                while(true){
+                    try{
+                        data[i] = in.readByte();
+                        i++;
+                    }catch (EOFException eof){
+                        break;
+                    }
+                }
+                Log.i(TAG,""+i);
+
+                //in.readFully(data);
                 in.close();
 
-                Networking.send(createMsg(SRV_MSG_INIT, new String[]{data.toString()}));
+                Networking.send(createMsg(SRV_MSG_INIT, new String[]{data.toString()})); //new String(data,"utf-8");
 
                 //tell the user through the waitscreen, that someone connected, and the game is ready to start
                 if(waitscreen != null)
                     waitscreen.srv_connected();
 
 
-            }catch (Exception e){
+            }
+            catch (Exception e){
                 Log.i(TAG,"Error processing a CLT_MSG_HELLO " + e.getMessage()  +  " " + e.getClass());
             }
         }

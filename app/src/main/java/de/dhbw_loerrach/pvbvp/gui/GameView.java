@@ -126,15 +126,16 @@ public class GameView extends View {
 	/**
 	 * The gameview will be updated and redrawn.
 	 */
-	public void update(GameObj[][] world, Ball ball, Panel[] panels) {
-		this.world = world;
-		this.panels = panels;
-		this.ball = ball;
+	public void update() {
+		this.world = World.playground;
+		this.panels = World.panels;
+		this.ball = World.ball;
 		postInvalidate();
 	}
 
 
-	public void ballMovementUpdate(Ball ball){
+	public void ballMovementUpdate(){
+		this.ball = World.ball;
 		ballTrace.add(new int[]{ball.getX(),ball.getY()});
 		if(ballTrace.size() > numberOfTraces) {
 			ballTrace.pop();

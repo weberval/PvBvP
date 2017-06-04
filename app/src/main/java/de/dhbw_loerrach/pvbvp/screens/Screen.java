@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import de.dhbw_loerrach.pvbvp.Main;
@@ -63,7 +62,6 @@ public class Screen extends Activity {
 
         Protocol.con = this.getApplicationContext();
 
-        RelativeLayout rl = ((RelativeLayout)findViewById(R.id.screen_layout));
 
         if(TYPE == 's'){
             title.setText(GAME_NAME);
@@ -73,20 +71,6 @@ public class Screen extends Activity {
         if(TYPE == 'e'){
             title.setText("Game Over!");
             play_button.setText("Replay");
-
-            Button closeApp = new Button(this);
-            closeApp.setText("Close");
-            closeApp.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    System.exit(0);
-                }
-            });
-            //RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams)rl.getLayoutParams();
-            //rlp.addRule(RelativeLayout.CENTER_IN_PARENT,closeApp.getId());
-            //rlp.addRule(RelativeLayout.BELOW,((Button)findViewById(R.id.screen_button)).getId());
-            rl.addView(closeApp);
-
         }
 
         Log.i(TAG,"created");
@@ -106,7 +90,6 @@ public class Screen extends Activity {
         Intent intent;
         switch (mode){
             case SERVER:
-                //display server waiting... message
                 intent = new Intent(this,WaitScreen.class);
                 WaitScreen.TEXT = "Server waiting...";
                 startActivity(intent);
@@ -114,7 +97,6 @@ public class Screen extends Activity {
                 Networking.startServerReceiver();
                 break;
             case CLIENT:
-                //display client connecting message
                 intent = new Intent(this,WaitScreen.class);
                 WaitScreen.TEXT = "Client trying to connect...";
                 startActivity(intent);
@@ -149,5 +131,21 @@ public class Screen extends Activity {
             mode = LOCAL;
         mode_button.setText(mode);
     }
+
+    public void close(View v){
+        System.exit(0);
+    }
+
+
+    //------------------------------------
+    public void debug_server(View view){
+        Networking.startServerReceiver();
+    }
+
+    public void debug_client(View view){
+        Networking.startClientReceiver();
+        Networking.startClient();
+    }
+    //------------------------------------
 
 }

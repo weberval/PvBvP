@@ -28,11 +28,11 @@ public class World {
 	public static Ball ball;
 	public static Panel[] panels;
 
-	private GameController gameController;
+	private static GameController gameController;
 
 
-	public World(GameController gameController) {
-		this.gameController = gameController;
+	public static void setController(GameController gameController_) {
+		gameController = gameController_;
 	}
 
 
@@ -42,7 +42,7 @@ public class World {
 	 *
 	 * @param level
 	 */
-	public void init(int level) {
+	public static void init(int level) {
 		playground = new GameObj[PLAYGROUND_WIDTH][PLAYGROUND_HEIGHT];
 		for (int i = 0; i < PLAYGROUND_WIDTH; ++i) {
 			for (int j = 0; j < PLAYGROUND_HEIGHT; ++j) {
@@ -50,12 +50,14 @@ public class World {
 			}
 		}
 
-		//add panels to world
 		panels = new Panel[2];
 		panels[0] = new Panel(PanelPlayer.PLAYER1);
 		panels[1] = new Panel(PanelPlayer.PLAYER2);
 
-		ball = new Ball(PanelPlayer.PLAYER1.index);
+		if(level % 2 == 0)
+			ball = new Ball(PanelPlayer.PLAYER1.index);
+		else
+			ball = new Ball(PanelPlayer.PLAYER2.index);
 
 		brickCreate();
 		masterBrickCreate();
@@ -63,7 +65,7 @@ public class World {
 	}
 
 
-	private void brickCreate() {
+	private static void brickCreate() {
 		/**
 		 * @param x line indent iterating through 0 and 1
 		 */
@@ -74,8 +76,8 @@ public class World {
 					random = Math.random();
 				}
 				if (random < 0.5) {
-					this.playground[j][i] = new Brick(GameObjType.BRICK, 'l');
-					this.playground[j + 1][i] = new Brick(GameObjType.BRICK, 'r');
+					playground[j][i] = new Brick(GameObjType.BRICK, 'l');
+					playground[j + 1][i] = new Brick(GameObjType.BRICK, 'r');
 				}
 			}
 		}
@@ -99,9 +101,9 @@ public class World {
         } */
 	}
 
-	public void masterBrickCreate() {
-		this.brickDestroy(PLAYGROUND_CENTER_X, PLAYGROUND_CENTER_Y_FLOOR);
-		this.brickDestroy(PLAYGROUND_CENTER_X, PLAYGROUND_CENTER_Y_FLOOR + 1);
+	public static void masterBrickCreate() {
+		brickDestroy(PLAYGROUND_CENTER_X, PLAYGROUND_CENTER_Y_FLOOR);
+		brickDestroy(PLAYGROUND_CENTER_X, PLAYGROUND_CENTER_Y_FLOOR + 1);
 
 		playground[PLAYGROUND_CENTER_X][PLAYGROUND_CENTER_Y_FLOOR] = new Brick(GameObjType.MASTER, 'm');
 		playground[PLAYGROUND_CENTER_X][PLAYGROUND_CENTER_Y_FLOOR + 1] = new Brick(GameObjType.MASTER, 'm');
@@ -112,20 +114,20 @@ public class World {
 		*/
 	}
 
-	public void brickDestroy(int x, int y) {
-		switch (this.playground[x][y].getSide()) {
+	public static void brickDestroy(int x, int y) {
+		switch (playground[x][y].getSide()) {
 			case 'l':
-				this.playground[x + 1][y] = new Air();
+				playground[x + 1][y] = new Air();
 				break;
 			case 'r':
-				this.playground[x - 1][y] = new Air();
+				playground[x - 1][y] = new Air();
 				break;
 		}
 		if(playground[x][y].type == GameObjType.BRICK)
 			playground[x][y] = new Air();
 	}
 
-	public void movePanel(int player, char dir) {
+	public static void movePanel(int player, char dir) {
 		if (player < 0 || player > 2) {
 			return;
 		}
@@ -137,7 +139,7 @@ public class World {
 		}
 	}
 
-	public GameObjType collisionCheck(int x, int y, Panel panel) {
+	public static GameObjType collisionCheck(int x, int y, Panel panel) {
 		if (y <= -1 || y >= World.PLAYGROUND_HEIGHT) {
 			return GameObjType.OUTOFBOUNDY;
 		}
@@ -147,14 +149,14 @@ public class World {
 		if (hitPanel(panel,x,y)){
 			return GameObjType.PANEL;
 		}
-		return this.playground[x][y].getType();
+		return playground[x][y].getType();
 	}
 
 	/**
 	 * returns true if the ball hit the panel
 	 * @return
 	 */
-	public boolean hitPanel(Panel panel,int x, int y){
+	public static boolean hitPanel(Panel panel,int x, int y){
 		if(panel.getY() == y){
 			if(x >= panel.getX() && x <= panel.getX() + Panel.PANEL_WIDTH)
 				return true;
@@ -166,7 +168,7 @@ public class World {
 	 * will be called when the ball goes out of bounds on y-axis
 	 * @param ply
 	 */
-	public void gameOver(PanelPlayer ply){
+	public static void gameOver(PanelPlayer ply){
 		gameController.gameOver(ply);
 	}
 
@@ -174,7 +176,7 @@ public class World {
 	 * will be call when the balls hits the masterbrick
 	 * @param ply
 	 */
-	public void win(PanelPlayer ply){
+	public static void win(PanelPlayer ply){
 		gameController.win(ply);
 	}
 
