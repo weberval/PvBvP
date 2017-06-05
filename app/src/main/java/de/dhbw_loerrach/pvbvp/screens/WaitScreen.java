@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import de.dhbw_loerrach.pvbvp.Main;
@@ -63,6 +64,7 @@ public class WaitScreen extends Activity {
                 killme();
             }
         });
+        ((RelativeLayout)findViewById(R.id.waitscreen)).addView(definitely_starting); //do we have to update the view somehow or does it changes automatically?
 
         //end the screen activity
         //display button for "start"

@@ -12,6 +12,7 @@ import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 
 import de.dhbw_loerrach.pvbvp.Main;
+import de.dhbw_loerrach.pvbvp.function.GameObj;
 import de.dhbw_loerrach.pvbvp.function.World;
 import de.dhbw_loerrach.pvbvp.gui.TouchHandler;
 import de.dhbw_loerrach.pvbvp.screens.Screen;
@@ -236,35 +237,33 @@ public class Protocol {
             Networking.partnerAddress = packet.getAddress();
 
             try {
-                //test
+
                 World.init(1);
 
                 //writing serialized file
                 File file = new File(con.getFilesDir(), GAMEFILE);
+                file.delete();
+
+
+                Log.i(TAG,"before : "+(int)file.length());
+
                 ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));
                 out.writeObject(World.playground);
                 out.flush();
                 int len = (int)file.length();
                 out.close();
 
+                Log.i(TAG,"after : "+(int)file.length());
+
                 ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
                 byte[] data = new byte[len];
-
-                int i = 0;
-                while(true){
-                    try{
-                        data[i] = in.readByte();
-                        i++;
-                    }catch (EOFException eof){
-                        break;
-                    }
+                try {
+                    in.readFully(data);
+                    in.close();
+                }catch(Exception e){
+                    e.printStackTrace();
                 }
-                Log.i(TAG,""+i);
-
-                //in.readFully(data);
-                in.close();
-
-                send_msg(SRV_MSG_INIT, new String[]{data.toString()}); //new String(data,"utf-8");
+                send_msg(SRV_MSG_INIT, new String[]{new String(data,"utf-8")}); //new String(data,"utf-8"); data.toString();
 
                 //tell the user through the waitscreen, that someone connected, and the game is ready to start
                 if(waitscreen != null)
@@ -273,6 +272,7 @@ public class Protocol {
 
             }
             catch (Exception e){
+                e.printStackTrace();
                 Log.i(TAG,"Error processing a CLT_MSG_HELLO " + e.getMessage()  +  " " + e.getClass());
             }
         }
@@ -341,6 +341,24 @@ public class Protocol {
                 waitscreen.clt_connected();
 
             //read the game file in and prepare the game
+            try {
+                File file = new File(con.getFilesDir(), GAMEFILE);
+                file.delete();
+
+
+                ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));
+                out.writeObject(para.getBytes()); //should be the original object
+                out.flush();
+                out.close();
+
+                ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
+                World.playground = (GameObj[][]) in.readObject();
+                in.close();
+
+            }catch (Exception e){
+                Log.i(TAG,"Error processing SRV_MSG_INIT");
+                e.printStackTrace();
+            }
 
             //start heartbeating
             send_msg(CLT_MSG_HB,null);

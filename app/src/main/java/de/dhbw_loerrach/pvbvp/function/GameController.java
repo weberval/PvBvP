@@ -50,7 +50,8 @@ public class GameController extends Thread {
 		level = 1;
 
 		World.setController(this);
-		World.init(level); //switch case: server / client this must not happen. world will be initialized before
+		if(Main.MODE == Screen.LOCAL)
+			World.init(level);
 
 	}
 

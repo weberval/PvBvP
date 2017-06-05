@@ -39,6 +39,8 @@ public class Networking {
 
     public static InetAddress partnerAddress = null;
 
+    public static final int PCKT_LENGTH = 10000;
+
     /**
      * starting the server.
      * waiting endlessly to connect.
@@ -49,7 +51,7 @@ public class Networking {
             @Override
             public void run() {
                 SERVER = true;
-                DatagramPacket packet = new DatagramPacket(new byte[1024],1024);
+                DatagramPacket packet = new DatagramPacket(new byte[PCKT_LENGTH],PCKT_LENGTH);
                 try {
 
                     socket = new DatagramSocket();
@@ -117,6 +119,8 @@ public class Networking {
 
     /**
      * start client receiver
+     *
+     * test if this is even running
      */
     public static void startClientReceiver(){
         new Thread(new Runnable() {
@@ -125,7 +129,7 @@ public class Networking {
                 try {
                     socketReceive = new DatagramSocket(null);
                     socketReceive.setReuseAddress(true);
-                    DatagramPacket packet = new DatagramPacket(new byte[1024],1024);
+                    DatagramPacket packet = new DatagramPacket(new byte[PCKT_LENGTH],PCKT_LENGTH);
                     Log.i(TAG_CLIENT,"Starting ClientReceiver");
                     while(RECEIVER_RUNNING){
                         socketReceive.receive(packet);
