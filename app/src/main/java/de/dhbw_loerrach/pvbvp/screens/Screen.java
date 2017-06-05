@@ -24,10 +24,14 @@ public class Screen extends Activity {
 
     public static final String TAG = "SCREEN";
 
+    public static final char START = 's';
+    public static final char END = 'e';
+    public static final char TIMEOUT = 't';
+
     /**
-     * type of the screen. Can be 's' for Startscreen, or 'e' for endscreen
+     * type of the screen. Can be 's' for Startscreen, or 'e' for endscreen, or 't' for time out
      */
-    public static char TYPE = 's';
+    public static char TYPE = START;
 
     /**
      * Title of the screen. Either <Gamename>, or 'Game Over'
@@ -61,16 +65,19 @@ public class Screen extends Activity {
         play_button = (Button) findViewById(R.id.screen_button);
 
         Protocol.con = this.getApplicationContext();
+        WaitScreen.screen = this;
 
 
-        if(TYPE == 's'){
+        if(TYPE == START){
             title.setText(GAME_NAME);
             play_button.setText("Start");
-
         }
-        if(TYPE == 'e'){
+        if(TYPE == END){
             title.setText("Game Over!");
             play_button.setText("Replay");
+        }
+        if(TYPE == TIMEOUT){
+            title.setText("Time out! Try to reconnect?");
         }
 
         Log.i(TAG,"created");

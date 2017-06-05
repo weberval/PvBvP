@@ -3,6 +3,8 @@ package de.dhbw_loerrach.pvbvp.screens;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import de.dhbw_loerrach.pvbvp.Main;
@@ -19,6 +21,8 @@ public class WaitScreen extends Activity {
 
     private TextView message;
 
+    public static Screen screen;
+
     public static String TEXT = "";
 
     protected void onCreate(Bundle bundle){
@@ -32,7 +36,10 @@ public class WaitScreen extends Activity {
         message.setText(TEXT);
     }
 
+    //test how this will work
     public void killme(){
+        if(screen != null)
+            screen.finish();
         Intent intent = new Intent(this,Main.class);
         startActivity(intent);
         finish();
@@ -40,13 +47,23 @@ public class WaitScreen extends Activity {
 
 
     public void clt_connected(){
-        //end the screen activity
-        //display message that we have connection
-        //write to World.playground (from INIT)
-        //when Protocol receives "START" kill this activity and start main (killme)
+        message.setText("Connected! Wait until the server starts the game");
     }
 
     public void srv_connected(){
+
+        message.setText("Connected! Press to start the game");
+
+        Button definitely_starting = new Button(this);
+        definitely_starting.setText("Start");
+        definitely_starting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Protocol.send_msg(Protocol.SRV_MSG_START,null);
+                killme();
+            }
+        });
+
         //end the screen activity
         //display button for "start"
         //show message that we have connection and pressing start, will run the game

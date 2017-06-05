@@ -6,8 +6,6 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
-import de.dhbw_loerrach.pvbvp.screens.WaitScreen;
-
 /**
  * Class for handling the networking.
  *
@@ -101,7 +99,7 @@ public class Networking {
 
 
                     InetAddress broadcast = InetAddress.getByName("255.255.255.255");
-                    byte[] data = Protocol.createMsg(Protocol.CLT_MSG_HELLO,null).getBytes();
+                    byte[] data = Protocol.get_msg(Protocol.CLT_MSG_HELLO,null).getBytes();
                     DatagramPacket packet = new DatagramPacket(data,data.length,broadcast,PORT);
 
                     Log.i(TAG_CLIENT,"connecting...");
@@ -146,7 +144,7 @@ public class Networking {
     public static void time_out(){
         Log.i((SERVER) ? TAG_SERVER :  TAG_CLIENT,"time out!");
         RECEIVER_RUNNING = false;
-        //Main.time_out -> start new waitscreen or screen with time out message and options to restart connection
+        Protocol.time_out();
     }
 
 

@@ -1,11 +1,9 @@
 package de.dhbw_loerrach.pvbvp.gui;
 
-import android.media.midi.MidiOutputPort;
 import android.util.Log;
 import android.view.MotionEvent;
 
 import de.dhbw_loerrach.pvbvp.function.GameController;
-import de.dhbw_loerrach.pvbvp.function.Panel;
 import de.dhbw_loerrach.pvbvp.function.PanelPlayer;
 
 /**
@@ -15,29 +13,30 @@ import de.dhbw_loerrach.pvbvp.function.PanelPlayer;
 public class TouchHandler {
 	
 	private static final String TAG = "TouchHandler";
+
 	/**
 	 * Vertical Fence, splits the screen through half vertically.
 	 * Any touch smaller than VER_FENCE is accounted to player 1, any touch larger to player 2.
 	 */
 	private static int VER_FENCE;
+
 	/**
 	 * Horizontal Fence, splits the screen though half horizontally.
 	 * Any touch smaller than HOR_FENCE is accounted the left, any touch larger to the right side.
 	 */
 	private static int HOR_FENCE;
 
-	private GameController gameController;
+	private static GameController gameController;
 
-	private boolean playerPanelThread[];
+	private static boolean playerPanelThread[];
 
-	public TouchHandler(GameController gameController) {
-		
-		this.gameController = gameController;
+
+	public static void setup(GameController gameController_){
+		gameController = gameController_;
 
 		playerPanelThread = new boolean[2];
-		
 		VER_FENCE = GameView.SCREEN_WIDTH / 2;
-		HOR_FENCE = GameView.SCREEN_HEIGHT / 2;
+		HOR_FENCE = GameView.SCREEN_HEIGHT /2;
 	}
 	
 	/**
@@ -47,7 +46,7 @@ public class TouchHandler {
 	 * @param x Coordinate in pixel
 	 * @param y Coordinate in pixel
 	 */
-	public void action(float x, float y, MotionEvent me) {
+	public static void action(float x, float y, MotionEvent me) {
 
 		int p = 2;
 		char dir =' ';
@@ -87,7 +86,7 @@ public class TouchHandler {
 	 * @param x
 	 * @param me
 	 */
-	public void action_remote(float x, MotionEvent me){
+	public static void action_remote(float x, MotionEvent me){
 		char dir = ' ';
 
 		if(x < VER_FENCE)
@@ -104,7 +103,7 @@ public class TouchHandler {
 		}
 	}
 
-	public void startThread(final int player, final char dir){
+	public static void startThread(final int player, final char dir){
 		Thread thread = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -117,6 +116,18 @@ public class TouchHandler {
 		thread.start();
 	}
 
+	/**
+	 * only called by the server, simulates the input of the client
+	 */
+	public static void client_action(float x, char updown){
+		if(updown == 'd'){
+			playerPanelThread[1] = true;
+			startThread(1,(x < VER_FENCE) ? 'l' : 'r'); //switch or not?? testing
+		}
+		if(updown == 'u'){
+			playerPanelThread[1] = false;
+		}
+	}
 
 	
 	/**
@@ -125,7 +136,7 @@ public class TouchHandler {
 	 * @param player
 	 * @param dir
 	 */
-	public void movePanel(int player, char dir) {
+	public static void movePanel(int player, char dir) {
 		gameController.movePanel(player, dir);
 	}
 	

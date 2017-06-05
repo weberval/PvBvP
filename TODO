@@ -1,5 +1,8 @@
--Bugfix: Ball slips through panel, when panel is moved "last moment".
+-Bug: Ball slips through panel, when panel is moved "last moment".
+-Bug: Java Serialized send and read.
+
 -Behaviour if app is minimized ??
+
 
 -TouchHandler getX from motionevent ??
 

@@ -5,6 +5,7 @@ import android.util.Log;
 
 import de.dhbw_loerrach.pvbvp.Main;
 import de.dhbw_loerrach.pvbvp.gui.GameView;
+import de.dhbw_loerrach.pvbvp.screens.Screen;
 
 /**
  * Created by Renat on 06.04.2017.
@@ -28,7 +29,7 @@ public class GameController extends Thread {
 	private Main main;
 	private GameView view;
 
-	private boolean RUNNING = false;
+	public boolean RUNNING = false;
 	private int ball_counter;
 
 	/**
@@ -113,7 +114,7 @@ public class GameController extends Thread {
 	public void gameOver(PanelPlayer ply){
 		//TODO: do some player related work
 		Log.i(TAG,"Game Over");
-		RUNNING = false;
+		Screen.TYPE = Screen.END;
 		main.gameOver();
 	}
 

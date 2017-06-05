@@ -11,7 +11,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 
+import de.dhbw_loerrach.pvbvp.Main;
 import de.dhbw_loerrach.pvbvp.function.World;
+import de.dhbw_loerrach.pvbvp.gui.TouchHandler;
+import de.dhbw_loerrach.pvbvp.screens.Screen;
 import de.dhbw_loerrach.pvbvp.screens.WaitScreen;
 
 
@@ -106,6 +109,7 @@ public class Protocol {
     public static final String TAG = "PROTOCOL";
     public static Context con;
     public static WaitScreen waitscreen = null;
+    public static Main main;
 
     private static final String SEPARATOR = ":";
     private static final String DATA_SEPARATOR = "::";
@@ -125,6 +129,8 @@ public class Protocol {
 
     public static final int SERVER = 0;
     public static final int CLIENT = 1;
+
+    public static final String GAMEFILE = "plyg.ser";
 
     private static int type;
     private static DatagramPacket packet;
@@ -234,7 +240,7 @@ public class Protocol {
                 World.init(1);
 
                 //writing serialized file
-                File file = new File(con.getFilesDir(), "plyg.ser");
+                File file = new File(con.getFilesDir(), GAMEFILE);
                 ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));
                 out.writeObject(World.playground);
                 out.flush();
@@ -258,7 +264,7 @@ public class Protocol {
                 //in.readFully(data);
                 in.close();
 
-                Networking.send(createMsg(SRV_MSG_INIT, new String[]{data.toString()})); //new String(data,"utf-8");
+                send_msg(SRV_MSG_INIT, new String[]{data.toString()}); //new String(data,"utf-8");
 
                 //tell the user through the waitscreen, that someone connected, and the game is ready to start
                 if(waitscreen != null)
@@ -281,15 +287,20 @@ public class Protocol {
             Networking.HB_STARTED = true;
             Networking.heartbeat();
         }
-        Networking.send(createMsg(SRV_MSG_HBOK,null));
+        Networking.TIME_OUT_COUNTER = 0;
+        send_msg(SRV_MSG_HBOK,null);
     }
 
     private static void cltUp(){
-
+        TouchHandler.client_action(-1,'u');
     }
 
     private static void cltDown(String para){
-
+        try{
+            TouchHandler.client_action(Integer.parseInt(para),'d');
+        }catch (NumberFormatException e){
+            Log.i(TAG,"Error in CLT_MSG_DOWN: " + e.getMessage());
+        }
     }
 
 
@@ -299,7 +310,8 @@ public class Protocol {
 
 
     private static void srvUpdate(String para){
-
+        //parse String
+        //World.update(pos-x,pos-y,Bricks[])...
     }
 
     private static void srvHbOK(){
@@ -307,7 +319,8 @@ public class Protocol {
             Networking.HB_STARTED = true;
             Networking.heartbeat();
         }
-        Networking.send(createMsg(CLT_MSG_HB,null));
+        Networking.TIME_OUT_COUNTER = 0;
+        send_msg(CLT_MSG_HB,null);
     }
 
     /**
@@ -327,13 +340,16 @@ public class Protocol {
             if(waitscreen != null)
                 waitscreen.clt_connected();
 
+            //read the game file in and prepare the game
+
             //start heartbeating
-            Networking.send(createMsg(CLT_MSG_HB,null));
+            send_msg(CLT_MSG_HB,null);
         }
     }
 
     private static void srvStart(){
-
+        if(waitscreen != null)
+            waitscreen.killme(); //starts the game
     }
 
     private static void srvWin(String para){
@@ -344,11 +360,7 @@ public class Protocol {
 
     }
 
-
-    /**
-     * creating a valid message
-     */
-    public static String createMsg(int type,String[] data){
+    public static String get_msg(int type,String[] data){
         int sender = (Networking.SERVER) ? SERVER : CLIENT;
         String result = Integer.toString(sender) + SEPARATOR + Integer.toString(type) + SEPARATOR;
         if(data != null) {
@@ -357,5 +369,17 @@ public class Protocol {
             }
         }
         return result+END;
+    }
+
+    /**
+     * creating a valid message and sending it
+     */
+    public static void send_msg(int type, String[] data){
+        Networking.send(get_msg(type,data));
+    }
+
+    public static void time_out(){
+        Screen.TYPE = Screen.TIMEOUT;
+        main.gameOver();
     }
 }

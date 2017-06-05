@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
+
+import de.dhbw_loerrach.pvbvp.Network.Protocol;
 import de.dhbw_loerrach.pvbvp.function.GameController;
 import de.dhbw_loerrach.pvbvp.gui.GameView;
 import de.dhbw_loerrach.pvbvp.gui.TouchHandler;
@@ -31,13 +33,13 @@ public class Main extends Activity {
 	private GameController gameController;
 	private GameView gameView;
 	private View.OnTouchListener touchListener;
-	private TouchHandler touchHandler;
 
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.game_layout);
+
+		Protocol.main = this;
 		
 		//set actionbar and navigationbar invisible
 		final View decorView = getWindow().getDecorView();
@@ -78,8 +80,8 @@ public class Main extends Activity {
 						|| me.getAction() == 261 || me.getAction() == MotionEvent.ACTION_DOWN) {
 					//touchHandler.action(me.getX(index), me.getX(index),me);
 					if(MODE.equals(Screen.LOCAL))
-						touchHandler.action(MotionEventCompat.getX(me,index),MotionEventCompat.getY(me,index),me);
-					else touchHandler.action_remote(MotionEventCompat.getX(me,index),me);
+						TouchHandler.action(MotionEventCompat.getX(me,index),MotionEventCompat.getY(me,index),me);
+					else TouchHandler.action_remote(MotionEventCompat.getX(me,index),me);
 					//touchHandler.action(me.getX(),me.getY(),me);
 					//Log.i(TAG,""+MotionEventCompat.getX(me,index) + " is ? " + me.getX(index) + " is ? " + me.getX());
 				}
@@ -90,7 +92,8 @@ public class Main extends Activity {
 
 		
 		gameController = new GameController(this, gameView);
-		touchHandler = new TouchHandler(gameController);
+		TouchHandler.setup(gameController);
+
 		gameController.start();
 		
 		
@@ -110,7 +113,7 @@ public class Main extends Activity {
 	}
 
 	public void gameOver(){
-		Screen.TYPE = 'e';
+		gameController.RUNNING = false;
 		Intent intent = new Intent(this,Screen.class);
 		startActivity(intent);
 		finish();
