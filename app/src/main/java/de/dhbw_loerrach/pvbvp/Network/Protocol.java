@@ -174,10 +174,10 @@ public class Protocol {
      * every message received from the server
     */
     public static void serverMsg(String input){
-        Log.i(TAG, "received message from server!");
         String[] msg;
         try {
             msg = input.split(SEPARATOR+"|"+END);
+            Log.i(TAG,"message = " + input);
             type = Integer.parseInt(msg[1]);
         }catch (Exception e){
             Log.i(TAG,"CORRUPT PACKET from SERVER" + e.getMessage());
@@ -281,7 +281,6 @@ public class Protocol {
             Networking.heartbeat();
         }
         Networking.TIME_OUT_COUNTER = 0;
-        send_msg(SRV_MSG_HBOK,null);
     }
 
     private static void cltUp(){
@@ -313,7 +312,6 @@ public class Protocol {
             Networking.heartbeat();
         }
         Networking.TIME_OUT_COUNTER = 0;
-        send_msg(CLT_MSG_HB,null);
     }
 
     /**

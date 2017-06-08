@@ -40,13 +40,13 @@ public class Networking {
     public static boolean HB_STARTED;
     public static final int TIME_OUT = 5;
     public static int TIME_OUT_COUNTER = 0;
-    public static int SLEEP_TIME = 1000;
+    public static final int SLEEP_TIME = 5000;
 
     public static boolean GOOD_TO_GO = false;
     public static boolean CLIENT_CONNECTED = false;
 
 
-
+    public static int PACKET_LENGTH = 10000;
     public static boolean RUNNING = true;
 
 
@@ -54,7 +54,7 @@ public class Networking {
      * setting up inital bluetooth
      */
     public static void setup_bluetooth(){
-        buffer = new byte[1024];
+        buffer = new byte[PACKET_LENGTH];
         badapter = BluetoothAdapter.getDefaultAdapter();
         if(badapter == null){
             Log.i(TAG,"Bluetooth not supported");
@@ -95,6 +95,7 @@ public class Networking {
     }
 
     public static void start_server_receiver(){
+        SERVER = true;
         if(GOOD_TO_GO) {
             Log.i(TAG_SERVER, "start_server_receiver()");
             new Thread(new Runnable() {
@@ -122,7 +123,6 @@ public class Networking {
                     }
 
                     while (RUNNING) {
-                        //test
                         try {
                             input.read(buffer);
                             Log.i(TAG_SERVER, "READING : " + new String(buffer, "utf-8"));
@@ -142,24 +142,20 @@ public class Networking {
      */
     public static void start_client(){
         if(GOOD_TO_GO) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    socket = null;
-                    try {
-                        socket = device.createRfcommSocketToServiceRecord(PVBVP_UUID);
-                    } catch (Exception e) {
-                        Log.e(TAG_CLIENT, "start_client()", e);
-                        try {
-                            socket.close();
-                        } catch (Exception e2) {
-                            Log.e(TAG_CLIENT, "", e2);
-                        }
-                    }
-                    start_client_receiver();
-                    start_client_broadcast();
+            socket = null;
+            try {
+                socket = device.createRfcommSocketToServiceRecord(PVBVP_UUID);
+            } catch (Exception e) {
+                Log.e(TAG_CLIENT, "start_client()", e);
+                try {
+                    socket.close();
+                } catch (Exception e2) {
+                    Log.e(TAG_CLIENT, "", e2);
                 }
-            }).start();
+                return;
+            }
+            start_client_receiver();
+            start_client_broadcast();
         }
     }
 
@@ -224,6 +220,7 @@ public class Networking {
                             TIME_OUT_COUNTER++;
                             if (TIME_OUT_COUNTER == TIME_OUT)
                                 time_out();
+                            else send((SERVER) ? Protocol.get_msg(Protocol.SRV_MSG_HBOK,null) : Protocol.get_msg(Protocol.CLT_MSG_HB,null));
                         } catch (Exception e) {
                             Log.e("HEARTBEAT","", e);
                         }
