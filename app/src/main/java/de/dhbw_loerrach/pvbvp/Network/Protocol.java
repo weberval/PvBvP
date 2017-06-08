@@ -139,13 +139,11 @@ public class Protocol {
     /**
      * server side
      * every message received from the client
-     * @param input
      */
-    public static void clientMsg(DatagramPacket input) {
-        packet = input;
+    public static void clientMsg(String input) {
         String[] msg;
         try {
-            msg = new String(input.getData(),"utf-8").split(SEPARATOR+"|"+END);
+            msg = input.split(SEPARATOR+"|"+END);
             type = Integer.parseInt(msg[1]);
         }catch (Exception e){
             Log.i(TAG,"CORRUPT PACKET from CLIENT: " + e.getMessage());
@@ -174,14 +172,12 @@ public class Protocol {
     /**
      * client side
      * every message received from the server
-     * @param input
     */
-    public static void serverMsg(DatagramPacket input){
-        packet = input;
+    public static void serverMsg(String input){
         Log.i(TAG, "received message from server!");
         String[] msg;
         try {
-            msg = new String(input.getData(),"utf-8").split(SEPARATOR+"|"+END);
+            msg = input.split(SEPARATOR+"|"+END);
             type = Integer.parseInt(msg[1]);
         }catch (Exception e){
             Log.i(TAG,"CORRUPT PACKET from SERVER" + e.getMessage());
@@ -219,6 +215,7 @@ public class Protocol {
                     Log.i(TAG,"CORRUPT PACKET: SRV_MSG_GAMEOVER");
                 break;
         }
+
     }
 
 
@@ -232,10 +229,6 @@ public class Protocol {
     * send an INIT back
     */
     private static void cltHello(){
-        Log.i(TAG,"SERVER : Hello received from " + packet.getAddress().getHostAddress());
-        if(Networking.partnerAddress == null) {
-            Networking.partnerAddress = packet.getAddress();
-
             try {
 
                 World.init(1);
@@ -275,13 +268,13 @@ public class Protocol {
                 e.printStackTrace();
                 Log.i(TAG,"Error processing a CLT_MSG_HELLO " + e.getMessage()  +  " " + e.getClass());
             }
-        }
     }
 
     /**
      * server received a heartbeat from client
      * send one back
      */
+
     private static void cltHb(){
         if(!Networking.HB_STARTED){
             Networking.HB_STARTED = true;
@@ -328,41 +321,38 @@ public class Protocol {
      * (First signal from the server)
      *
      */
+
     private static void srvInit(String para){
         Log.i(TAG,"CLIENT : INIT RECEIVED");
-        if(Networking.partnerAddress == null) {
-
-            Networking.partnerAddress = packet.getAddress();
             Networking.CLIENT_CONNECTED = true;
 
+        //tell the user through the waitscreen that he/she is connected to the server, and have to wait til the game is started
+        if(waitscreen != null)
+            waitscreen.clt_connected();
 
-            //tell the user through the waitscreen that he/she is connected to the server, and have to wait til the game is started
-            if(waitscreen != null)
-                waitscreen.clt_connected();
-
-            //read the game file in and prepare the game
-            try {
-                File file = new File(con.getFilesDir(), GAMEFILE);
-                file.delete();
+        //read the game file in and prepare the game
+        try {
+            File file = new File(con.getFilesDir(), GAMEFILE);
+            file.delete();
 
 
-                ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));
-                out.writeObject(para.getBytes()); //should be the original object
-                out.flush();
-                out.close();
+            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));
+            out.writeObject(para.getBytes()); //should be the original object
+            out.flush();
+            out.close();
 
-                ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
-                World.playground = (GameObj[][]) in.readObject();
-                in.close();
+            ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
+            World.playground = (GameObj[][]) in.readObject();
+            in.close();
 
-            }catch (Exception e){
-                Log.i(TAG,"Error processing SRV_MSG_INIT");
-                e.printStackTrace();
-            }
-
-            //start heartbeating
-            send_msg(CLT_MSG_HB,null);
+        }catch (Exception e){
+            Log.i(TAG,"Error processing SRV_MSG_INIT");
+            e.printStackTrace();
         }
+
+        //start heart beating
+        send_msg(CLT_MSG_HB,null);
+
     }
 
     private static void srvStart(){

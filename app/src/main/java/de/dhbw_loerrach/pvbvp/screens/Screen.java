@@ -59,6 +59,9 @@ public class Screen extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.screen);
 
+        Log.i(TAG,"setting up bluetooth");
+        Networking.setup_bluetooth();
+
         title = (TextView) findViewById(R.id.screen_title);
         mode_button = (Button) findViewById(R.id.gamemode);
         mode_button.setText(LOCAL);
@@ -101,15 +104,15 @@ public class Screen extends Activity {
                 WaitScreen.TEXT = "Server waiting...";
                 startActivity(intent);
 
-                Networking.startServerReceiver();
+                //Networking.startServerReceiver();
                 break;
             case CLIENT:
                 intent = new Intent(this,WaitScreen.class);
                 WaitScreen.TEXT = "Client trying to connect...";
                 startActivity(intent);
 
-                Networking.startClientReceiver();
-                Networking.startClient();
+                //Networking.startClientReceiver();
+                //Networking.startClient();
                 break;
             case LOCAL:
                 intent = new Intent(this,Main.class);
@@ -146,12 +149,11 @@ public class Screen extends Activity {
 
     //------------------------------------
     public void debug_server(View view){
-        Networking.startServerReceiver();
+        Networking.start_server_receiver();
     }
 
     public void debug_client(View view){
-        Networking.startClientReceiver();
-        Networking.startClient();
+        Networking.start_client();
     }
     //------------------------------------
 
