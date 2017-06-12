@@ -117,9 +117,11 @@ public class World {
 	public static void brickDestroy(int x, int y) {
 		switch (playground[x][y].getSide()) {
 			case 'l':
+				if(playground[x + 1][y].type == GameObjType.BRICK)
 				playground[x + 1][y].destruct();
 				break;
 			case 'r':
+				if(playground[x - 1][y].type == GameObjType.BRICK)
 				playground[x - 1][y].destruct();
 				break;
 		}
