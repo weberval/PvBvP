@@ -3,16 +3,9 @@ package de.dhbw_loerrach.pvbvp.Network;
 import android.content.Context;
 import android.util.Log;
 
-import java.io.EOFException;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 
 import de.dhbw_loerrach.pvbvp.Main;
-import de.dhbw_loerrach.pvbvp.function.GameObj;
 import de.dhbw_loerrach.pvbvp.function.World;
 import de.dhbw_loerrach.pvbvp.gui.TouchHandler;
 import de.dhbw_loerrach.pvbvp.screens.Screen;
@@ -194,6 +187,7 @@ public class Protocol {
                 srvHbOK();
                 break;
             case SRV_MSG_INIT:
+                Log.i(TAG,"len " + msg.length);
                 if(msg.length == 3)
                     srvInit(msg[2]);
                 else
@@ -233,30 +227,10 @@ public class Protocol {
 
                 World.init(1);
 
-                //writing serialized file
-                File file = new File(con.getFilesDir(), GAMEFILE);
-                file.delete();
 
+                //send world
 
-                Log.i(TAG,"before : "+(int)file.length());
-
-                ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));
-                out.writeObject(World.playground);
-                out.flush();
-                int len = (int)file.length();
-                out.close();
-
-                Log.i(TAG,"after : "+(int)file.length());
-
-                ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
-                byte[] data = new byte[len];
-                try {
-                    in.readFully(data);
-                    in.close();
-                }catch(Exception e){
-                    e.printStackTrace();
-                }
-                send_msg(SRV_MSG_INIT, new String[]{new String(data,"utf-8")}); //new String(data,"utf-8"); data.toString();
+                send_msg(SRV_MSG_INIT, new String[]{World.returnString(),Integer.toString(World.ball.getX()),Integer.toString(World.ball.getY()),Integer.toString(World.ball.getDir())});
 
                 //tell the user through the waitscreen, that someone connected, and the game is ready to start
                 if(waitscreen != null)
@@ -321,33 +295,23 @@ public class Protocol {
      */
 
     private static void srvInit(String para){
-        Log.i(TAG,"CLIENT : INIT RECEIVED");
-            Networking.CLIENT_CONNECTED = true;
+
+        Networking.CLIENT_CONNECTED = true;
 
         //tell the user through the waitscreen that he/she is connected to the server, and have to wait til the game is started
         if(waitscreen != null)
             waitscreen.clt_connected();
 
-        //read the game file in and prepare the game
+        //read the game file in and prepare the game 'para'
         try {
-            File file = new File(con.getFilesDir(), GAMEFILE);
-            file.delete();
-
-
-            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));
-            out.writeObject(para.getBytes()); //should be the original object
-            out.flush();
-            out.close();
-
-            ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
-            World.playground = (GameObj[][]) in.readObject();
-            in.close();
-
+            String[] para_list = para.split(DATA_SEPARATOR);
+            World.decode(para_list[0]);
+            World.ball.setX(Integer.parseInt(para_list[1]));
+            World.ball.setY(Integer.parseInt(para_list[2]));
+            World.ball.setDir(Integer.parseInt(para_list[3]));
         }catch (Exception e){
-            Log.i(TAG,"Error processing SRV_MSG_INIT");
-            e.printStackTrace();
+            Log.e(TAG,"",e);
         }
-
         //start heart beating
         send_msg(CLT_MSG_HB,null);
 

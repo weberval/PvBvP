@@ -219,27 +219,43 @@ public class World {
 	 * Every GameObj will be converted to a Sting, consisting of the width, the height, the Type (A,B,M), the Coordinates (three digit form each), and the side
 	 * @return
 	 */
-	public String toString() {
+	public static String returnString() {
 		String string = getWidthfixedlenght()+getHeightfixedlenght();
 		for (int i = 0; i < PLAYGROUND_WIDTH; ++i) {
 			for (int j = 0; j < PLAYGROUND_HEIGHT; ++j) {
 				string += playground[i][j].toString();
 			}
+			string +="N";
 		}
 		return string;
 	}
 
 	public static void decode(String string) {
-		int x = string.charAt(0)-30;
-		int y = string.charAt(1)-30;
-		char[] array = string.substring(2).toCharArray();
-		playground = new GameObj[x][y];
-		for (int i = 0; i < y; i++) {
-			for (int j = 0; j < x; j++) {
-				switch (array[(i+1)*j]){
-					case 'A':
-						// TODO
-				}
+		playground = new GameObj[PLAYGROUND_WIDTH][PLAYGROUND_HEIGHT];
+		char[] pg = string.toCharArray();
+		int i,j;
+		i = j = 0;
+		for(char ch : pg){
+			switch (ch){
+				case 'N':
+					j++;
+					break;
+				case 'L':
+					playground[i][j] = new Brick(GameObjType.BRICK,'l');
+					i++;
+					break;
+				case 'R':
+					playground[i][j] = new Brick(GameObjType.BRICK,'r');
+					i++;
+					break;
+				case 'A':
+					playground[i][j] = new Air();
+					i++;
+					break;
+				case 'M':
+					playground[i][j] = new Brick(GameObjType.MASTER,'r');
+					i++;
+					break;
 			}
 		}
 	}
