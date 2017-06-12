@@ -1,0 +1,18 @@
+package de.dhbw_loerrach.pvbvp.gui;
+
+/**
+ * Created by Renat on 07.04.2017.
+ */
+public enum GameObjImage {
+	BRICK_LEFT,
+	BRICK_RIGHT,
+	BRICK_DESTRUCTED_1_LEFT,
+	BRICK_DESTRUCTED_2_LEFT,
+	BRICK_DESTRUCTED_3_LEFT,
+	BRICK_DESTRUCTED_1_RIGHT,
+	BRICK_DESTRUCTED_2_RIGHT,
+	BRICK_DESTRUCTED_3_RIGHT,
+	MASTER,
+	PANEL,
+	BALL;
+}
