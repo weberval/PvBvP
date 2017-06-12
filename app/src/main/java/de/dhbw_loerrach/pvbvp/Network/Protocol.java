@@ -3,8 +3,6 @@ package de.dhbw_loerrach.pvbvp.Network;
 import android.content.Context;
 import android.util.Log;
 
-import java.net.DatagramPacket;
-
 import de.dhbw_loerrach.pvbvp.Main;
 import de.dhbw_loerrach.pvbvp.function.World;
 import de.dhbw_loerrach.pvbvp.gui.TouchHandler;
@@ -124,10 +122,7 @@ public class Protocol {
     public static final int SERVER = 0;
     public static final int CLIENT = 1;
 
-    public static final String GAMEFILE = "plyg.ser";
-
     private static int type;
-    private static DatagramPacket packet;
 
     /**
      * server side
@@ -153,7 +148,7 @@ public class Protocol {
                 cltUp();
                 break;
             case CLT_MSG_DOWN:
-                if (msg.length == 3)
+                if (msg.length == 4)
                     cltDown(msg[2]);
                 else
                     Log.i(TAG, "CORRUPT PACKET: CLT_MSG_DOWN");

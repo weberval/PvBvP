@@ -57,5 +57,4 @@ public class GameObj implements Serializable {
 				return null;
 		}
 	}
-	// TODO: write decoder for GameObj
 }

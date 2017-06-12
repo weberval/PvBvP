@@ -28,7 +28,7 @@ public class Networking {
     public static BluetoothAdapter badapter;
     private static BluetoothDevice device;
 
-    public static final UUID PVBVP_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+    public static final UUID PVBVP_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"); //default ID
     public static BluetoothSocket socket;
     public static BluetoothServerSocket srv_socket;
 

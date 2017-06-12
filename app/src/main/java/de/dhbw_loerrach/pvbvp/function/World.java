@@ -191,36 +191,13 @@ public class World {
 		return (playground[ball.x][ball.y].type == GameObjType.MASTER ? true : false);
 	}
 
-	/**
-	 * returns the width of the array, 3 chars
-	 * @return
-	 */
-	public static String getWidthfixedlenght(){
-		String output = PLAYGROUND_WIDTH + "";
-		for (int i = 0; i < 3 - output.length();i++){
-			output += "_";
-		}
-		return output;
-	}
-
-	/**
-	 * returns the height of the array, 3 chars
-	 * @return
-	 */
-	public static String getHeightfixedlenght(){
-		String output = PLAYGROUND_HEIGHT + "";
-		for (int i = 0; i < 3 - output.length();i++){
-			output += "_";
-		}
-		return output;
-	}
 
 	/**
 	 * Every GameObj will be converted to a Sting, consisting of the width, the height, the Type (A,B,M), the Coordinates (three digit form each), and the side
 	 * @return
 	 */
 	public static String returnString() {
-		String string = getWidthfixedlenght()+getHeightfixedlenght();
+		String string = "";
 		for (int i = 0; i < PLAYGROUND_WIDTH; ++i) {
 			for (int j = 0; j < PLAYGROUND_HEIGHT; ++j) {
 				string += playground[i][j].toString();
