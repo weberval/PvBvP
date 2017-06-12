@@ -11,6 +11,8 @@ import java.io.OutputStream;
 import java.util.Set;
 import java.util.UUID;
 
+import de.dhbw_loerrach.pvbvp.function.World;
+
 /**
  * Class for handling the networking.
  *
@@ -35,12 +37,6 @@ public class Networking {
     private static InputStream input;
     private static OutputStream output;
     private static byte[] buffer;
-
-
-    public static boolean HB_STARTED;
-    public static final int TIME_OUT = 5;
-    public static int TIME_OUT_COUNTER = 0;
-    public static final int SLEEP_TIME = 5000;
 
     public static boolean GOOD_TO_GO = false;
     public static boolean CLIENT_CONNECTED = false;
@@ -125,8 +121,6 @@ public class Networking {
                     while (RUNNING) {
                         try {
                             input.read(buffer);
-                            Log.i(TAG_SERVER, "READING : " + new String(buffer, "utf-8"));
-
                             Protocol.clientMsg(new String(buffer, "utf-8"));
                         } catch (Exception e) {
                             Log.e(TAG_SERVER, "", e);
@@ -209,31 +203,31 @@ public class Networking {
         }
     }
 
-    public static void heartbeat(){
-        if (GOOD_TO_GO) {
+    /**
+     * thread that sends the update to the client
+     */
+    public static void game_updater(){
+        if(GOOD_TO_GO){
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    while(RUNNING) {
-                        try {
-                            Thread.sleep(SLEEP_TIME);
-                            TIME_OUT_COUNTER++;
-                            if (TIME_OUT_COUNTER == TIME_OUT)
-                                time_out();
-                            else send((SERVER) ? Protocol.get_msg(Protocol.SRV_MSG_HBOK,null) : Protocol.get_msg(Protocol.CLT_MSG_HB,null));
-                        } catch (Exception e) {
-                            Log.e("HEARTBEAT","", e);
+                    while(World.gameController.RUNNING){
+
+
+                        //TODO Add Array to World for destroyed bricks to update
+                        Protocol.send_msg(Protocol.SRV_MSG_UPDATE,new String[]{
+                                Integer.toString(World.ball.getX()),
+                                Integer.toString(World.ball.getY())
+                                });
+
+                        try{
+                            Thread.sleep(Protocol.GAME_UPDATE);
+                        }catch (Exception e){
+                            Log.e(TAG,"",e);
                         }
                     }
                 }
             }).start();
         }
     }
-
-    public static void time_out(){
-        Log.i((SERVER) ? TAG_SERVER :  TAG_CLIENT,"time out!");
-        RUNNING = false;
-        Protocol.time_out();
-    }
-
 }

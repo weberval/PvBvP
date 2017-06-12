@@ -28,7 +28,7 @@ public class World {
 	public static Ball ball;
 	public static Panel[] panels;
 
-	private static GameController gameController;
+	public static GameController gameController;
 
 
 	public static void setController(GameController gameController_) {
