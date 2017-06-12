@@ -10,6 +10,7 @@ public enum GameObjType {
 	BRICK,
 	PANEL,
 	BALL,
+	DESTUCTEDBRICK,
 	OUTOFBOUNDX,
 	OUTOFBOUNDY;
 }

@@ -32,6 +32,18 @@ public class ImageLoader {
 				return scaleImage(R.drawable.brick_left);
 			case BRICK_RIGHT:
 				return scaleImage(R.drawable.brick_right);
+			case BRICK_DESTRUCTED_1_LEFT:
+				return scaleImage(R.drawable.brick_destroy1_left);
+			case BRICK_DESTRUCTED_2_LEFT:
+				return scaleImage(R.drawable.brick_destroy2_left);
+			case BRICK_DESTRUCTED_3_LEFT:
+				return scaleImage(R.drawable.brick_destroy3_left);
+			case BRICK_DESTRUCTED_1_RIGHT:
+				return scaleImage(R.drawable.brick_destroy1_right);
+			case BRICK_DESTRUCTED_2_RIGHT:
+				return scaleImage(R.drawable.brick_destroy2_right);
+			case BRICK_DESTRUCTED_3_RIGHT:
+				return scaleImage(R.drawable.brick_destroy3_right);
 			case MASTER:
 				return scaleImage(R.drawable.master);
 			case PANEL:

@@ -117,14 +117,14 @@ public class World {
 	public static void brickDestroy(int x, int y) {
 		switch (playground[x][y].getSide()) {
 			case 'l':
-				playground[x + 1][y] = new Air();
+				playground[x + 1][y].destruct();
 				break;
 			case 'r':
-				playground[x - 1][y] = new Air();
+				playground[x - 1][y].destruct();
 				break;
 		}
 		if(playground[x][y].type == GameObjType.BRICK)
-			playground[x][y] = new Air();
+			playground[x][y].destruct();
 	}
 
 	public static void movePanel(int player, char dir) {

@@ -6,13 +6,11 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
-import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 import android.view.View;
 
 import java.util.LinkedList;
 
-import de.dhbw_loerrach.pvbvp.R;
 import de.dhbw_loerrach.pvbvp.function.Ball;
 import de.dhbw_loerrach.pvbvp.function.GameController;
 import de.dhbw_loerrach.pvbvp.function.GameObj;
@@ -67,6 +65,7 @@ public class GameView extends View {
 	
 	private Paint paint;
 	private Paint paint_points;
+	private Paint test_paint;
 
 	/**
 	 * positions for the point counter
@@ -85,6 +84,12 @@ public class GameView extends View {
 	private Bitmap ballBM;
 	private Bitmap brickLeft;
 	private Bitmap brickRight;
+	private Bitmap brickDestructed1Left;
+	private Bitmap brickDestructed2Left;
+	private Bitmap brickDestructed3Left;
+	private Bitmap brickDestructed1Right;
+	private Bitmap brickDestructed2Right;
+	private Bitmap brickDestructed3Right;
 	private Bitmap master;
 	private Bitmap panel;
 
@@ -106,6 +111,12 @@ public class GameView extends View {
 		ballBM = imageLoader.getImage(GameObjImage.BALL, (int) blockWidth, (int) blockHeight);
 		brickLeft = imageLoader.getImage(GameObjImage.BRICK_LEFT, (int) blockWidth, (int) blockHeight);
 		brickRight = imageLoader.getImage(GameObjImage.BRICK_RIGHT, (int) blockWidth, (int) blockHeight);
+		brickDestructed1Left = imageLoader.getImage(GameObjImage.BRICK_DESTRUCTED_1_LEFT, (int) blockWidth, (int) blockHeight);
+		brickDestructed2Left = imageLoader.getImage(GameObjImage.BRICK_DESTRUCTED_2_LEFT, (int) blockWidth, (int) blockHeight);
+		brickDestructed3Left = imageLoader.getImage(GameObjImage.BRICK_DESTRUCTED_3_LEFT, (int) blockWidth, (int) blockHeight);
+		brickDestructed1Right = imageLoader.getImage(GameObjImage.BRICK_DESTRUCTED_1_RIGHT, (int) blockWidth, (int) blockHeight);
+		brickDestructed2Right = imageLoader.getImage(GameObjImage.BRICK_DESTRUCTED_2_RIGHT, (int) blockWidth, (int) blockHeight);
+		brickDestructed3Right = imageLoader.getImage(GameObjImage.BRICK_DESTRUCTED_3_RIGHT, (int) blockWidth, (int) blockHeight);
 		master = imageLoader.getImage(GameObjImage.MASTER, (int) blockWidth, (int) blockHeight);
 		panel = imageLoader.getImage(GameObjImage.PANEL, (int) blockWidth * Panel.PANEL_WIDTH, (int) blockHeight);
 
@@ -119,6 +130,9 @@ public class GameView extends View {
 		paint_points = new Paint();
 		paint_points.setColor(Color.WHITE);
 		paint_points.setTextSize(35);
+
+		test_paint = new Paint();
+		test_paint.setColor(Color.GREEN);
 
 		Log.i(TAG, "created");
 	}
@@ -154,6 +168,39 @@ public class GameView extends View {
                 for (int j = 0; j < world[i].length; j++) {
 
                     switch (world[i][j].getType()) {
+						case DESTUCTEDBRICK:
+							switch (world[i][j].getSide()) {
+								case 'r':
+									switch (world[i][j].getDestructionStage()) {
+										case 3:
+											canvas.drawBitmap(brickDestructed1Right, i * blockWidth, j * blockHeight, paint);
+											break;
+										case 2:
+											canvas.drawBitmap(brickDestructed2Right, i * blockWidth, j * blockHeight, paint);
+											break;
+										case 1:
+											canvas.drawBitmap(brickDestructed3Right, i * blockWidth, j * blockHeight, paint);
+											break;
+										default: // For debugging purposes only
+											canvas.drawRect(i * blockWidth, j * blockHeight, i * blockWidth + blockWidth, j * blockHeight + blockHeight, test_paint);
+									}
+									break;
+								case 'l':
+									switch (world[i][j].getDestructionStage()) {
+										case 3:
+											canvas.drawBitmap(brickDestructed1Left, i * blockWidth, j * blockHeight, paint);
+											break;
+										case 2:
+											canvas.drawBitmap(brickDestructed2Left, i * blockWidth, j * blockHeight, paint);
+											break;
+										case 1:
+											canvas.drawBitmap(brickDestructed3Left, i * blockWidth, j * blockHeight, paint);
+											break;
+										default: // For debugging purposes only
+											canvas.drawRect(i * blockWidth, j * blockHeight, i * blockWidth + blockWidth, j * blockHeight + blockHeight, test_paint);
+									}
+							}
+							break;
                         case BRICK:
                             if (world[i][j].getSide() == 'r') {
                                 canvas.drawBitmap(brickRight, i * blockWidth, j * blockHeight, paint);

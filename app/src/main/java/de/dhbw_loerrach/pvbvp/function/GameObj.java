@@ -21,6 +21,12 @@ public class GameObj implements Serializable {
 	public char getSide() {
 		return (char) 0;
 	}
+
+	public int getDestructionStage(){
+		return 0;
+	}
+
+	public void destruct(){};
 	
 	public PanelPlayer getPlayer() {
 		return null;

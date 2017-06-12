@@ -171,7 +171,7 @@ public class Ball extends GameObj {
 
 
 				//ball hits the edge of the panel, total reflection (left up -> right down)
-				if(leftup == GameObjType.PANEL && up == GameObjType.AIR) {
+				if(leftup == GameObjType.PANEL && (up == GameObjType.AIR || up == GameObjType.DESTUCTEDBRICK)) {
 					//direction = 1;
 					onPanelHit(panel1,panel2); //for now
 				}
@@ -183,13 +183,13 @@ public class Ball extends GameObj {
 				else if(up == GameObjType.BRICK && left == GameObjType.BRICK)
 					direction = 1;
 				//ball hits edge of brick, total reflection (left up -> right down)
-				else if(up == GameObjType.AIR && leftup == GameObjType.BRICK && left == GameObjType.AIR)
+				else if((up == GameObjType.AIR || up == GameObjType.DESTUCTEDBRICK) && leftup == GameObjType.BRICK && (left == GameObjType.AIR || left == GameObjType.DESTUCTEDBRICK))
 					direction = 1;
 				//reflection on x-axis (left up -> left down) ; leftup doesn't matter
-				else if(up == GameObjType.BRICK && left == GameObjType.AIR)
+				else if(up == GameObjType.BRICK && (left == GameObjType.AIR || left == GameObjType.DESTUCTEDBRICK))
 					direction = 3;
 				//reflect on y-axis (left up -> right up) ; leftup doesn't matter
-				else if(left == GameObjType.BRICK && up == GameObjType.AIR)
+				else if(left == GameObjType.BRICK && (up == GameObjType.AIR || up == GameObjType.DESTUCTEDBRICK))
 					direction = -3;
 				//reflect on y-axis (left up -> right up)
 				else if(left == GameObjType.OUTOFBOUNDX)
@@ -253,7 +253,7 @@ public class Ball extends GameObj {
 
 
 				//ball hits the edge of the panel, total reflection (right up -> left down)
-				if(rightup == GameObjType.PANEL && up3 == GameObjType.AIR)
+				if(rightup == GameObjType.PANEL && (up3 == GameObjType.AIR || up3 == GameObjType.DESTUCTEDBRICK))
 					onPanelHit(panel1,panel2); //direction = 3;
 				//ball hits the panel, reflection on x-axis (right up -> right down)
 				else if(up3 == GameObjType.PANEL)
@@ -262,13 +262,13 @@ public class Ball extends GameObj {
 				else if(up3 == GameObjType.BRICK && right == GameObjType.BRICK)
 					direction = 3;
 				//ball hits edge of brick, total reflection (right up -> left down)
-				else if(up3 == GameObjType.AIR && right == GameObjType.AIR && rightup == GameObjType.BRICK)
+				else if((up3 == GameObjType.AIR || up3 == GameObjType.DESTUCTEDBRICK) && (right == GameObjType.AIR || right == GameObjType.DESTUCTEDBRICK) && rightup == GameObjType.BRICK)
 					direction = 3;
 				//ball hits bricks below, reflection on x-axis (right up -> right down)
-				else if(up3 == GameObjType.BRICK && right == GameObjType.AIR)
+				else if(up3 == GameObjType.BRICK && (right == GameObjType.AIR || right == GameObjType.DESTUCTEDBRICK))
 					direction = -1;
 				//ball hits brick on side, reflection on y-axis (right up -> left up)
-				else if(up3 == GameObjType.AIR && right == GameObjType.BRICK)
+				else if((up3 == GameObjType.AIR || up3 == GameObjType.DESTUCTEDBRICK) && right == GameObjType.BRICK)
 					direction = -1;
 				//reflect on y-axis (right up -> left up)
 				else if(rightup == GameObjType.OUTOFBOUNDX)
