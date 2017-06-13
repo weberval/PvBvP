@@ -39,10 +39,6 @@ public class Brick extends GameObj {
 	}
 
 	public String toString() {
-		if(type == GameObjType.MASTER)
-			return "M";
-		if(side == 'l')
-			return "L";
-		else return "R";
+		return ""+this.getTypefixedString()+this.getXfixedString()+this.getYfixedString()+side;
 	}
 }

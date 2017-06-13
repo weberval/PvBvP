@@ -182,7 +182,7 @@ public class GameView extends View {
 											canvas.drawBitmap(brickDestructed3Right, i * blockWidth, j * blockHeight, paint);
 											break;
 										default: // For debugging purposes only
-											canvas.drawRect(i * blockWidth, j * blockHeight, i * blockWidth + blockWidth, j * blockHeight + blockHeight, test_paint);
+										//	canvas.drawRect(i * blockWidth, j * blockHeight, i * blockWidth + blockWidth, j * blockHeight + blockHeight, test_paint);
 									}
 									break;
 								case 'l':
@@ -197,7 +197,7 @@ public class GameView extends View {
 											canvas.drawBitmap(brickDestructed3Left, i * blockWidth, j * blockHeight, paint);
 											break;
 										default: // For debugging purposes only
-											canvas.drawRect(i * blockWidth, j * blockHeight, i * blockWidth + blockWidth, j * blockHeight + blockHeight, test_paint);
+										//	canvas.drawRect(i * blockWidth, j * blockHeight, i * blockWidth + blockWidth, j * blockHeight + blockHeight, test_paint);
 									}
 							}
 							break;

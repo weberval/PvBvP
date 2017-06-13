@@ -17,6 +17,7 @@ import de.dhbw_loerrach.pvbvp.function.GameController;
 import de.dhbw_loerrach.pvbvp.gui.GameView;
 import de.dhbw_loerrach.pvbvp.gui.TouchHandler;
 import de.dhbw_loerrach.pvbvp.screens.Screen;
+import de.dhbw_loerrach.pvbvp.sound.Soundeffects;
 
 /**
  * Start of application.
@@ -40,6 +41,7 @@ public class Main extends Activity {
 		setContentView(R.layout.game_layout);
 
 		Protocol.main = this;
+		Soundeffects.init(this);
 		
 		//set actionbar and navigationbar invisible
 		final View decorView = getWindow().getDecorView();

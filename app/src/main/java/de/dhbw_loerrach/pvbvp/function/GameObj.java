@@ -44,8 +44,23 @@ public class GameObj implements Serializable {
 		return y;
 	}
 
+	public String getXfixedString(){
+		String output = this.x + "";
+		for (int i = 0; i < 3 - output.length();i++){
+			output += "_";
+		}
+		return output;
+	}
 
-	public String toString() {
+	public String getYfixedString(){
+		String output = this.y + "";
+		for (int i = 0; i < 3 - output.length();i++){
+			output += "_";
+		}
+		return output;
+	}
+
+	public String getTypefixedString() {
 		switch (this.type){
 			case AIR:
 				return "A";
@@ -57,4 +72,5 @@ public class GameObj implements Serializable {
 				return null;
 		}
 	}
+	// TODO: write decoder for GameObj
 }

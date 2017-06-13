@@ -2,6 +2,8 @@ package de.dhbw_loerrach.pvbvp.function;
 
 import android.util.Log;
 
+import de.dhbw_loerrach.pvbvp.sound.Soundeffects;
+
 /**
  * Created by weva on 04.04.2017.
  * const PLAYGROUND_WIDTH has to be odd
@@ -28,7 +30,7 @@ public class World {
 	public static Ball ball;
 	public static Panel[] panels;
 
-	public static GameController gameController;
+	private static GameController gameController;
 
 
 	public static void setController(GameController gameController_) {
@@ -125,8 +127,10 @@ public class World {
 				playground[x - 1][y].destruct();
 				break;
 		}
-		if(playground[x][y].type == GameObjType.BRICK)
+		if(playground[x][y].type == GameObjType.BRICK) {
 			playground[x][y].destruct();
+			Soundeffects.playKock();
+		}
 	}
 
 	public static void movePanel(int player, char dir) {
@@ -142,7 +146,7 @@ public class World {
 	}
 
 	public static GameObjType collisionCheck(int x, int y, Panel panel) {
-		if (y <= -1 || y >= World.PLAYGROUND_HEIGHT) {
+		if (y < -1 || y > World.PLAYGROUND_HEIGHT) {
 			return GameObjType.OUTOFBOUNDY;
 		}
 		if (x <= -1 || x >= World.PLAYGROUND_WIDTH) {
@@ -151,7 +155,12 @@ public class World {
 		if (hitPanel(panel,x,y)){
 			return GameObjType.PANEL;
 		}
-		return playground[x][y].getType();
+		try {
+			return playground[x][y].getType();
+		}
+		catch (ArrayIndexOutOfBoundsException e) {
+			return GameObjType.AIR;
+		}
 	}
 
 	/**
@@ -159,9 +168,20 @@ public class World {
 	 * @return
 	 */
 	public static boolean hitPanel(Panel panel,int x, int y){
-		if(panel.getY() == y){
-			if(x >= panel.getX() && x <= panel.getX() + Panel.PANEL_WIDTH)
+		int diff = 0;
+		switch (panel.getPlayer()){
+			case PLAYER1:
+				diff = 1;
+				break;
+			case PLAYER2:
+				diff = -1;
+				break;
+		}
+		if(panel.getY() == y + diff){
+			if(x >= panel.getX() && x <= panel.getX() + Panel.PANEL_WIDTH) {
+				Soundeffects.playBlink();
 				return true;
+			}
 		}
 		return false;
 	}
@@ -191,48 +211,55 @@ public class World {
 		return (playground[ball.x][ball.y].type == GameObjType.MASTER ? true : false);
 	}
 
+	/**
+	 * returns the width of the array, 3 chars
+	 * @return
+	 */
+	public static String getWidthfixedlenght(){
+		String output = PLAYGROUND_WIDTH + "";
+		for (int i = 0; i < 3 - output.length();i++){
+			output += "_";
+		}
+		return output;
+	}
+
+	/**
+	 * returns the height of the array, 3 chars
+	 * @return
+	 */
+	public static String getHeightfixedlenght(){
+		String output = PLAYGROUND_HEIGHT + "";
+		for (int i = 0; i < 3 - output.length();i++){
+			output += "_";
+		}
+		return output;
+	}
 
 	/**
 	 * Every GameObj will be converted to a Sting, consisting of the width, the height, the Type (A,B,M), the Coordinates (three digit form each), and the side
 	 * @return
 	 */
-	public static String returnString() {
-		String string = "";
+	public String toString() {
+		String string = getWidthfixedlenght()+getHeightfixedlenght();
 		for (int i = 0; i < PLAYGROUND_WIDTH; ++i) {
 			for (int j = 0; j < PLAYGROUND_HEIGHT; ++j) {
 				string += playground[i][j].toString();
 			}
-			string +="N";
 		}
 		return string;
 	}
 
 	public static void decode(String string) {
-		playground = new GameObj[PLAYGROUND_WIDTH][PLAYGROUND_HEIGHT];
-		char[] pg = string.toCharArray();
-		int i,j;
-		i = j = 0;
-		for(char ch : pg){
-			switch (ch){
-				case 'N':
-					j++;
-					break;
-				case 'L':
-					playground[i][j] = new Brick(GameObjType.BRICK,'l');
-					i++;
-					break;
-				case 'R':
-					playground[i][j] = new Brick(GameObjType.BRICK,'r');
-					i++;
-					break;
-				case 'A':
-					playground[i][j] = new Air();
-					i++;
-					break;
-				case 'M':
-					playground[i][j] = new Brick(GameObjType.MASTER,'r');
-					i++;
-					break;
+		int x = string.charAt(0)-30;
+		int y = string.charAt(1)-30;
+		char[] array = string.substring(2).toCharArray();
+		playground = new GameObj[x][y];
+		for (int i = 0; i < y; i++) {
+			for (int j = 0; j < x; j++) {
+				switch (array[(i+1)*j]){
+					case 'A':
+						// TODO
+				}
 			}
 		}
 	}

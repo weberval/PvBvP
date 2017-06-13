@@ -3,65 +3,77 @@
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/screen_layout"
-    android:background="#FFFFFF"> <!-- TODO: add some nice background-->
+    android:background="@drawable/menu_bg" >
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:id="@+id/screen_title"
+        android:width="0mm"
         />
 
-
     <Button
-        android:layout_width="wrap_content"
-        android:textAllCaps="false"
-        android:layout_height="wrap_content"
         android:id="@+id/screen_button"
-        android:layout_centerInParent="true"
-        android:onClick="startGame"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="50dp"
+        android:layout_marginEnd="25dp"
+        android:layout_toStartOf="@+id/gamemode"
+        android:background="@drawable/brick"
+        android:fontFamily="monospace"
+        android:onClick="startGame"
+        android:textAllCaps="false"
+        android:textColor="#ffffff"/>
 
     <Button
         android:id="@+id/gamemode"
         android:textAllCaps="false"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/screen_button"
         android:onClick="gameMode"
-        />
+        android:layout_alignBottom="@+id/screen_button"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="monospace"
+        android:background="@drawable/brick"
+        android:textColor="#ffffff"/>
 
     <Button
         android:id="@+id/close_button"
-        android:textAllCaps="false"
-        android:text="Close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/gamemode"
+        android:layout_alignBaseline="@+id/gamemode"
+        android:layout_alignBottom="@+id/gamemode"
+        android:layout_marginStart="25dp"
+        android:layout_toEndOf="@+id/gamemode"
+        android:background="@drawable/brick"
+        android:fontFamily="monospace"
         android:onClick="close"
-        />
+        android:text="Close"
+        android:textAllCaps="false"
+        android:textColor="#ffffff"/>
 
     <!-- DEBUG -->
-    <Button
-        android:id="@+id/DEBUG_server"
-        android:textAllCaps="false"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/gamemode"
-        android:text="DEBUG server"
-        android:onClick="debug_server"
-        />
+    <!--<Button-->
+        <!--android:id="@+id/DEBUG_server"-->
+        <!--android:textAllCaps="false"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@id/gamemode"-->
+        <!--android:text="DEBUG server"-->
+        <!--android:onClick="debug_server"-->
+        <!--/>-->
 
-    <Button
-        android:id="@+id/DEBUG_client"
-        android:textAllCaps="false"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/DEBUG_server"
-        android:text="DEBUG Client"
-        android:onClick="debug_client"
-        />
+    <!--<Button-->
+        <!--android:id="@+id/DEBUG_client"-->
+        <!--android:textAllCaps="false"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@id/DEBUG_server"-->
+        <!--android:text="DEBUG Client"-->
+        <!--android:onClick="debug_client"-->
+        <!--/>-->
     <!-- DEBUG -->
 
 </RelativeLayout>
