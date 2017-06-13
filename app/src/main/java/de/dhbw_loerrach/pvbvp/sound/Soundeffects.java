@@ -2,6 +2,7 @@ package de.dhbw_loerrach.pvbvp.sound;
 
 
 import android.media.MediaPlayer;
+import android.media.MediaTimestamp;
 
 import de.dhbw_loerrach.pvbvp.Main;
 import de.dhbw_loerrach.pvbvp.R;
@@ -32,24 +33,32 @@ public class Soundeffects {
 		/**
 		 * setting music file
 		 */
-		music = MediaPlayer.create(main, R.raw.headknocker);
-		music.setLooping(true);
-		music.setVolume(volumeMusic, volumeMusic);
-		music.start();
+		if (music == null) {
+			music = MediaPlayer.create(main, R.raw.headknocker);
+			music.setLooping(true);
+			music.setVolume(volumeMusic, volumeMusic);
+			music.start();
+		}
+
 
 		/**
 		 * setting audio effect files
 		 */
-		knock = MediaPlayer.create(main, R.raw.knock);
-		rrrrt = MediaPlayer.create(main, R.raw.rrrrt);
-		tick = MediaPlayer.create(main, R.raw.tick);
-		blink = MediaPlayer.create(main, R.raw.blink);
+		if (knock == null)
+			knock = MediaPlayer.create(main, R.raw.knock);
+		if (rrrrt == null)
+			rrrrt = MediaPlayer.create(main, R.raw.rrrrt);
+		if (tick == null)
+			tick = MediaPlayer.create(main, R.raw.tick);
+		if (blink == null)
+			blink = MediaPlayer.create(main, R.raw.blink);
 
 		/**
 		 * setting sound effects volume
 		 */
 		knock.setVolume(volumeEffects, volumeEffects);
 		rrrrt.setVolume(volumeEffects, volumeEffects);
+		tick.setVolume(volumeEffects, volumeEffects);
 		blink.setVolume(volumeEffects, volumeEffects);
 	}
 
