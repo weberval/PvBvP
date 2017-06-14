@@ -1,4 +1,4 @@
-# PvBvP 
+# The Game 3000 - Ultimate Deluxe 
 In diesem kleinen Projekt von Renat und mir, geht es darum ein Android-Spiel im Pong-Stil zu entwickeln.
 Dieses soll im lokalen Multiplayer spielbar sein.
 ## Spielablauf
@@ -10,3 +10,8 @@ Um dieses Projekt kompilieren, erstellen Sie am besten ein neues Android Projekt
 Dieses Nennnen Sie *PvBvP* und als Domain geben Sie *dhbw_loerrach.de* an.
 Wählen Sie keine activity aus!
 Danach kopieren Sie die Sourcedateien in das Projekt.
+## APK-Datei
+Eine kompilierte APK-Datei finden Sie im Projekt-root.
+## Lizenz
+Das Project ist veröffentlicht unter der CC BY-SA Lizenz:
+https://creativecommons.org/licenses/by-sa/3.0/
