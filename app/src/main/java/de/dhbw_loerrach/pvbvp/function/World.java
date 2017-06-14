@@ -222,7 +222,7 @@ public class World {
  		return string;
 	}
 
-	public static void decode(){
+	public static void decode(String string){
 		playground = new GameObj[PLAYGROUND_WIDTH][PLAYGROUND_HEIGHT];
 		char[] pg = string.toCharArray();
 		int i,j;
