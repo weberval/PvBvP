@@ -17,15 +17,14 @@
         android:id="@+id/screen_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="50dp"
-        android:layout_marginEnd="25dp"
-        android:layout_toStartOf="@+id/gamemode"
         android:background="@drawable/brick"
         android:fontFamily="monospace"
         android:onClick="startGame"
         android:textAllCaps="false"
-        android:textColor="#ffffff"/>
+        android:textColor="#ffffff"
+        android:layout_alignBaseline="@+id/dummy3"
+        android:layout_alignBottom="@+id/dummy3"
+        android:layout_toStartOf="@+id/dummy3"/>
 
     <Button
         android:id="@+id/gamemode"
@@ -33,26 +32,69 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="gameMode"
-        android:layout_alignBottom="@+id/screen_button"
-        android:layout_centerHorizontal="true"
         android:fontFamily="monospace"
         android:background="@drawable/brick"
-        android:textColor="#ffffff"/>
+        android:textColor="#ffffff"
+        android:layout_below="@+id/dummy3"
+        android:layout_toStartOf="@+id/dummy1"/>
+
 
     <Button
         android:id="@+id/close_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/gamemode"
-        android:layout_alignBottom="@+id/gamemode"
-        android:layout_marginStart="25dp"
-        android:layout_toEndOf="@+id/gamemode"
         android:background="@drawable/brick"
         android:fontFamily="monospace"
         android:onClick="close"
-        android:text="Close"
+        android:text="@string/close"
         android:textAllCaps="false"
-        android:textColor="#ffffff"/>
+        android:textColor="#ffffff"
+        android:layout_above="@+id/dummy2"
+        android:layout_toEndOf="@+id/dummy1"
+        android:layout_marginStart="42dp"/>
+
+    <!-- dummy Buttons -->
+    <Button
+        android:id="@+id/dummy1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/brick"
+        android:fontFamily="monospace"
+        android:text="@string/test_dummy"
+        android:textAllCaps="false"
+        android:clickable="false"
+        android:textColor="#ffffff"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp"/>
+
+    <Button
+        android:id="@+id/dummy2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/brick"
+        android:fontFamily="monospace"
+        android:text="@string/test_dummy"
+        android:textAllCaps="false"
+        android:clickable="false"
+        android:textColor="#ffffff"
+        android:layout_alignBaseline="@+id/dummy1"
+        android:layout_alignBottom="@+id/dummy1"
+        android:layout_toEndOf="@+id/dummy1"/>
+
+
+    <Button
+        android:id="@+id/dummy3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/brick"
+        android:fontFamily="monospace"
+        android:text="@string/test_dummy"
+        android:textAllCaps="false"
+        android:clickable="false"
+        android:textColor="#ffffff"
+        android:layout_above="@+id/dummy1"
+        android:layout_toStartOf="@+id/screen_title"/>
 
     <!-- DEBUG -->
     <!--<Button-->
