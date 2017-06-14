@@ -13,5 +13,8 @@ Danach kopieren Sie die Sourcedateien in das Projekt.
 ## APK-Datei
 Eine kompilierte APK-Datei finden Sie im Projekt-root.
 ## Lizenz
-Das Project ist veröffentlicht unter der CC BY-SA Lizenz:
-https://creativecommons.org/licenses/by-sa/3.0/
+
+Das Project ist veröffentlicht unter der GNU General Public License v3.0. <br>
+Einzige Ausnahme ist die Datei "/app/src/main/res/raw/headknocker.mp3". <br>
+<a href="freemusicarchive.org/music/Audiobinger/~/Head_Knocker_90bpm">Headknocker by Audiobinger</a><br>
+Diese ist veröffentlicht unter der <a href="creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0 Lizenz</a>.
