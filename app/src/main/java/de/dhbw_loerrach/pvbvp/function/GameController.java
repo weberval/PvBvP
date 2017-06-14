@@ -5,6 +5,7 @@ import android.util.Log;
 
 import de.dhbw_loerrach.pvbvp.Main;
 import de.dhbw_loerrach.pvbvp.gui.GameView;
+import de.dhbw_loerrach.pvbvp.Network.Networking;
 import de.dhbw_loerrach.pvbvp.screens.Screen;
 
 /**
@@ -52,6 +53,8 @@ public class GameController extends Thread {
 		World.setController(this);
 		if(Main.MODE == Screen.LOCAL)
 			World.init(level);
+		else if(Main.MODE == Screen.CLIENT)
+			Networking.game_updater();
 
 	}
 

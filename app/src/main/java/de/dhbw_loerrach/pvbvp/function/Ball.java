@@ -36,6 +36,23 @@ public class Ball extends GameObj {
 		}
 	}
 	
+
+	public int getDir(){
+		return direction;
+	}
+
+	public void setX(int x){
+		this.x = x;
+	}
+
+	public void setY(int y){
+		this.y = y;
+	}
+
+	public void setDir(int dir){
+		direction = dir;
+	}
+
 	public void move() {
 		panel1 = World.panels[0];
 		panel2 = World.panels[1];
