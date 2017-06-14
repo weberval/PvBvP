@@ -56,7 +56,7 @@ public class World {
 		panels[0] = new Panel(PanelPlayer.PLAYER1);
 		panels[1] = new Panel(PanelPlayer.PLAYER2);
 
-		if(level % 2 == 0)
+		if (level % 2 == 0)
 			ball = new Ball(PanelPlayer.PLAYER1.index);
 		else
 			ball = new Ball(PanelPlayer.PLAYER2.index);
@@ -119,15 +119,15 @@ public class World {
 	public static void brickDestroy(int x, int y) {
 		switch (playground[x][y].getSide()) {
 			case 'l':
-				if(playground[x + 1][y].type == GameObjType.BRICK)
-				playground[x + 1][y].destruct();
+				if (playground[x + 1][y].type == GameObjType.BRICK)
+					playground[x + 1][y].destruct();
 				break;
 			case 'r':
-				if(playground[x - 1][y].type == GameObjType.BRICK)
-				playground[x - 1][y].destruct();
+				if (playground[x - 1][y].type == GameObjType.BRICK)
+					playground[x - 1][y].destruct();
 				break;
 		}
-		if(playground[x][y].type == GameObjType.BRICK) {
+		if (playground[x][y].type == GameObjType.BRICK) {
 			playground[x][y].destruct();
 			Soundeffects.playKock();
 		}
@@ -152,24 +152,24 @@ public class World {
 		if (x <= -1 || x >= World.PLAYGROUND_WIDTH) {
 			return GameObjType.OUTOFBOUNDX;
 		}
-		if (hitPanel(panel,x,y)){
+		if (hitPanel(panel, x, y)) {
 			return GameObjType.PANEL;
 		}
 		try {
 			return playground[x][y].getType();
-		}
-		catch (ArrayIndexOutOfBoundsException e) {
+		} catch (ArrayIndexOutOfBoundsException e) {
 			return GameObjType.AIR;
 		}
 	}
 
 	/**
 	 * returns true if the ball hit the panel
+	 *
 	 * @return
 	 */
-	public static boolean hitPanel(Panel panel,int x, int y){
+	public static boolean hitPanel(Panel panel, int x, int y) {
 		int diff = 0;
-		switch (panel.getPlayer()){
+		switch (panel.getPlayer()) {
 			case PLAYER1:
 				diff = 1;
 				break;
@@ -177,8 +177,8 @@ public class World {
 				diff = -1;
 				break;
 		}
-		if(panel.getY() == y + diff){
-			if(x >= panel.getX() && x <= panel.getX() + Panel.PANEL_WIDTH) {
+		if (panel.getY() == y + diff) {
+			if (x >= panel.getX() && x <= panel.getX() + Panel.PANEL_WIDTH) {
 				Soundeffects.playBlink();
 				return true;
 			}
@@ -188,56 +188,59 @@ public class World {
 
 	/**
 	 * will be called when the ball goes out of bounds on y-axis
+	 *
 	 * @param ply
 	 */
-	public static void gameOver(PanelPlayer ply){
+	public static void gameOver(PanelPlayer ply) {
 		gameController.gameOver(ply);
 	}
 
 	/**
 	 * will be call when the balls hits the masterbrick
+	 *
 	 * @param ply
 	 */
-	public static void win(PanelPlayer ply){
+	public static void win(PanelPlayer ply) {
 		gameController.win(ply);
 	}
 
 	/**
 	 * checks if the masterbrick was hit
-	 *  not in use now
+	 * not in use now
+	 *
 	 * @return
 	 */
-	public boolean hitMasterBrick(){
+	public boolean hitMasterBrick() {
 		return (playground[ball.x][ball.y].type == GameObjType.MASTER ? true : false);
 	}
 
-	public static String returnString(){
+	public static String returnString() {
 		String string = "";
- 		for (int i = 0; i < PLAYGROUND_WIDTH; ++i) {
- 			for (int j = 0; j < PLAYGROUND_HEIGHT; ++j) {
- 				string += playground[i][j].toString();
- 			}
-			string +="N";
- 		}
- 		return string;
+		for (int i = 0; i < PLAYGROUND_WIDTH; ++i) {
+			for (int j = 0; j < PLAYGROUND_HEIGHT; ++j) {
+				string += playground[i][j].toString();
+			}
+			string += "N";
+		}
+		return string;
 	}
 
-	public static void decode(String string){
+	public static void decode(String string) {
 		playground = new GameObj[PLAYGROUND_WIDTH][PLAYGROUND_HEIGHT];
 		char[] pg = string.toCharArray();
-		int i,j;
+		int i, j;
 		i = j = 0;
-		for(char ch : pg){
-			switch (ch){
+		for (char ch : pg) {
+			switch (ch) {
 				case 'N':
 					j++;
 					break;
 				case 'L':
-					playground[i][j] = new Brick(GameObjType.BRICK,'l');
+					playground[i][j] = new Brick(GameObjType.BRICK, 'l');
 					i++;
 					break;
 				case 'R':
-					playground[i][j] = new Brick(GameObjType.BRICK,'r');
+					playground[i][j] = new Brick(GameObjType.BRICK, 'r');
 					i++;
 					break;
 				case 'A':
@@ -245,10 +248,10 @@ public class World {
 					i++;
 					break;
 				case 'M':
-					playground[i][j] = new Brick(GameObjType.MASTER,'r');
+					playground[i][j] = new Brick(GameObjType.MASTER, 'r');
 					i++;
 					break;
+			}
+		}
 	}
-
-
 }
