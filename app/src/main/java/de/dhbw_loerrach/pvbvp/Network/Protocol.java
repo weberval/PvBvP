@@ -3,16 +3,8 @@ package de.dhbw_loerrach.pvbvp.Network;
 import android.content.Context;
 import android.util.Log;
 
-import java.io.EOFException;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.DatagramPacket;
-
 import de.dhbw_loerrach.pvbvp.Main;
-import de.dhbw_loerrach.pvbvp.function.GameObj;
+import de.dhbw_loerrach.pvbvp.function.PanelPlayer;
 import de.dhbw_loerrach.pvbvp.function.World;
 import de.dhbw_loerrach.pvbvp.gui.TouchHandler;
 import de.dhbw_loerrach.pvbvp.screens.Screen;
@@ -121,20 +113,19 @@ public class Protocol {
     public static final int SRV_MSG_UPDATE = 2;
     public static final int SRV_MSG_WIN = 3;
     public static final int SRV_MSG_GAMEOVER = 4;
-    public static final int SRV_MSG_HBOK = 5;
 
     public static final int CLT_MSG_HELLO = 0;
     public static final int CLT_MSG_DOWN = 1;
     public static final int CLT_MSG_UP = 2;
-    public static final int CLT_MSG_HB = 3;
+    public static final int CLT_MSG_OK = 3;
 
     public static final int SERVER = 0;
     public static final int CLIENT = 1;
 
-    public static final String GAMEFILE = "plyg.ser";
+    //milliseconds between each  update
+    public static final int GAME_UPDATE = 20;
 
     private static int type;
-    private static DatagramPacket packet;
 
     /**
      * server side
@@ -153,14 +144,14 @@ public class Protocol {
             case CLT_MSG_HELLO:
                 cltHello();
                 break;
-            case CLT_MSG_HB:
-                cltHb();
+            case CLT_MSG_OK:
+                cltOK();
                 break;
             case CLT_MSG_UP:
                 cltUp();
                 break;
             case CLT_MSG_DOWN:
-                if (msg.length == 3)
+                if (msg.length == 4)
                     cltDown(msg[2]);
                 else
                     Log.i(TAG, "CORRUPT PACKET: CLT_MSG_DOWN");
@@ -190,10 +181,8 @@ public class Protocol {
                 else
                     Log.i(TAG,"CORRUPT PACKET: SRV_MSG_UPDATE");
                 break;
-            case SRV_MSG_HBOK:
-                srvHbOK();
-                break;
             case SRV_MSG_INIT:
+                Log.i(TAG,"len " + msg.length);
                 if(msg.length == 3)
                     srvInit(msg[2]);
                 else
@@ -230,39 +219,13 @@ public class Protocol {
     */
     private static void cltHello(){
             try {
-
                 World.init(1);
-
-                //writing serialized file
-                File file = new File(con.getFilesDir(), GAMEFILE);
-                file.delete();
-
-
-                Log.i(TAG,"before : "+(int)file.length());
-
-                ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));
-                out.writeObject(World.playground);
-                out.flush();
-                int len = (int)file.length();
-                out.close();
-
-                Log.i(TAG,"after : "+(int)file.length());
-
-                ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
-                byte[] data = new byte[len];
-                try {
-                    in.readFully(data);
-                    in.close();
-                }catch(Exception e){
-                    e.printStackTrace();
-                }
-                send_msg(SRV_MSG_INIT, new String[]{new String(data,"utf-8")}); //new String(data,"utf-8"); data.toString();
+                //send world
+                send_msg(SRV_MSG_INIT, new String[]{World.returnString(),Integer.toString(World.ball.getX()),Integer.toString(World.ball.getY()),Integer.toString(World.ball.getDir())});
 
                 //tell the user through the waitscreen, that someone connected, and the game is ready to start
                 if(waitscreen != null)
                     waitscreen.srv_connected();
-
-
             }
             catch (Exception e){
                 e.printStackTrace();
@@ -270,18 +233,7 @@ public class Protocol {
             }
     }
 
-    /**
-     * server received a heartbeat from client
-     * send one back
-     */
 
-    private static void cltHb(){
-        if(!Networking.HB_STARTED){
-            Networking.HB_STARTED = true;
-            Networking.heartbeat();
-        }
-        Networking.TIME_OUT_COUNTER = 0;
-    }
 
     private static void cltUp(){
         TouchHandler.client_action(-1,'u');
@@ -295,24 +247,41 @@ public class Protocol {
         }
     }
 
+    /**
+     * client sends an OK to servers INIT back.
+     */
+    private static void cltOK(){
+        Networking.CLIENT_CONNECTED = true;
+    }
+
 
    /**
     * client side
     */
 
-
+    /**
+     * update the current State of the game
+     * @param para = ball_x :: ball_y :: destroyed_brick1_x :: destroyed_brick1_y :: ....
+     */
     private static void srvUpdate(String para){
-        //parse String
-        //World.update(pos-x,pos-y,Bricks[])...
+        String[] list = para.split(DATA_SEPARATOR);
+        //must be even or else a number is missing
+        if(list.length % 2 == 1){
+            Log.i(TAG,"Error in SRV_MSG_UPDATE");
+        }
+        try{
+            World.ball.setX(Integer.parseInt(list[0]));
+            World.ball.setY(Integer.parseInt(list[1]));
+
+            for(int i = 2; i < list.length-1; i ++){
+                World.brickDestroy(Integer.parseInt(list[i]),Integer.parseInt(list[i+1]));
+            }
+
+        }catch (Exception e){
+            Log.e(TAG,"",e);
+        }
     }
 
-    private static void srvHbOK(){
-        if(!Networking.HB_STARTED){
-            Networking.HB_STARTED = true;
-            Networking.heartbeat();
-        }
-        Networking.TIME_OUT_COUNTER = 0;
-    }
 
     /**
      * An INIT was received from the server
@@ -321,35 +290,24 @@ public class Protocol {
      */
 
     private static void srvInit(String para){
-        Log.i(TAG,"CLIENT : INIT RECEIVED");
-            Networking.CLIENT_CONNECTED = true;
+
+        Networking.CLIENT_CONNECTED = true;
 
         //tell the user through the waitscreen that he/she is connected to the server, and have to wait til the game is started
         if(waitscreen != null)
             waitscreen.clt_connected();
 
-        //read the game file in and prepare the game
+        //read the game file in and prepare the game 'para'
         try {
-            File file = new File(con.getFilesDir(), GAMEFILE);
-            file.delete();
-
-
-            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));
-            out.writeObject(para.getBytes()); //should be the original object
-            out.flush();
-            out.close();
-
-            ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
-            World.playground = (GameObj[][]) in.readObject();
-            in.close();
-
+            String[] para_list = para.split(DATA_SEPARATOR);
+            World.decode(para_list[0]);
+            World.ball.setX(Integer.parseInt(para_list[1]));
+            World.ball.setY(Integer.parseInt(para_list[2]));
+            World.ball.setDir(Integer.parseInt(para_list[3]));
         }catch (Exception e){
-            Log.i(TAG,"Error processing SRV_MSG_INIT");
-            e.printStackTrace();
+            Log.e(TAG,"",e);
         }
-
-        //start heart beating
-        send_msg(CLT_MSG_HB,null);
+        send_msg(CLT_MSG_OK,null);
 
     }
 
@@ -359,11 +317,11 @@ public class Protocol {
     }
 
     private static void srvWin(String para){
-
+        World.win(PanelPlayer.valueOf(para));  //???
     }
 
     private static void srvGameover(String para){
-
+        World.gameOver(PanelPlayer.valueOf(para));  //???
     }
 
     public static String get_msg(int type,String[] data){
@@ -382,10 +340,5 @@ public class Protocol {
      */
     public static void send_msg(int type, String[] data){
         Networking.send(get_msg(type,data));
-    }
-
-    public static void time_out(){
-        Screen.TYPE = Screen.TIMEOUT;
-        main.gameOver();
     }
 }
