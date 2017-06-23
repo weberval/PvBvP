@@ -10,3 +10,5 @@
 !*.svg
 !*.gif
 !*.mp3
+!*.css
+!*.html
