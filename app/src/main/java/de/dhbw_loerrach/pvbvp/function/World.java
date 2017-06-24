@@ -5,12 +5,11 @@ import android.util.Log;
 import de.dhbw_loerrach.pvbvp.sound.Soundeffects;
 
 /**
- * Created by weva on 04.04.2017.
- * const PLAYGROUND_WIDTH has to be odd
- * const PLAYGROUND_HEIGHT has to be even
+ * Created by weva on 04.04.2017. <br />
+ * const PLAYGROUND_WIDTH has to be odd <br />
+ * const PLAYGROUND_HEIGHT has to be even <br />
  * const PANEL_WITH has to be even
  */
-
 public class World {
 
 	private static final String TAG = "WORLD";
@@ -39,9 +38,8 @@ public class World {
 
 
 	/**
-	 * TODO(?): depending on level, the blocks are set and where the ball spawns.
+	 * depending on level, the blocks are set and where the ball spawns. <br />
 	 * (for example: all even level start with player1, all odd level start with player2)
-	 *
 	 * @param level
 	 */
 	public static void init(int level) {
@@ -67,6 +65,10 @@ public class World {
 	}
 
 
+	/**
+	 * creates almost random playground, containing brick-objects
+	 * @see Brick
+	 */
 	private static void brickCreate() {
 		/**
 		 * @param x line indent iterating through 0 and 1
@@ -84,25 +86,26 @@ public class World {
 			}
 		}
 
-		/**
-		 * @deprecated alternative way to create blocks
-		 */
-        /*
-        for (int i = 0; i < brickCount; ++i) {
-            int x = PLAYGROUND_OFFSET_X + (int)((Math.random() - .1) * (PLAYGROUND_WIDTH - PLAYGROUND_OFFSET_X));
-            int y = PLAYGROUND_OFFSET_Y + (int)((Math.random() - .1) * (PLAYGROUND_HEIGHT - PLAYGROUND_OFFSET_Y));
-            switch (this.playground[x][y].getType()) {
-                case AIR:
-                    int offset = (x % 2) - (y % 2);
-                    this.playground[x + offset][y] = new Brick(GameObjType.BRICK, 'l');
-                    this.playground[x + offset + 1][y] = new Brick(GameObjType.BRICK, 'r');
-                    break;
-                default:
-                    --i;
-            }
-        } */
+// ## alternative way to create blocks ##
+//        for (int i = 0; i < brickCount; ++i) {
+//            int x = PLAYGROUND_OFFSET_X + (int)((Math.random() - .1) * (PLAYGROUND_WIDTH - PLAYGROUND_OFFSET_X));
+//            int y = PLAYGROUND_OFFSET_Y + (int)((Math.random() - .1) * (PLAYGROUND_HEIGHT - PLAYGROUND_OFFSET_Y));
+//            switch (this.playground[x][y].getType()) {
+//                case AIR:
+//                    int offset = (x % 2) - (y % 2);
+//                    this.playground[x + offset][y] = new Brick(GameObjType.BRICK, 'l');
+//                    this.playground[x + offset + 1][y] = new Brick(GameObjType.BRICK, 'r');
+//                    break;
+//                default:
+//                    --i;
+//            }
+//        } */
 	}
 
+	/**
+	 * creates masterbrick-object in the center of the playground
+	 * @see Brick
+	 */
 	public static void masterBrickCreate() {
 		brickDestroy(PLAYGROUND_CENTER_X, PLAYGROUND_CENTER_Y_FLOOR);
 		brickDestroy(PLAYGROUND_CENTER_X, PLAYGROUND_CENTER_Y_FLOOR + 1);
@@ -116,6 +119,12 @@ public class World {
 		*/
 	}
 
+	/**
+	 * destructs brick at given coordinate and corresponding neighbour
+	 * @see Brick
+	 * @param x coordinate of the brick to destroy
+	 * @param y coordinate of the brick to destroy
+	 */
 	public static void brickDestroy(int x, int y) {
 		switch (playground[x][y].getSide()) {
 			case 'l':
@@ -133,6 +142,11 @@ public class World {
 		}
 	}
 
+	/**
+	 * move the panel
+	 * @param player the player the panel belongs to
+	 * @param dir  ether to the [l]eft side or to the [r]ight side
+	 */
 	public static void movePanel(int player, char dir) {
 		if (player < 0 || player > 2) {
 			return;
@@ -145,6 +159,13 @@ public class World {
 		}
 	}
 
+	/**
+	 *
+	 * @param x coordinate
+	 * @param y coordinate
+	 * @param panel
+	 * @return type of object which triggered the collision check
+	 */
 	public static GameObjType collisionCheck(int x, int y, Panel panel) {
 		if (y < -1 || y > World.PLAYGROUND_HEIGHT) {
 			return GameObjType.OUTOFBOUNDY;
@@ -163,9 +184,7 @@ public class World {
 	}
 
 	/**
-	 * returns true if the ball hit the panel
-	 *
-	 * @return
+	 * @return true if the ball hit the panel
 	 */
 	public static boolean hitPanel(Panel panel, int x, int y) {
 		int diff = 0;
@@ -208,6 +227,7 @@ public class World {
 	 * checks if the masterbrick was hit
 	 * not in use now
 	 *
+	 * @deprecated
 	 * @return
 	 */
 	public boolean hitMasterBrick() {
@@ -225,6 +245,10 @@ public class World {
 		return string;
 	}
 
+	/**
+	 * used for networking
+	 * @param string
+	 */
 	public static void decode(String string) {
 		playground = new GameObj[PLAYGROUND_WIDTH][PLAYGROUND_HEIGHT];
 		char[] pg = string.toCharArray();

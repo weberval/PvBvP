@@ -2,8 +2,6 @@ package de.dhbw_loerrach.pvbvp.function;
 
 /**
  * Created by weva on 04.04.2017.
- * Panel-Object extends GameObj
- * var int player
  */
 public class Panel extends GameObj {
 	
@@ -13,7 +11,6 @@ public class Panel extends GameObj {
 	/**
 	 * @param player sets player for panel
 	 */
-	
 	public Panel(PanelPlayer player) {
 		this.type = GameObjType.PANEL;
 		this.player = player;
@@ -27,13 +24,19 @@ public class Panel extends GameObj {
 				break;
 		}
 	}
-	
+
+	/**
+	 * moves the panel to the "right" side
+	 */
 	public void moveRight() {
 		if (this.x < World.PLAYGROUND_WIDTH - PANEL_WIDTH) {
 			this.x++;
 		}
 	}
-	
+
+	/**
+	 * moves the panel to the "left" side
+	 */
 	public void moveLeft() {
 		if (this.x > 1) {
 			this.x--;

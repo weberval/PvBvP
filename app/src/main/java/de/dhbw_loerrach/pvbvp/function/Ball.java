@@ -5,10 +5,9 @@ import android.util.Log;
 import static de.dhbw_loerrach.pvbvp.Main.PORTAL;
 
 /**
- * Created by weva on 04.04.2017.
- * Ball-Object extends GameObj
- * var int direction: 1, 2, 3, -1, -2, -3
- * var int player: 1, 2
+ * Created by weva on 04.04.2017. <br />
+ * var int direction: 1, 2, 3, -1, -2, -3 <br />
+ * var int player: 1, 2 <br />
  */
 
 public class Ball extends GameObj {
@@ -35,7 +34,6 @@ public class Ball extends GameObj {
 			y = World.PLAYGROUND_HEIGHT - 2;
 		}
 	}
-	
 
 	public int getDir(){
 		return direction;
@@ -53,6 +51,10 @@ public class Ball extends GameObj {
 		direction = dir;
 	}
 
+	/**
+	 * use for movement of an ball object <br />
+	 * performs the collision check
+	 */
 	public void move() {
 		panel1 = World.panels[0];
 		panel2 = World.panels[1];
@@ -302,6 +304,12 @@ public class Ball extends GameObj {
 		}
 	}
 
+	/**
+	 * handles hits on the panel
+	 * @see World
+	 * @param p1 panel of player one
+	 * @param p2 panel of player two
+	 */
 	public void onPanelHit(Panel p1, Panel p2){
 		if(PORTAL){
 			if(y == World.PLAYGROUND_HEIGHT-1)

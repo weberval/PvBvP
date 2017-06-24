@@ -11,6 +11,7 @@ public class Brick extends GameObj {
 	
 	private char side;
 	private int destructionStage = 0;
+
 	/**
 	 * @param side select side (left / right) of Block, also sets master true if master block
 	 */
@@ -38,6 +39,10 @@ public class Brick extends GameObj {
 		}
 	}
 
+	/**
+	 * for network support
+	 * @return
+	 */
 	public String toString() {
 		if(type == GameObjType.MASTER)
 			return "M";

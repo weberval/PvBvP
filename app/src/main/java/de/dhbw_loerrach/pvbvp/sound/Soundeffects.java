@@ -14,8 +14,9 @@ import de.dhbw_loerrach.pvbvp.R;
 public class Soundeffects {
 
 	/**
-	 * This class provides soundfiles to other classes.
-	 *
+	 * This class provides sound to other classes. <br />
+	 * Currently available are a knock, rrrrt, tick and blink-sounds. <br />
+	 * A music track is also available. (see licence)
 	 */
 
 	private static float volumeMusic = 1;
@@ -31,7 +32,7 @@ public class Soundeffects {
 	public static void init(Main main){
 
 		/**
-		 * setting music file
+		 * setting music file if not already done
 		 */
 		if (music == null) {
 			music = MediaPlayer.create(main, R.raw.headknocker);
@@ -42,7 +43,7 @@ public class Soundeffects {
 
 
 		/**
-		 * setting audio effect files
+		 * setting audio effect files  if not already done
 		 */
 		if (knock == null)
 			knock = MediaPlayer.create(main, R.raw.knock);
@@ -93,5 +94,4 @@ public class Soundeffects {
 	public static void stopMusic(){
 		music.stop();
 	}
-
 }
